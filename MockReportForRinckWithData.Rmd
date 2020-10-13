@@ -1,0 +1,77 @@
+---
+title: "Mock Up Admissions Funnel"
+author: "Office of Marketing and Brand Management"
+date: "10/13/2020"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+### FY20
+
+Before September 1
+
+```{r}
+PH_20-19-18 <-  c(740L, 1376L, 3628L)
+OOS_PH_20 <- c(552L, 1072L, 3127L)
+
+JR_20-19-18 <- c(3890L, 8944L, 11736L)
+OOS_JR_20 <- c(3049L, 6171L, 8064L)
+SR_20-19-18 <- c(13670L, 15656L, 13311L)
+OOS_SR_20 <- c(9191L, 10875L, 9231L)
+TR_R_20-19-18 <- c(2183L, 2112L, 2246L)
+TR_S-20-19-18 <- c(15853L, 17768L, 15557L)
+GR_20-19-18 <- c(1641L, 1217L, 1157L)
+OOS_GR_20 <- c(534L, 320L, 291L)
+FY_Over25_20 <- c(1000L, 1048L, 1162L)
+
+
+
+
+
+
+
+
+```
+
+## FY21 
+
+After September 1
+
+```{r}
+PH_20-19-18_21 <- c(172L, 221L, 549L)
+OOS_PH_21 <- c(122L, 139L, 480L)
+JR_20-19-18_21 <- c(899L, 1520L, 3893L)
+OOS_JR_21 <- c(681L, 1147L, 3372L)
+SR_20-19-18_21 <- c(4237L, 9396L, 12279L)
+OOS_SR_21 <- c(3321L, 6431L, 8537L)
+TR_R_20-19-18_21 <- c(376L, 1081L, 1008L)
+TR_S-20-19-18_21 <- c(4613L, 10477L, 13287L)
+GR_20-19-18_21 <- c(221L, 639L, 506L)
+FY_Over25_21 <- c(190L, 368L, 378L)
+OOS_GR_21 <- c(72L, 94L, 70L)
+
+```
+
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

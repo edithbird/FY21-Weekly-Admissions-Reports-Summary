@@ -40,9 +40,6 @@ knitr::opts_chunk$set(
 options(tinytex.verbose = TRUE)
 ```
 
-```{r, include=FALSE}
-options(tinytex.verbose = TRUE)
-```
 
 # **FY21 Weekly Admissions Reports Summary to Inform Agency Campaigns**
 
@@ -77,7 +74,8 @@ kable(Table)
 
 # Conclusions
 
-- I propose sharing a simple table on a weekly basis
+- I propose sharing a simple table on a weekly basis. 
+
 
 ```{r}
 Sample <- read.csv("C:/Users/christine.iyer/Box/FY21 Weekly Admissions Reports Summary to Inform Agency Campaigns/Sample.csv", header = T, stringsAsFactors = F)
@@ -85,6 +83,12 @@ kable(Sample)
 ```
 
 - It will take about one hour weekly to summarize the findings in the multiple admissions' reports.
+
+- Notes after rough draft discussion
+  - Clarify classification of stealth apps
+  - Clarification of other elements detailed in email to John Tabor. 
+  - Final report should have weekly ups and downs by numbers and percentages. 
+  - Add form completions for direct conversions. 
 
 
 \href{https://www.wrike.com/open.htm?id=569449783}{{\color{blue}{\underline{Wrike Project Details}}}}
