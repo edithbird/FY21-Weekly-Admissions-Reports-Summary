@@ -71,6 +71,8 @@ Table <-  read.csv("C:/Users/christine.iyer/Box/FY21 Weekly Admissions Reports S
 ```{r}
 kable(Table)
 ```
+install.packages("magick")
+install.packages("webshot")
 
 # Conclusions
 
@@ -78,7 +80,11 @@ kable(Table)
 
 
 ```{r}
-
+library(gridExtra)
+library(kableExtra)
+library(magick)
+library(webshot)
+#webshot::install_phantomjs()
 ```
 
 library(gridExtra)

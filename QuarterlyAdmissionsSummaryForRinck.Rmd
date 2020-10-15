@@ -1,5 +1,5 @@
 ---
-title: "Quarterly Admissions Funnel Summary for Advertising"
+title: "FY21 Q1 Admissions Funnel Summary for Advertising"
 author: "Office of Marketing and Brand Management"
 date: "10/13/2020"
 output: pdf_document
@@ -111,15 +111,34 @@ kable(numbers)%>%
 ## Marketing Forms as an Initial Inquiry Source  (July 1 - September 30)
 
 ```{r}
-inqs <- read.csv("C:/Users/christine.iyer/Box/FY21 Weekly Admissions Reports Summary to Inform Agency Campaigns/Reports/Quarterly_Inquiries.csv", header = T, stringsAsFactors = F)
 
-inqs$Audience <- factor(inqs$Audience, levels = c("HS-IS", "HS-OOS", "HS-UNKN", "TR", "WA", "GR", "OL"))
-kable(inqs %>% group_by(Audience, Antic.Start) %>% summarise(Inqs = n()) %>% spread(Antic.Start, Inqs) %>% select(Audience, FA21, FA20) %>% mutate(Change = paste0(round(FA21-FA20/FA20*100,2), "%")) %>% na.omit())%>%
+inqs2 <- read.csv("C:/Users/christine.iyer/Box/FY21 Weekly Admissions Reports Summary to Inform Agency Campaigns/Reports/TY1Better.csv", header = T, stringsAsFactors = F)
+
+inqs2 <- inqs2 %>% mutate(Initial.Source.Date = as.Date(Initial.Source.Date, format = "%m/%d/%Y"))
+
+inqs2$Audience <- factor(inqs2$Audience, levels = c("HS-IS", "HS-OOS", "HS-UNKN", "TR", "WA", "GR", "OL"))
+kable(inqs2 %>% 
+        mutate(FY = ifelse(Initial.Source.Date < "2020-06-30", "FY20", "FY21")) %>% 
+        group_by(Audience, FY) %>% summarise(Inqs = n()) %>% 
+        spread(FY, Inqs) %>% select(Audience, FY21, FY20) %>% mutate(Change = paste0(round((FY21-FY20)/FY20*100,2), "%")) %>% 
+        na.omit())%>%
   kable_styling() %>%
   add_header_above(c(" " = 1, "Inquiries" = 2, " " = 1))
 ```
+\newpage
+
 # Conclusions
 
-* Overall inquiries are down for all audiences, as are Marketing inquiries. 
+* Overall inquiries for Fall 2021 start. 
+
+* Marketing inquiries are also down as a whole, however they are up for both in-state HS students seeking an Undergraduate degree and students interested in an Online program. There is currently no way to count Online degree inquiries, but we see applications are up a lot. 
 
 * Applications are slightly up for most audiences. 
+
+#
+
+\href{https://www.wrike.com/open.htm?id=569449783}{{\color{blue}{\underline{Wrike Project Details}}}}
+
+\href{https://github.com/edithbird/FY21-Weekly-Admissions-Reports-Summary}{{\color{blue}{\underline{Github Repository}}}}
+
+
