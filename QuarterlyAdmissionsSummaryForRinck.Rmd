@@ -26,7 +26,7 @@ The following report provides 2 summaries. First, I show a succinct version of t
 
 # Findings
 
-## Admissions Funnel Summary through September 21, 2020 (most current)
+## Admissions Funnel Summary to September 21, 2020 (most current)
 
 ```{r eval=FALSE, include=FALSE}
 `PH_20-19-18` <-  c(740L, 1376L, 3628L)
@@ -108,7 +108,7 @@ kable(numbers)%>%
   add_header_above(c(" " = 1, "Inquiries" = 2, "Applicants" = 2, "YoY Change" = 2))
 ```
 
-## Marketing Forms as an Initial Inquiry Source  (July 1 - September 30)
+## Marketing Forms as an Initial Inquiry Source  (July 1 to September 30)
 
 ```{r}
 
@@ -129,9 +129,9 @@ kable(inqs2 %>%
 
 # Conclusions
 
-* Overall inquiries for Fall 2021 start. 
+* Overall, inquiries for Fall 2021 are down. 
 
-* Marketing inquiries are also down as a whole, however they are up for both in-state HS students seeking an Undergraduate degree and students interested in an Online program. There is currently no way to count Online degree inquiries, but we see applications are up a lot. 
+* Marketing inquiries are also down as a whole, however they are up for both in-state HS students seeking an Undergraduate degree and students interested in an Online program. Aside from the marketing inquiry forms for online programs, SF is currently not set up to track online degree inquiries in the weekly admissions funnel report. We see applications for online programs are up a lot, indicating a positive trend. 
 
 * Applications are slightly up for most audiences. 
 
