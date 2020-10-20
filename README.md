@@ -16,3 +16,5 @@ I have a couple follow up questions on the weekly reports.
 4. Since there are fewer inquiries these days, would it make sense that the number in the Applications rows go up if people are still applying and just not taking the traditional routes to make inquiries? That will probably be the case.
 ﻿
 5. How complicated would it be to add a new section category to the inquiry report? (I may have asked you this before and the answer was pretty complicated) Marketing assigns referral source codes to ad viewers who complete inquiry forms. It's easy enough for me to pull a report from SF on a regular basis, but it would also be cool for us to see how they do weekly on your report. In theory that could be done but with all the different referral codes it would probably be easier to create a whole new report for those codes.  
+
+Tableau Calculated Field Reference https://community.tableau.com/s/question/0D54T00000C5mt5/calculated-field-for-comparing-values-across-dates
