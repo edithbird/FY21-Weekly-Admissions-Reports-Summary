@@ -1,4 +1,4 @@
-## FY21-Weekly-Admissions-Reports-Summary
+﻿## FY21-Weekly-Admissions-Reports-Summary
 
 The overall objective of this project is to evaluate the Fall and Spring Admissions Reports and determine what information would be of value to the agency in assessing and optimizing the various campaigns. 
 There are about 7 different reports for each anticipated  start term and not all of there reports are useful. However, the agency would welcome a summary of what's happening with inquiry and application generation for graduate, UG, TR, and OL products, both in and out of state, There may be other demographics  with appropriate information that would be helpful for them to know.
@@ -16,3 +16,6 @@ I have a couple follow up questions on the weekly reports.
 4. Since there are fewer inquiries these days, would it make sense that the number in the Applications rows go up if people are still applying and just not taking the traditional routes to make inquiries? That will probably be the case.
 ﻿
 5. How complicated would it be to add a new section category to the inquiry report? (I may have asked you this before and the answer was pretty complicated) Marketing assigns referral source codes to ad viewers who complete inquiry forms. It's easy enough for me to pull a report from SF on a regular basis, but it would also be cool for us to see how they do weekly on your report. In theory that could be done but with all the different referral codes it would probably be easier to create a whole new report for those codes.  
+
+6. 10/20/20: After conversations with Jon Barker and John Tabor, I think we have a plan to automate a weekly report that does not involve manual work. 
+We use the DAA report for inquiries and John Tabors raw data from Peoplesoft for applicant data. 
