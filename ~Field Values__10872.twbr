@@ -2045,18 +2045,22 @@
         <calculation class='categorical-bin' column='[Anticipated Start Term Year]' new-bin='true'>
           <bin default-name='false' value='&quot;Fall/Summer 2018&quot;'>
             <value>&quot; 2018&quot;</value>
+            <value>&quot;2018&quot;</value>
             <value>&quot;Fall 2018&quot;</value>
+            <value>&quot;Sep-18&quot;</value>
             <value>&quot;September 2018&quot;</value>
             <value>&quot;Summer 2018&quot;</value>
           </bin>
           <bin default-name='false' value='&quot;Fall/Summer 2019&quot;'>
             <value>&quot;Fall 2019&quot;</value>
+            <value>&quot;Sep-19&quot;</value>
             <value>&quot;September 2019&quot;</value>
             <value>&quot;Summer 2019&quot;</value>
             <value>&quot;Summer 2019 2019&quot;</value>
           </bin>
           <bin default-name='false' value='&quot;Fall/Summer 2020&quot;'>
             <value>&quot; 2020&quot;</value>
+            <value>&quot;2020&quot;</value>
             <value>&quot;Fall 2020&quot;</value>
             <value>&quot;Fall 2020 2020&quot;</value>
             <value>&quot;Summer 2020&quot;</value>
@@ -2078,10 +2082,12 @@
             <value>&quot;Summer 2023&quot;</value>
           </bin>
           <bin default-name='false' value='&quot;Spring 2018&quot;'>
+            <value>&quot;Jan-18&quot;</value>
             <value>&quot;January 2018&quot;</value>
             <value>&quot;Spring 2018&quot;</value>
           </bin>
           <bin default-name='false' value='&quot;Spring 2019&quot;'>
+            <value>&quot;Jan-19&quot;</value>
             <value>&quot;January 2019&quot;</value>
             <value>&quot;Spring 2019&quot;</value>
             <value>&quot;Spring 2019 2019&quot;</value>
@@ -2168,11 +2174,20 @@
           </bin>
         </calculation>
       </column>
+      <column datatype='string' name='[Status]' role='dimension' type='nominal'>
+        <calculation class='categorical-bin' column='[Application Status]' new-bin='true'>
+          <bin default-name='false' value='&quot;Applied&quot;'>
+            <value>%null%</value>
+            <value>&quot;Applied&quot;</value>
+          </bin>
+        </calculation>
+      </column>
       <column datatype='string' name='[Student Stage]' role='dimension' type='nominal' />
-      <layout dim-ordering='alphabetic' dim-percentage='0.820205' measure-ordering='alphabetic' measure-percentage='0.179795' show-structure='true' />
+      <layout dim-ordering='alphabetic' dim-percentage='0.820604' measure-ordering='alphabetic' measure-percentage='0.179396' show-structure='true' />
       <semantic-values>
         <semantic-value key='[Country].[Name]' value='&quot;United States&quot;' />
       </semantic-values>
+      <date-options start-of-week='tuesday' />
     </datasource>
     <datasource caption='FY21_ExperienceUSM_Apps20200904' inline='true' name='federated.0fzqwf00c8q31b0zx3kko0aquqq4' version='18.1'>
       <connection class='federated'>
@@ -4734,6 +4749,920 @@
         <semantic-value key='[Country].[Name]' value='&quot;United States&quot;' />
       </semantic-values>
     </datasource>
+    <datasource caption='sheet1 (USM_AD_REPORT_UGRD_ADMISSIONS-10-12-20)' inline='true' name='federated.0adbvbf1irgeij14vjsz40tj1tp4' version='18.1'>
+      <connection class='federated'>
+        <named-connections>
+          <named-connection caption='USM_AD_REPORT_UGRD_ADMISSIONS-10-12-20' name='excel-direct.09j3nuo189689g10m1n6b1vqlgo9'>
+            <connection class='excel-direct' cleaning='no' compat='no' dataRefreshTime='' filename='C:/Users/christine.iyer/Box/FY21 Weekly Admissions Reports Summary to Inform Agency Campaigns/Reports/USM_AD_REPORT_UGRD_ADMISSIONS-10-12-20.xlsx' interpretationMode='0' password='' server='' validate='no' />
+          </named-connection>
+        </named-connections>
+        <relation connection='excel-direct.09j3nuo189689g10m1n6b1vqlgo9' name='sheet1' table='[sheet1$]' type='table'>
+          <columns gridOrigin='A1:BC595:no:A1:BC595:0' header='yes' outcome='2'>
+            <column datatype='string' name='Emplid_Career' ordinal='0' />
+            <column datatype='string' name='ID' ordinal='1' />
+            <column datatype='string' name='Appl Nbr' ordinal='2' />
+            <column datatype='string' name='Last Name' ordinal='3' />
+            <column datatype='string' name='First Name' ordinal='4' />
+            <column datatype='string' name='Sex' ordinal='5' />
+            <column datatype='date' name='Birthdate' ordinal='6' />
+            <column datatype='integer' name='Age' ordinal='7' />
+            <column datatype='string' name='Report Term' ordinal='8' />
+            <column datatype='string' name='Admit Term' ordinal='9' />
+            <column datatype='string' name='Admit Type' ordinal='10' />
+            <column datatype='string' name='Admission Residency' ordinal='11' />
+            <column datatype='string' name='Ethnicity' ordinal='12' />
+            <column datatype='string' name='Housing' ordinal='13' />
+            <column datatype='string' name='Status' ordinal='14' />
+            <column datatype='string' name='Prog Actn' ordinal='15' />
+            <column datatype='string' name='Action Rsn' ordinal='16' />
+            <column datatype='string' name='Enrolled Flag' ordinal='17' />
+            <column datatype='date' name='Max Admit Date' ordinal='18' />
+            <column datatype='string' name='Max Deny Date' ordinal='19' />
+            <column datatype='string' name='CGS Broken Deposit' ordinal='20' />
+            <column datatype='date' name='Matric Date' ordinal='21' />
+            <column datatype='string' name='Defer Prog Action' ordinal='22' />
+            <column datatype='date' name='Max Withdraw Date' ordinal='23' />
+            <column datatype='string' name='Acad Prog' ordinal='24' />
+            <column datatype='string' name='Acad Plan' ordinal='25' />
+            <column datatype='string' name='Max Sub-Plan' ordinal='26' />
+            <column datatype='integer' name='Max Sat Math' ordinal='27' />
+            <column datatype='integer' name='Max Sat Verbal' ordinal='28' />
+            <column datatype='integer' name='Max SAT Write' ordinal='29' />
+            <column datatype='string' name='Last School' ordinal='30' />
+            <column datatype='string' name='Last School Desc' ordinal='31' />
+            <column datatype='string' name='Last School Typ' ordinal='32' />
+            <column datatype='string' name='Method' ordinal='33' />
+            <column datatype='string' name='Complete' ordinal='34' />
+            <column datatype='string' name='Address 1' ordinal='35' />
+            <column datatype='string' name='Address 2' ordinal='36' />
+            <column datatype='string' name='City' ordinal='37' />
+            <column datatype='string' name='State' ordinal='38' />
+            <column datatype='string' name='Postal' ordinal='39' />
+            <column datatype='string' name='County' ordinal='40' />
+            <column datatype='string' name='Country' ordinal='41' />
+            <column datatype='string' name='Middle' ordinal='42' />
+            <column datatype='integer' name='SAT Total' ordinal='43' />
+            <column datatype='string' name='Group Name' ordinal='44' />
+            <column datatype='string' name='Acad Load' ordinal='45' />
+            <column datatype='integer' name='Max SAT ERWS' ordinal='46' />
+            <column datatype='integer' name='Max SAT MSS' ordinal='47' />
+            <column datatype='string' name='Multicultural' ordinal='48' />
+            <column datatype='string' name='Mutiple_Ethnic' ordinal='49' />
+            <column datatype='string' name='EDUPathways' ordinal='50' />
+            <column datatype='string' name='InDegreeProgram' ordinal='51' />
+            <column datatype='string' name='Citizenship_Status' ordinal='52' />
+            <column datatype='string' name='Subterm' ordinal='53' />
+            <column datatype='date' name='Applied Date' ordinal='54' />
+          </columns>
+        </relation>
+        <metadata-records>
+          <metadata-record class='column'>
+            <remote-name>Emplid_Career</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[Emplid_Career]</local-name>
+            <parent-name>[sheet1]</parent-name>
+            <remote-alias>Emplid_Career</remote-alias>
+            <ordinal>0</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <collation flag='1' name='LEN_RUS_S2' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;WSTR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>ID</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[ID]</local-name>
+            <parent-name>[sheet1]</parent-name>
+            <remote-alias>ID</remote-alias>
+            <ordinal>1</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <collation flag='1' name='LEN_RUS_S2' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;WSTR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Appl Nbr</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[Appl Nbr]</local-name>
+            <parent-name>[sheet1]</parent-name>
+            <remote-alias>Appl Nbr</remote-alias>
+            <ordinal>2</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <collation flag='1' name='LEN_RUS_S2' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;WSTR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Last Name</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[Last Name]</local-name>
+            <parent-name>[sheet1]</parent-name>
+            <remote-alias>Last Name</remote-alias>
+            <ordinal>3</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <collation flag='1' name='LEN_RUS_S2' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;WSTR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>First Name</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[First Name]</local-name>
+            <parent-name>[sheet1]</parent-name>
+            <remote-alias>First Name</remote-alias>
+            <ordinal>4</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <collation flag='1' name='LEN_RUS_S2' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;WSTR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Sex</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[Sex]</local-name>
+            <parent-name>[sheet1]</parent-name>
+            <remote-alias>Sex</remote-alias>
+            <ordinal>5</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <collation flag='1' name='LEN_RUS_S2' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;WSTR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Birthdate</remote-name>
+            <remote-type>7</remote-type>
+            <local-name>[Birthdate]</local-name>
+            <parent-name>[sheet1]</parent-name>
+            <remote-alias>Birthdate</remote-alias>
+            <ordinal>6</ordinal>
+            <local-type>date</local-type>
+            <aggregation>Year</aggregation>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;DATE&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Age</remote-name>
+            <remote-type>20</remote-type>
+            <local-name>[Age]</local-name>
+            <parent-name>[sheet1]</parent-name>
+            <remote-alias>Age</remote-alias>
+            <ordinal>7</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;I8&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Report Term</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[Report Term]</local-name>
+            <parent-name>[sheet1]</parent-name>
+            <remote-alias>Report Term</remote-alias>
+            <ordinal>8</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <collation flag='1' name='LEN_RUS_S2' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;WSTR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Admit Term</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[Admit Term]</local-name>
+            <parent-name>[sheet1]</parent-name>
+            <remote-alias>Admit Term</remote-alias>
+            <ordinal>9</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <collation flag='1' name='LEN_RUS_S2' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;WSTR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Admit Type</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[Admit Type]</local-name>
+            <parent-name>[sheet1]</parent-name>
+            <remote-alias>Admit Type</remote-alias>
+            <ordinal>10</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <collation flag='1' name='LEN_RUS_S2' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;WSTR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Admission Residency</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[Admission Residency]</local-name>
+            <parent-name>[sheet1]</parent-name>
+            <remote-alias>Admission Residency</remote-alias>
+            <ordinal>11</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <collation flag='1' name='LEN_RUS_S2' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;WSTR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Ethnicity</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[Ethnicity]</local-name>
+            <parent-name>[sheet1]</parent-name>
+            <remote-alias>Ethnicity</remote-alias>
+            <ordinal>12</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <collation flag='1' name='LEN_RUS_S2' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;WSTR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Housing</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[Housing]</local-name>
+            <parent-name>[sheet1]</parent-name>
+            <remote-alias>Housing</remote-alias>
+            <ordinal>13</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <collation flag='1' name='LEN_RUS_S2' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;WSTR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Status</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[Status]</local-name>
+            <parent-name>[sheet1]</parent-name>
+            <remote-alias>Status</remote-alias>
+            <ordinal>14</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <collation flag='1' name='LEN_RUS_S2' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;WSTR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Prog Actn</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[Prog Actn]</local-name>
+            <parent-name>[sheet1]</parent-name>
+            <remote-alias>Prog Actn</remote-alias>
+            <ordinal>15</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <collation flag='1' name='LEN_RUS_S2' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;WSTR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Action Rsn</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[Action Rsn]</local-name>
+            <parent-name>[sheet1]</parent-name>
+            <remote-alias>Action Rsn</remote-alias>
+            <ordinal>16</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <collation flag='1' name='LEN_RUS_S2' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;WSTR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Enrolled Flag</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[Enrolled Flag]</local-name>
+            <parent-name>[sheet1]</parent-name>
+            <remote-alias>Enrolled Flag</remote-alias>
+            <ordinal>17</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <collation flag='1' name='LEN_RUS_S2' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;WSTR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Max Admit Date</remote-name>
+            <remote-type>7</remote-type>
+            <local-name>[Max Admit Date]</local-name>
+            <parent-name>[sheet1]</parent-name>
+            <remote-alias>Max Admit Date</remote-alias>
+            <ordinal>18</ordinal>
+            <local-type>date</local-type>
+            <aggregation>Year</aggregation>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;DATE&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Max Deny Date</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[Max Deny Date]</local-name>
+            <parent-name>[sheet1]</parent-name>
+            <remote-alias>Max Deny Date</remote-alias>
+            <ordinal>19</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <collation flag='1' name='LEN_RUS_S2' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;WSTR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>CGS Broken Deposit</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[CGS Broken Deposit]</local-name>
+            <parent-name>[sheet1]</parent-name>
+            <remote-alias>CGS Broken Deposit</remote-alias>
+            <ordinal>20</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <collation flag='1' name='LEN_RUS_S2' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;WSTR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Matric Date</remote-name>
+            <remote-type>7</remote-type>
+            <local-name>[Matric Date]</local-name>
+            <parent-name>[sheet1]</parent-name>
+            <remote-alias>Matric Date</remote-alias>
+            <ordinal>21</ordinal>
+            <local-type>date</local-type>
+            <aggregation>Year</aggregation>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;DATE&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Defer Prog Action</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[Defer Prog Action]</local-name>
+            <parent-name>[sheet1]</parent-name>
+            <remote-alias>Defer Prog Action</remote-alias>
+            <ordinal>22</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <collation flag='1' name='LEN_RUS_S2' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;WSTR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Max Withdraw Date</remote-name>
+            <remote-type>7</remote-type>
+            <local-name>[Max Withdraw Date]</local-name>
+            <parent-name>[sheet1]</parent-name>
+            <remote-alias>Max Withdraw Date</remote-alias>
+            <ordinal>23</ordinal>
+            <local-type>date</local-type>
+            <aggregation>Year</aggregation>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;DATE&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Acad Prog</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[Acad Prog]</local-name>
+            <parent-name>[sheet1]</parent-name>
+            <remote-alias>Acad Prog</remote-alias>
+            <ordinal>24</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <collation flag='1' name='LEN_RUS_S2' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;WSTR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Acad Plan</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[Acad Plan]</local-name>
+            <parent-name>[sheet1]</parent-name>
+            <remote-alias>Acad Plan</remote-alias>
+            <ordinal>25</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <collation flag='1' name='LEN_RUS_S2' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;WSTR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Max Sub-Plan</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[Max Sub-Plan]</local-name>
+            <parent-name>[sheet1]</parent-name>
+            <remote-alias>Max Sub-Plan</remote-alias>
+            <ordinal>26</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <collation flag='1' name='LEN_RUS_S2' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;WSTR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Max Sat Math</remote-name>
+            <remote-type>20</remote-type>
+            <local-name>[Max Sat Math]</local-name>
+            <parent-name>[sheet1]</parent-name>
+            <remote-alias>Max Sat Math</remote-alias>
+            <ordinal>27</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;I8&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Max Sat Verbal</remote-name>
+            <remote-type>20</remote-type>
+            <local-name>[Max Sat Verbal]</local-name>
+            <parent-name>[sheet1]</parent-name>
+            <remote-alias>Max Sat Verbal</remote-alias>
+            <ordinal>28</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;I8&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Max SAT Write</remote-name>
+            <remote-type>20</remote-type>
+            <local-name>[Max SAT Write]</local-name>
+            <parent-name>[sheet1]</parent-name>
+            <remote-alias>Max SAT Write</remote-alias>
+            <ordinal>29</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;I8&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Last School</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[Last School]</local-name>
+            <parent-name>[sheet1]</parent-name>
+            <remote-alias>Last School</remote-alias>
+            <ordinal>30</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <collation flag='1' name='LEN_RUS_S2' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;WSTR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Last School Desc</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[Last School Desc]</local-name>
+            <parent-name>[sheet1]</parent-name>
+            <remote-alias>Last School Desc</remote-alias>
+            <ordinal>31</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <collation flag='1' name='LEN_RUS_S2' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;WSTR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Last School Typ</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[Last School Typ]</local-name>
+            <parent-name>[sheet1]</parent-name>
+            <remote-alias>Last School Typ</remote-alias>
+            <ordinal>32</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <collation flag='1' name='LEN_RUS_S2' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;WSTR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Method</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[Method]</local-name>
+            <parent-name>[sheet1]</parent-name>
+            <remote-alias>Method</remote-alias>
+            <ordinal>33</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <collation flag='1' name='LEN_RUS_S2' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;WSTR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Complete</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[Complete]</local-name>
+            <parent-name>[sheet1]</parent-name>
+            <remote-alias>Complete</remote-alias>
+            <ordinal>34</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <collation flag='1' name='LEN_RUS_S2' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;WSTR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Address 1</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[Address 1]</local-name>
+            <parent-name>[sheet1]</parent-name>
+            <remote-alias>Address 1</remote-alias>
+            <ordinal>35</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <collation flag='1' name='LEN_RUS_S2' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;WSTR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Address 2</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[Address 2]</local-name>
+            <parent-name>[sheet1]</parent-name>
+            <remote-alias>Address 2</remote-alias>
+            <ordinal>36</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <collation flag='1' name='LEN_RUS_S2' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;WSTR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>City</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[City]</local-name>
+            <parent-name>[sheet1]</parent-name>
+            <remote-alias>City</remote-alias>
+            <ordinal>37</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <collation flag='1' name='LEN_RUS_S2' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;WSTR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>State</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[State]</local-name>
+            <parent-name>[sheet1]</parent-name>
+            <remote-alias>State</remote-alias>
+            <ordinal>38</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <collation flag='1' name='LEN_RUS_S2' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;WSTR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Postal</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[Postal]</local-name>
+            <parent-name>[sheet1]</parent-name>
+            <remote-alias>Postal</remote-alias>
+            <ordinal>39</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <collation flag='1' name='LEN_RUS_S2' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;WSTR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>County</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[County]</local-name>
+            <parent-name>[sheet1]</parent-name>
+            <remote-alias>County</remote-alias>
+            <ordinal>40</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <collation flag='1' name='LEN_RUS_S2' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;WSTR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Country</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[Country]</local-name>
+            <parent-name>[sheet1]</parent-name>
+            <remote-alias>Country</remote-alias>
+            <ordinal>41</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <collation flag='1' name='LEN_RUS_S2' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;WSTR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Middle</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[Middle]</local-name>
+            <parent-name>[sheet1]</parent-name>
+            <remote-alias>Middle</remote-alias>
+            <ordinal>42</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <collation flag='1' name='LEN_RUS_S2' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;WSTR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>SAT Total</remote-name>
+            <remote-type>20</remote-type>
+            <local-name>[SAT Total]</local-name>
+            <parent-name>[sheet1]</parent-name>
+            <remote-alias>SAT Total</remote-alias>
+            <ordinal>43</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;I8&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Group Name</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[Group Name]</local-name>
+            <parent-name>[sheet1]</parent-name>
+            <remote-alias>Group Name</remote-alias>
+            <ordinal>44</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <collation flag='1' name='LEN_RUS_S2' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;WSTR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Acad Load</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[Acad Load]</local-name>
+            <parent-name>[sheet1]</parent-name>
+            <remote-alias>Acad Load</remote-alias>
+            <ordinal>45</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <collation flag='1' name='LEN_RUS_S2' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;WSTR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Max SAT ERWS</remote-name>
+            <remote-type>20</remote-type>
+            <local-name>[Max SAT ERWS]</local-name>
+            <parent-name>[sheet1]</parent-name>
+            <remote-alias>Max SAT ERWS</remote-alias>
+            <ordinal>46</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;I8&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Max SAT MSS</remote-name>
+            <remote-type>20</remote-type>
+            <local-name>[Max SAT MSS]</local-name>
+            <parent-name>[sheet1]</parent-name>
+            <remote-alias>Max SAT MSS</remote-alias>
+            <ordinal>47</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;I8&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Multicultural</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[Multicultural]</local-name>
+            <parent-name>[sheet1]</parent-name>
+            <remote-alias>Multicultural</remote-alias>
+            <ordinal>48</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <collation flag='1' name='LEN_RUS_S2' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;WSTR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Mutiple_Ethnic</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[Mutiple_Ethnic]</local-name>
+            <parent-name>[sheet1]</parent-name>
+            <remote-alias>Mutiple_Ethnic</remote-alias>
+            <ordinal>49</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <collation flag='1' name='LEN_RUS_S2' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;WSTR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>EDUPathways</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[EDUPathways]</local-name>
+            <parent-name>[sheet1]</parent-name>
+            <remote-alias>EDUPathways</remote-alias>
+            <ordinal>50</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <collation flag='1' name='LEN_RUS_S2' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;WSTR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>InDegreeProgram</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[InDegreeProgram]</local-name>
+            <parent-name>[sheet1]</parent-name>
+            <remote-alias>InDegreeProgram</remote-alias>
+            <ordinal>51</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <collation flag='1' name='LEN_RUS_S2' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;WSTR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Citizenship_Status</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[Citizenship_Status]</local-name>
+            <parent-name>[sheet1]</parent-name>
+            <remote-alias>Citizenship_Status</remote-alias>
+            <ordinal>52</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <collation flag='1' name='LEN_RUS_S2' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;WSTR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Subterm</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[Subterm]</local-name>
+            <parent-name>[sheet1]</parent-name>
+            <remote-alias>Subterm</remote-alias>
+            <ordinal>53</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <collation flag='1' name='LEN_RUS_S2' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;WSTR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Applied Date</remote-name>
+            <remote-type>7</remote-type>
+            <local-name>[Applied Date]</local-name>
+            <parent-name>[sheet1]</parent-name>
+            <remote-alias>Applied Date</remote-alias>
+            <ordinal>54</ordinal>
+            <local-type>date</local-type>
+            <aggregation>Year</aggregation>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;DATE&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='capability'>
+            <remote-name />
+            <remote-type>0</remote-type>
+            <parent-name>[sheet1]</parent-name>
+            <remote-alias />
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='integer' name='context'>0</attribute>
+              <attribute datatype='string' name='gridOrigin'>&quot;A1:BC595:no:A1:BC595:0&quot;</attribute>
+              <attribute datatype='boolean' name='header'>true</attribute>
+              <attribute datatype='integer' name='outcome'>2</attribute>
+            </attributes>
+          </metadata-record>
+        </metadata-records>
+      </connection>
+      <aliases enabled='yes' />
+      <column caption='Citizenship Status' datatype='string' name='[Citizenship_Status]' role='dimension' type='nominal' />
+      <column datatype='string' name='[City]' role='dimension' semantic-role='[City].[Name]' type='nominal' />
+      <column datatype='string' name='[Country]' role='dimension' semantic-role='[Country].[ISO3166_2]' type='nominal' />
+      <column datatype='string' name='[County]' role='dimension' semantic-role='[County].[Name]' type='nominal' />
+      <column caption='EDU Pathways' datatype='string' name='[EDUPathways]' role='dimension' type='nominal' />
+      <column caption='Emplid Career' datatype='string' name='[Emplid_Career]' role='dimension' type='nominal' />
+      <column caption='In Degree Program' datatype='string' name='[InDegreeProgram]' role='dimension' type='nominal' />
+      <column caption='Mutiple Ethnic' datatype='string' name='[Mutiple_Ethnic]' role='dimension' type='nominal' />
+      <column datatype='integer' name='[Number of Records]' role='measure' type='quantitative' user:auto-column='numrec'>
+        <calculation class='tableau' formula='1' />
+      </column>
+      <column datatype='string' name='[State]' role='dimension' semantic-role='[State].[Name]' type='nominal' />
+      <layout dim-ordering='alphabetic' dim-percentage='0.589698' measure-ordering='alphabetic' measure-percentage='0.410302' show-structure='true' />
+      <semantic-values>
+        <semantic-value key='[Country].[Name]' value='&quot;United States&quot;' />
+      </semantic-values>
+    </datasource>
   </datasources>
   <worksheets>
     <worksheet name='Anticipated Plan'>
@@ -4882,6 +5811,32 @@
       </table>
       <simple-id uuid='{8096A7E9-112A-42CF-89D7-C2CADDEDE282}' />
     </worksheet>
+    <worksheet name='App Report'>
+      <table>
+        <view>
+          <datasources>
+            <datasource caption='sheet1 (USM_AD_REPORT_UGRD_ADMISSIONS-10-12-20)' name='federated.0adbvbf1irgeij14vjsz40tj1tp4' />
+          </datasources>
+          <datasource-dependencies datasource='federated.0adbvbf1irgeij14vjsz40tj1tp4'>
+            <column datatype='date' name='[Applied Date]' role='dimension' type='ordinal' />
+            <column-instance column='[Applied Date]' derivation='Month-Trunc' name='[tmn:Applied Date:ok]' pivot='key' type='ordinal' />
+          </datasource-dependencies>
+          <aggregation value='true' />
+        </view>
+        <style />
+        <panes>
+          <pane selection-relaxation-option='selection-relaxation-allow'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Automatic' />
+          </pane>
+        </panes>
+        <rows />
+        <cols>[federated.0adbvbf1irgeij14vjsz40tj1tp4].[tmn:Applied Date:ok]</cols>
+      </table>
+      <simple-id uuid='{1E9CB32F-E320-4235-8148-F8795A86CFDD}' />
+    </worksheet>
     <worksheet name='DAA Inquiry Report'>
       <layout-options>
         <title>
@@ -5023,18 +5978,22 @@
               <calculation class='categorical-bin' column='[Anticipated Start Term Year]' new-bin='true'>
                 <bin default-name='false' value='&quot;Fall/Summer 2018&quot;'>
                   <value>&quot; 2018&quot;</value>
+                  <value>&quot;2018&quot;</value>
                   <value>&quot;Fall 2018&quot;</value>
+                  <value>&quot;Sep-18&quot;</value>
                   <value>&quot;September 2018&quot;</value>
                   <value>&quot;Summer 2018&quot;</value>
                 </bin>
                 <bin default-name='false' value='&quot;Fall/Summer 2019&quot;'>
                   <value>&quot;Fall 2019&quot;</value>
+                  <value>&quot;Sep-19&quot;</value>
                   <value>&quot;September 2019&quot;</value>
                   <value>&quot;Summer 2019&quot;</value>
                   <value>&quot;Summer 2019 2019&quot;</value>
                 </bin>
                 <bin default-name='false' value='&quot;Fall/Summer 2020&quot;'>
                   <value>&quot; 2020&quot;</value>
+                  <value>&quot;2020&quot;</value>
                   <value>&quot;Fall 2020&quot;</value>
                   <value>&quot;Fall 2020 2020&quot;</value>
                   <value>&quot;Summer 2020&quot;</value>
@@ -5056,10 +6015,12 @@
                   <value>&quot;Summer 2023&quot;</value>
                 </bin>
                 <bin default-name='false' value='&quot;Spring 2018&quot;'>
+                  <value>&quot;Jan-18&quot;</value>
                   <value>&quot;January 2018&quot;</value>
                   <value>&quot;Spring 2018&quot;</value>
                 </bin>
                 <bin default-name='false' value='&quot;Spring 2019&quot;'>
+                  <value>&quot;Jan-19&quot;</value>
                   <value>&quot;January 2019&quot;</value>
                   <value>&quot;Spring 2019&quot;</value>
                   <value>&quot;Spring 2019 2019&quot;</value>
@@ -5430,18 +6391,22 @@
               <calculation class='categorical-bin' column='[Anticipated Start Term Year]' new-bin='true'>
                 <bin default-name='false' value='&quot;Fall/Summer 2018&quot;'>
                   <value>&quot; 2018&quot;</value>
+                  <value>&quot;2018&quot;</value>
                   <value>&quot;Fall 2018&quot;</value>
+                  <value>&quot;Sep-18&quot;</value>
                   <value>&quot;September 2018&quot;</value>
                   <value>&quot;Summer 2018&quot;</value>
                 </bin>
                 <bin default-name='false' value='&quot;Fall/Summer 2019&quot;'>
                   <value>&quot;Fall 2019&quot;</value>
+                  <value>&quot;Sep-19&quot;</value>
                   <value>&quot;September 2019&quot;</value>
                   <value>&quot;Summer 2019&quot;</value>
                   <value>&quot;Summer 2019 2019&quot;</value>
                 </bin>
                 <bin default-name='false' value='&quot;Fall/Summer 2020&quot;'>
                   <value>&quot; 2020&quot;</value>
+                  <value>&quot;2020&quot;</value>
                   <value>&quot;Fall 2020&quot;</value>
                   <value>&quot;Fall 2020 2020&quot;</value>
                   <value>&quot;Summer 2020&quot;</value>
@@ -5463,10 +6428,12 @@
                   <value>&quot;Summer 2023&quot;</value>
                 </bin>
                 <bin default-name='false' value='&quot;Spring 2018&quot;'>
+                  <value>&quot;Jan-18&quot;</value>
                   <value>&quot;January 2018&quot;</value>
                   <value>&quot;Spring 2018&quot;</value>
                 </bin>
                 <bin default-name='false' value='&quot;Spring 2019&quot;'>
+                  <value>&quot;Jan-19&quot;</value>
                   <value>&quot;January 2019&quot;</value>
                   <value>&quot;Spring 2019&quot;</value>
                   <value>&quot;Spring 2019 2019&quot;</value>
@@ -5574,10 +6541,10 @@
               <bucket>&quot;[federated.06v9rwm1stl59c1bbz7pi08pn2nc].[sum:Number of Records:qk]&quot;</bucket>
             </dictionary>
           </manual-sort>
-          <filter class='categorical' column='[federated.06v9rwm1stl59c1bbz7pi08pn2nc].[Age (group)]'>
+          <filter class='categorical' column='[federated.06v9rwm1stl59c1bbz7pi08pn2nc].[Age (group)]' filter-group='6'>
             <groupfilter function='level-members' level='[Age (group)]' user:ui-enumeration='all' user:ui-marker='enumerate' />
           </filter>
-          <filter class='categorical' column='[federated.06v9rwm1stl59c1bbz7pi08pn2nc].[Anticipated Start Term Year (group)]'>
+          <filter class='categorical' column='[federated.06v9rwm1stl59c1bbz7pi08pn2nc].[Anticipated Start Term Year (group)]' filter-group='3'>
             <groupfilter function='except' user:ui-domain='relevant' user:ui-enumeration='exclusive' user:ui-marker='enumerate'>
               <groupfilter function='level-members' level='[Anticipated Start Term Year (group)]' />
               <groupfilter function='union'>
@@ -5588,54 +6555,32 @@
               </groupfilter>
             </groupfilter>
           </filter>
-          <filter class='categorical' column='[federated.06v9rwm1stl59c1bbz7pi08pn2nc].[Application Status]'>
+          <filter class='categorical' column='[federated.06v9rwm1stl59c1bbz7pi08pn2nc].[Application Status]' filter-group='4'>
             <groupfilter function='level-members' level='[Application Status]' user:ui-enumeration='all' user:ui-marker='enumerate' />
           </filter>
-          <filter class='categorical' column='[federated.06v9rwm1stl59c1bbz7pi08pn2nc].[Stage]'>
+          <filter class='categorical' column='[federated.06v9rwm1stl59c1bbz7pi08pn2nc].[Stage]' filter-group='7'>
             <groupfilter function='except' user:ui-domain='relevant' user:ui-enumeration='exclusive' user:ui-marker='enumerate'>
               <groupfilter function='level-members' level='[Stage]' />
               <groupfilter function='member' level='[Stage]' member='&quot;Lead&quot;' />
             </groupfilter>
           </filter>
-          <filter class='categorical' column='[federated.06v9rwm1stl59c1bbz7pi08pn2nc].[mn:Initial Source Date:ok]'>
+          <filter class='categorical' column='[federated.06v9rwm1stl59c1bbz7pi08pn2nc].[mn:Initial Source Date:ok]' filter-group='10'>
             <groupfilter function='level-members' level='[mn:Initial Source Date:ok]' user:ui-enumeration='all' user:ui-marker='enumerate' />
           </filter>
-          <filter class='categorical' column='[federated.06v9rwm1stl59c1bbz7pi08pn2nc].[none:Career:nk]'>
+          <filter class='categorical' column='[federated.06v9rwm1stl59c1bbz7pi08pn2nc].[none:Career:nk]' filter-group='5'>
             <groupfilter function='member' level='[none:Career:nk]' member='&quot;Undergraduate&quot;' user:ui-domain='relevant' user:ui-enumeration='inclusive' user:ui-marker='enumerate' />
           </filter>
-          <filter class='categorical' column='[federated.06v9rwm1stl59c1bbz7pi08pn2nc].[none:Student Type:nk]'>
+          <filter class='categorical' column='[federated.06v9rwm1stl59c1bbz7pi08pn2nc].[none:Student Type:nk]' filter-group='8'>
             <groupfilter function='union' user:ui-domain='relevant' user:ui-enumeration='inclusive' user:ui-marker='enumerate'>
               <groupfilter function='member' level='[none:Student Type:nk]' member='&quot;First-Year Student&quot;' />
-              <groupfilter function='member' level='[none:Student Type:nk]' member='&quot;Graduate&quot;' />
               <groupfilter function='member' level='[none:Student Type:nk]' member='&quot;Readmit&quot;' />
               <groupfilter function='member' level='[none:Student Type:nk]' member='&quot;Transfer&quot;' />
             </groupfilter>
           </filter>
-          <filter class='categorical' column='[federated.06v9rwm1stl59c1bbz7pi08pn2nc].[twk:Initial Source Date:ok]'>
-            <groupfilter function='union' user:ui-domain='relevant' user:ui-enumeration='inclusive' user:ui-marker='enumerate'>
-              <groupfilter function='member' level='[twk:Initial Source Date:ok]' member='#2020-06-07 00:00:00#' />
-              <groupfilter function='member' level='[twk:Initial Source Date:ok]' member='#2020-06-14 00:00:00#' />
-              <groupfilter function='member' level='[twk:Initial Source Date:ok]' member='#2020-06-21 00:00:00#' />
-              <groupfilter function='member' level='[twk:Initial Source Date:ok]' member='#2020-06-28 00:00:00#' />
-              <groupfilter function='member' level='[twk:Initial Source Date:ok]' member='#2020-07-05 00:00:00#' />
-              <groupfilter function='member' level='[twk:Initial Source Date:ok]' member='#2020-07-12 00:00:00#' />
-              <groupfilter function='member' level='[twk:Initial Source Date:ok]' member='#2020-07-19 00:00:00#' />
-              <groupfilter function='member' level='[twk:Initial Source Date:ok]' member='#2020-07-26 00:00:00#' />
-              <groupfilter function='member' level='[twk:Initial Source Date:ok]' member='#2020-08-02 00:00:00#' />
-              <groupfilter function='member' level='[twk:Initial Source Date:ok]' member='#2020-08-09 00:00:00#' />
-              <groupfilter function='member' level='[twk:Initial Source Date:ok]' member='#2020-08-16 00:00:00#' />
-              <groupfilter function='member' level='[twk:Initial Source Date:ok]' member='#2020-08-23 00:00:00#' />
-              <groupfilter function='member' level='[twk:Initial Source Date:ok]' member='#2020-08-30 00:00:00#' />
-              <groupfilter function='member' level='[twk:Initial Source Date:ok]' member='#2020-09-06 00:00:00#' />
-              <groupfilter function='member' level='[twk:Initial Source Date:ok]' member='#2020-09-13 00:00:00#' />
-              <groupfilter function='member' level='[twk:Initial Source Date:ok]' member='#2020-09-20 00:00:00#' />
-              <groupfilter function='member' level='[twk:Initial Source Date:ok]' member='#2020-09-27 00:00:00#' />
-              <groupfilter function='member' level='[twk:Initial Source Date:ok]' member='#2020-10-04 00:00:00#' />
-              <groupfilter function='member' level='[twk:Initial Source Date:ok]' member='#2020-10-11 00:00:00#' />
-              <groupfilter function='member' level='[twk:Initial Source Date:ok]' member='#2020-10-18 00:00:00#' />
-            </groupfilter>
+          <filter class='categorical' column='[federated.06v9rwm1stl59c1bbz7pi08pn2nc].[twk:Initial Source Date:ok]' filter-group='11'>
+            <groupfilter from='#2017-01-03 00:00:00#' function='range' level='[twk:Initial Source Date:ok]' to='#2020-10-20 00:00:00#' user:ui-domain='relevant' user:ui-enumeration='inclusive' user:ui-marker='enumerate' />
           </filter>
-          <filter class='categorical' column='[federated.06v9rwm1stl59c1bbz7pi08pn2nc].[yr:Initial Source Date:ok]'>
+          <filter class='categorical' column='[federated.06v9rwm1stl59c1bbz7pi08pn2nc].[yr:Initial Source Date:ok]' filter-group='9'>
             <groupfilter function='union' user:ui-domain='relevant' user:ui-enumeration='inclusive' user:ui-marker='enumerate'>
               <groupfilter function='member' level='[yr:Initial Source Date:ok]' member='2017' />
               <groupfilter function='member' level='[yr:Initial Source Date:ok]' member='2018' />
@@ -6077,6 +7022,630 @@
       </table>
       <simple-id uuid='{D71DEB93-9212-4FE4-B31B-CC077F61CAA2}' />
     </worksheet>
+    <worksheet name='Sheet 14'>
+      <table>
+        <view>
+          <datasources>
+            <datasource caption='DAA_10-20-2020' name='federated.06v9rwm1stl59c1bbz7pi08pn2nc' />
+          </datasources>
+          <datasource-dependencies datasource='federated.06v9rwm1stl59c1bbz7pi08pn2nc'>
+            <column datatype='string' name='[Age (group)]' role='dimension' type='nominal'>
+              <calculation class='categorical-bin' column='[Age]' new-bin='true'>
+                <bin default-name='false' value='&quot;19 and Under&quot;'>
+                  <value>13</value>
+                  <value>14</value>
+                  <value>15</value>
+                  <value>16</value>
+                  <value>17</value>
+                  <value>18</value>
+                  <value>19</value>
+                </bin>
+                <bin default-name='false' value='&quot;20-25&quot;'>
+                  <value>20</value>
+                  <value>21</value>
+                  <value>22</value>
+                  <value>23</value>
+                  <value>24</value>
+                  <value>25</value>
+                </bin>
+                <bin default-name='false' value='&quot;26 and Over&quot;'>
+                  <value>26</value>
+                  <value>27</value>
+                  <value>28</value>
+                  <value>29</value>
+                  <value>30</value>
+                  <value>31</value>
+                  <value>32</value>
+                  <value>33</value>
+                  <value>34</value>
+                  <value>35</value>
+                  <value>36</value>
+                  <value>37</value>
+                  <value>38</value>
+                  <value>39</value>
+                  <value>40</value>
+                  <value>41</value>
+                  <value>42</value>
+                  <value>43</value>
+                  <value>44</value>
+                  <value>45</value>
+                  <value>46</value>
+                  <value>47</value>
+                  <value>48</value>
+                  <value>49</value>
+                  <value>50</value>
+                  <value>51</value>
+                  <value>52</value>
+                  <value>53</value>
+                  <value>54</value>
+                  <value>55</value>
+                  <value>56</value>
+                  <value>57</value>
+                  <value>58</value>
+                  <value>59</value>
+                  <value>60</value>
+                  <value>61</value>
+                  <value>62</value>
+                  <value>63</value>
+                  <value>64</value>
+                  <value>65</value>
+                  <value>66</value>
+                  <value>67</value>
+                  <value>68</value>
+                  <value>69</value>
+                  <value>70</value>
+                  <value>71</value>
+                  <value>72</value>
+                  <value>73</value>
+                  <value>74</value>
+                  <value>75</value>
+                  <value>76</value>
+                  <value>77</value>
+                  <value>78</value>
+                  <value>79</value>
+                  <value>80</value>
+                  <value>82</value>
+                  <value>83</value>
+                  <value>90</value>
+                  <value>100</value>
+                  <value>119</value>
+                  <value>120</value>
+                  <value>139</value>
+                </bin>
+                <bin default-name='false' value='&quot;Unknown&quot;'>
+                  <value>%null%</value>
+                  <value>-980</value>
+                  <value>-972</value>
+                  <value>-970</value>
+                  <value>-951</value>
+                  <value>-946</value>
+                  <value>-659</value>
+                  <value>-277</value>
+                  <value>-224</value>
+                  <value>-202</value>
+                  <value>-195</value>
+                  <value>-180</value>
+                  <value>-179</value>
+                  <value>-79</value>
+                  <value>-78</value>
+                  <value>-54</value>
+                  <value>-46</value>
+                  <value>-45</value>
+                  <value>-38</value>
+                  <value>-36</value>
+                  <value>-34</value>
+                  <value>-2</value>
+                  <value>-1</value>
+                  <value>0</value>
+                  <value>1</value>
+                  <value>2</value>
+                  <value>3</value>
+                  <value>4</value>
+                  <value>5</value>
+                  <value>6</value>
+                  <value>7</value>
+                  <value>8</value>
+                  <value>10</value>
+                  <value>11</value>
+                </bin>
+              </calculation>
+            </column>
+            <column datatype='integer' name='[Age]' role='measure' type='quantitative' />
+            <column caption='Anticipated Start ' datatype='string' name='[Anticipated Start Term Year (group)]' role='dimension' type='nominal'>
+              <calculation class='categorical-bin' column='[Anticipated Start Term Year]' new-bin='true'>
+                <bin default-name='false' value='&quot;Fall/Summer 2018&quot;'>
+                  <value>&quot; 2018&quot;</value>
+                  <value>&quot;2018&quot;</value>
+                  <value>&quot;Fall 2018&quot;</value>
+                  <value>&quot;Sep-18&quot;</value>
+                  <value>&quot;September 2018&quot;</value>
+                  <value>&quot;Summer 2018&quot;</value>
+                </bin>
+                <bin default-name='false' value='&quot;Fall/Summer 2019&quot;'>
+                  <value>&quot;Fall 2019&quot;</value>
+                  <value>&quot;Sep-19&quot;</value>
+                  <value>&quot;September 2019&quot;</value>
+                  <value>&quot;Summer 2019&quot;</value>
+                  <value>&quot;Summer 2019 2019&quot;</value>
+                </bin>
+                <bin default-name='false' value='&quot;Fall/Summer 2020&quot;'>
+                  <value>&quot; 2020&quot;</value>
+                  <value>&quot;2020&quot;</value>
+                  <value>&quot;Fall 2020&quot;</value>
+                  <value>&quot;Fall 2020 2020&quot;</value>
+                  <value>&quot;Summer 2020&quot;</value>
+                </bin>
+                <bin default-name='false' value='&quot;Fall/Summer 2021&quot;'>
+                  <value>&quot;Fall 2021&quot;</value>
+                  <value>&quot;Fall 2021 2021&quot;</value>
+                  <value>&quot;Summer 2021&quot;</value>
+                  <value>&quot;Summer 2021 2021&quot;</value>
+                </bin>
+                <bin default-name='false' value='&quot;Fall/Summer 2022&quot;'>
+                  <value>&quot;Fall 2022&quot;</value>
+                  <value>&quot;Fall 2022 2022&quot;</value>
+                  <value>&quot;Summer 2022&quot;</value>
+                  <value>&quot;Summer 2022 2022&quot;</value>
+                </bin>
+                <bin default-name='false' value='&quot;Fall/Summer 2023&quot;'>
+                  <value>&quot;Fall 2023&quot;</value>
+                  <value>&quot;Summer 2023&quot;</value>
+                </bin>
+                <bin default-name='false' value='&quot;Spring 2018&quot;'>
+                  <value>&quot;Jan-18&quot;</value>
+                  <value>&quot;January 2018&quot;</value>
+                  <value>&quot;Spring 2018&quot;</value>
+                </bin>
+                <bin default-name='false' value='&quot;Spring 2019&quot;'>
+                  <value>&quot;Jan-19&quot;</value>
+                  <value>&quot;January 2019&quot;</value>
+                  <value>&quot;Spring 2019&quot;</value>
+                  <value>&quot;Spring 2019 2019&quot;</value>
+                </bin>
+                <bin default-name='true' value='&quot;Spring 2020&quot;'>
+                  <value>&quot;Spring 2020&quot;</value>
+                </bin>
+                <bin default-name='false' value='&quot;Spring 2021&quot;'>
+                  <value>&quot;Spring 2021&quot;</value>
+                  <value>&quot;Spring 2021 2021&quot;</value>
+                </bin>
+                <bin default-name='false' value='&quot;Spring 2022 &quot;'>
+                  <value>&quot;Spring 2022&quot;</value>
+                  <value>&quot;Spring 2022 2022&quot;</value>
+                </bin>
+                <bin default-name='true' value='&quot;Spring 2023&quot;'>
+                  <value>&quot;Spring 2023&quot;</value>
+                </bin>
+              </calculation>
+            </column>
+            <column datatype='string' name='[Anticipated Start Term Year]' role='dimension' type='nominal' />
+            <column datatype='string' name='[App Application Status]' role='dimension' type='nominal' />
+            <column datatype='string' name='[Application Status]' role='dimension' type='nominal'>
+              <calculation class='categorical-bin' column='[App Application Status]' new-bin='true'>
+                <bin default-name='false' value='&quot;Admitted &quot;'>
+                  <value>&quot;Admitted (Not Confirmed)&quot;</value>
+                  <value>&quot;Conditional Admit&quot;</value>
+                  <value>&quot;Withdrawn (After Admitted)&quot;</value>
+                </bin>
+                <bin default-name='false' value='&quot;Applied&quot;'>
+                  <value>&quot;Complete (No Decision)&quot;</value>
+                  <value>&quot;Complete (Waitlisted)&quot;</value>
+                  <value>&quot;Denied&quot;</value>
+                  <value>&quot;Hold (More Information Needed)&quot;</value>
+                  <value>&quot;Incomplete&quot;</value>
+                  <value>&quot;Withdrawn (Before Decision)&quot;</value>
+                </bin>
+                <bin default-name='false' value='&quot;Confirmed &quot;'>
+                  <value>&quot;Confirmed&quot;</value>
+                  <value>&quot;USM Graduate Confirmed&quot;</value>
+                  <value>&quot;Withdrawn (After Confirmed)&quot;</value>
+                </bin>
+                <bin default-name='false' value='&quot;Enrolled &quot;'>
+                  <value>&quot;Enrolled&quot;</value>
+                  <value>&quot;USM Graduate Enrolled&quot;</value>
+                </bin>
+              </calculation>
+            </column>
+            <column datatype='string' name='[Career]' role='dimension' type='nominal' />
+            <column datatype='date' name='[Initial Source Date]' role='dimension' type='ordinal' />
+            <column caption='Inqs' datatype='integer' name='[Number of Records 1]' role='measure' type='quantitative' user:auto-column='numrec'>
+              <calculation class='tableau' formula='1' />
+            </column>
+            <column datatype='string' name='[Stage]' role='dimension' type='nominal'>
+              <calculation class='categorical-bin' column='[Student Stage]' new-bin='true'>
+                <bin default-name='false' value='&quot;Applicant&quot;'>
+                  <value>&quot;\&quot;Applicant\&quot;&quot;</value>
+                  <value>&quot;Applicant&quot;</value>
+                </bin>
+              </calculation>
+            </column>
+            <column datatype='string' name='[Student Stage]' role='dimension' type='nominal' />
+            <column datatype='string' name='[Student Type]' role='dimension' type='nominal' />
+            <column-instance column='[Initial Source Date]' derivation='Month' name='[mn:Initial Source Date:ok]' pivot='key' type='ordinal' />
+            <column-instance column='[Career]' derivation='None' name='[none:Career:nk]' pivot='key' type='nominal' />
+            <column-instance column='[Student Stage]' derivation='None' name='[none:Student Stage:nk]' pivot='key' type='nominal' />
+            <column-instance column='[Student Type]' derivation='None' name='[none:Student Type:nk]' pivot='key' type='nominal' />
+            <column-instance column='[Number of Records 1]' derivation='Sum' name='[sum:Number of Records 1:qk]' pivot='key' type='quantitative' />
+            <column-instance column='[Initial Source Date]' derivation='Month-Trunc' name='[tmn:Initial Source Date:ok]' pivot='key' type='ordinal' />
+            <column-instance column='[Initial Source Date]' derivation='Week-Trunc' name='[twk:Initial Source Date:ok]' pivot='key' type='ordinal' />
+            <column-instance column='[Initial Source Date]' derivation='Week' name='[wk:Initial Source Date:ok]' pivot='key' type='ordinal' />
+            <column-instance column='[Initial Source Date]' derivation='Year' name='[yr:Initial Source Date:ok]' pivot='key' type='ordinal' />
+          </datasource-dependencies>
+          <filter class='categorical' column='[federated.06v9rwm1stl59c1bbz7pi08pn2nc].[:Measure Names]'>
+            <groupfilter function='level-members' level='[:Measure Names]' />
+          </filter>
+          <filter class='categorical' column='[federated.06v9rwm1stl59c1bbz7pi08pn2nc].[Age (group)]' filter-group='6'>
+            <groupfilter function='level-members' level='[Age (group)]' user:ui-enumeration='all' user:ui-marker='enumerate' />
+          </filter>
+          <filter class='categorical' column='[federated.06v9rwm1stl59c1bbz7pi08pn2nc].[Anticipated Start Term Year (group)]' filter-group='3'>
+            <groupfilter function='except' user:ui-domain='relevant' user:ui-enumeration='exclusive' user:ui-marker='enumerate'>
+              <groupfilter function='level-members' level='[Anticipated Start Term Year (group)]' />
+              <groupfilter function='union'>
+                <groupfilter function='member' level='[Anticipated Start Term Year (group)]' member='%null%' />
+                <groupfilter function='member' level='[Anticipated Start Term Year (group)]' member='&quot;Fall/Summer 2018&quot;' />
+                <groupfilter function='member' level='[Anticipated Start Term Year (group)]' member='&quot;Fall/Summer 2019&quot;' />
+                <groupfilter from='&quot;Fall/Summer 2022&quot;' function='range' level='[Anticipated Start Term Year (group)]' to='&quot;Spring 2023&quot;' />
+              </groupfilter>
+            </groupfilter>
+          </filter>
+          <filter class='categorical' column='[federated.06v9rwm1stl59c1bbz7pi08pn2nc].[Application Status]' filter-group='4'>
+            <groupfilter function='level-members' level='[Application Status]' user:ui-enumeration='all' user:ui-marker='enumerate' />
+          </filter>
+          <filter class='categorical' column='[federated.06v9rwm1stl59c1bbz7pi08pn2nc].[Stage]' filter-group='7'>
+            <groupfilter function='except' user:ui-domain='relevant' user:ui-enumeration='exclusive' user:ui-marker='enumerate'>
+              <groupfilter function='level-members' level='[Stage]' />
+              <groupfilter function='member' level='[Stage]' member='&quot;Lead&quot;' />
+            </groupfilter>
+          </filter>
+          <filter class='categorical' column='[federated.06v9rwm1stl59c1bbz7pi08pn2nc].[mn:Initial Source Date:ok]' filter-group='10'>
+            <groupfilter function='level-members' level='[mn:Initial Source Date:ok]' user:ui-enumeration='all' user:ui-marker='enumerate' />
+          </filter>
+          <filter class='categorical' column='[federated.06v9rwm1stl59c1bbz7pi08pn2nc].[none:Career:nk]' filter-group='5'>
+            <groupfilter function='member' level='[none:Career:nk]' member='&quot;Undergraduate&quot;' user:ui-domain='relevant' user:ui-enumeration='inclusive' user:ui-marker='enumerate' />
+          </filter>
+          <filter class='categorical' column='[federated.06v9rwm1stl59c1bbz7pi08pn2nc].[none:Student Stage:nk]'>
+            <groupfilter function='union' user:ui-domain='relevant' user:ui-enumeration='inclusive' user:ui-marker='enumerate'>
+              <groupfilter function='member' level='[none:Student Stage:nk]' member='%null%' />
+              <groupfilter from='&quot;\&quot;Applicant\&quot;&quot;' function='range' level='[none:Student Stage:nk]' to='&quot;Lead&quot;' />
+            </groupfilter>
+          </filter>
+          <filter class='categorical' column='[federated.06v9rwm1stl59c1bbz7pi08pn2nc].[none:Student Type:nk]' filter-group='8'>
+            <groupfilter function='union' user:ui-domain='relevant' user:ui-enumeration='inclusive' user:ui-marker='enumerate'>
+              <groupfilter function='member' level='[none:Student Type:nk]' member='&quot;First-Year Student&quot;' />
+              <groupfilter function='member' level='[none:Student Type:nk]' member='&quot;Readmit&quot;' />
+              <groupfilter function='member' level='[none:Student Type:nk]' member='&quot;Transfer&quot;' />
+            </groupfilter>
+          </filter>
+          <filter class='categorical' column='[federated.06v9rwm1stl59c1bbz7pi08pn2nc].[twk:Initial Source Date:ok]' filter-group='11'>
+            <groupfilter from='#2017-01-03 00:00:00#' function='range' level='[twk:Initial Source Date:ok]' to='#2020-10-20 00:00:00#' user:ui-domain='relevant' user:ui-enumeration='inclusive' user:ui-marker='enumerate' />
+          </filter>
+          <filter class='categorical' column='[federated.06v9rwm1stl59c1bbz7pi08pn2nc].[wk:Initial Source Date:ok]'>
+            <groupfilter function='union' user:ui-domain='relevant' user:ui-enumeration='inclusive' user:ui-marker='enumerate'>
+              <groupfilter function='member' level='[wk:Initial Source Date:ok]' member='%null%' />
+              <groupfilter function='member' level='[wk:Initial Source Date:ok]' member='1' />
+              <groupfilter function='member' level='[wk:Initial Source Date:ok]' member='2' />
+              <groupfilter function='member' level='[wk:Initial Source Date:ok]' member='3' />
+              <groupfilter function='member' level='[wk:Initial Source Date:ok]' member='4' />
+              <groupfilter function='member' level='[wk:Initial Source Date:ok]' member='5' />
+              <groupfilter function='member' level='[wk:Initial Source Date:ok]' member='6' />
+              <groupfilter function='member' level='[wk:Initial Source Date:ok]' member='7' />
+              <groupfilter function='member' level='[wk:Initial Source Date:ok]' member='8' />
+              <groupfilter function='member' level='[wk:Initial Source Date:ok]' member='9' />
+              <groupfilter function='member' level='[wk:Initial Source Date:ok]' member='10' />
+              <groupfilter function='member' level='[wk:Initial Source Date:ok]' member='11' />
+              <groupfilter function='member' level='[wk:Initial Source Date:ok]' member='12' />
+              <groupfilter function='member' level='[wk:Initial Source Date:ok]' member='13' />
+              <groupfilter function='member' level='[wk:Initial Source Date:ok]' member='14' />
+              <groupfilter function='member' level='[wk:Initial Source Date:ok]' member='15' />
+              <groupfilter function='member' level='[wk:Initial Source Date:ok]' member='16' />
+              <groupfilter function='member' level='[wk:Initial Source Date:ok]' member='17' />
+              <groupfilter function='member' level='[wk:Initial Source Date:ok]' member='18' />
+              <groupfilter function='member' level='[wk:Initial Source Date:ok]' member='19' />
+              <groupfilter function='member' level='[wk:Initial Source Date:ok]' member='20' />
+              <groupfilter function='member' level='[wk:Initial Source Date:ok]' member='21' />
+              <groupfilter function='member' level='[wk:Initial Source Date:ok]' member='22' />
+              <groupfilter function='member' level='[wk:Initial Source Date:ok]' member='23' />
+              <groupfilter function='member' level='[wk:Initial Source Date:ok]' member='24' />
+              <groupfilter function='member' level='[wk:Initial Source Date:ok]' member='25' />
+              <groupfilter function='member' level='[wk:Initial Source Date:ok]' member='26' />
+              <groupfilter function='member' level='[wk:Initial Source Date:ok]' member='27' />
+              <groupfilter function='member' level='[wk:Initial Source Date:ok]' member='28' />
+              <groupfilter function='member' level='[wk:Initial Source Date:ok]' member='29' />
+              <groupfilter function='member' level='[wk:Initial Source Date:ok]' member='30' />
+              <groupfilter function='member' level='[wk:Initial Source Date:ok]' member='31' />
+              <groupfilter function='member' level='[wk:Initial Source Date:ok]' member='32' />
+              <groupfilter function='member' level='[wk:Initial Source Date:ok]' member='33' />
+              <groupfilter function='member' level='[wk:Initial Source Date:ok]' member='34' />
+              <groupfilter function='member' level='[wk:Initial Source Date:ok]' member='35' />
+              <groupfilter function='member' level='[wk:Initial Source Date:ok]' member='36' />
+              <groupfilter function='member' level='[wk:Initial Source Date:ok]' member='37' />
+              <groupfilter function='member' level='[wk:Initial Source Date:ok]' member='38' />
+              <groupfilter function='member' level='[wk:Initial Source Date:ok]' member='39' />
+              <groupfilter function='member' level='[wk:Initial Source Date:ok]' member='40' />
+              <groupfilter function='member' level='[wk:Initial Source Date:ok]' member='41' />
+              <groupfilter function='member' level='[wk:Initial Source Date:ok]' member='42' />
+              <groupfilter function='member' level='[wk:Initial Source Date:ok]' member='43' />
+              <groupfilter function='member' level='[wk:Initial Source Date:ok]' member='44' />
+              <groupfilter function='member' level='[wk:Initial Source Date:ok]' member='45' />
+              <groupfilter function='member' level='[wk:Initial Source Date:ok]' member='46' />
+              <groupfilter function='member' level='[wk:Initial Source Date:ok]' member='47' />
+              <groupfilter function='member' level='[wk:Initial Source Date:ok]' member='48' />
+              <groupfilter function='member' level='[wk:Initial Source Date:ok]' member='49' />
+              <groupfilter function='member' level='[wk:Initial Source Date:ok]' member='50' />
+              <groupfilter function='member' level='[wk:Initial Source Date:ok]' member='51' />
+              <groupfilter function='member' level='[wk:Initial Source Date:ok]' member='52' />
+              <groupfilter function='member' level='[wk:Initial Source Date:ok]' member='53' />
+            </groupfilter>
+          </filter>
+          <filter class='categorical' column='[federated.06v9rwm1stl59c1bbz7pi08pn2nc].[yr:Initial Source Date:ok]' filter-group='9'>
+            <groupfilter function='union' user:ui-domain='relevant' user:ui-enumeration='inclusive' user:ui-marker='enumerate'>
+              <groupfilter function='member' level='[yr:Initial Source Date:ok]' member='2017' />
+              <groupfilter function='member' level='[yr:Initial Source Date:ok]' member='2018' />
+              <groupfilter function='member' level='[yr:Initial Source Date:ok]' member='2019' />
+              <groupfilter function='member' level='[yr:Initial Source Date:ok]' member='2020' />
+            </groupfilter>
+          </filter>
+          <slices>
+            <column>[federated.06v9rwm1stl59c1bbz7pi08pn2nc].[none:Student Stage:nk]</column>
+            <column>[federated.06v9rwm1stl59c1bbz7pi08pn2nc].[Anticipated Start Term Year (group)]</column>
+            <column>[federated.06v9rwm1stl59c1bbz7pi08pn2nc].[Application Status]</column>
+            <column>[federated.06v9rwm1stl59c1bbz7pi08pn2nc].[none:Career:nk]</column>
+            <column>[federated.06v9rwm1stl59c1bbz7pi08pn2nc].[none:Student Type:nk]</column>
+            <column>[federated.06v9rwm1stl59c1bbz7pi08pn2nc].[Age (group)]</column>
+            <column>[federated.06v9rwm1stl59c1bbz7pi08pn2nc].[yr:Initial Source Date:ok]</column>
+            <column>[federated.06v9rwm1stl59c1bbz7pi08pn2nc].[mn:Initial Source Date:ok]</column>
+            <column>[federated.06v9rwm1stl59c1bbz7pi08pn2nc].[wk:Initial Source Date:ok]</column>
+            <column>[federated.06v9rwm1stl59c1bbz7pi08pn2nc].[:Measure Names]</column>
+            <column>[federated.06v9rwm1stl59c1bbz7pi08pn2nc].[Stage]</column>
+            <column>[federated.06v9rwm1stl59c1bbz7pi08pn2nc].[twk:Initial Source Date:ok]</column>
+          </slices>
+          <aggregation value='true' />
+        </view>
+        <style />
+        <panes>
+          <pane selection-relaxation-option='selection-relaxation-allow'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Automatic' />
+            <encodings>
+              <color column='[federated.06v9rwm1stl59c1bbz7pi08pn2nc].[Anticipated Start Term Year (group)]' />
+            </encodings>
+          </pane>
+        </panes>
+        <rows>[federated.06v9rwm1stl59c1bbz7pi08pn2nc].[sum:Number of Records 1:qk]</rows>
+        <cols>[federated.06v9rwm1stl59c1bbz7pi08pn2nc].[tmn:Initial Source Date:ok]</cols>
+      </table>
+      <simple-id uuid='{55EA55D4-B8EB-4C3A-8376-FDB600470036}' />
+    </worksheet>
+    <worksheet name='Sheet 16'>
+      <table>
+        <view>
+          <datasources>
+            <datasource caption='sheet1 (USM_AD_REPORT_UGRD_ADMISSIONS-10-12-20)' name='federated.0adbvbf1irgeij14vjsz40tj1tp4' />
+          </datasources>
+          <datasource-dependencies datasource='federated.0adbvbf1irgeij14vjsz40tj1tp4'>
+            <column datatype='string' name='[Complete]' role='dimension' type='nominal' />
+            <column datatype='integer' name='[Number of Records]' role='measure' type='quantitative' user:auto-column='numrec'>
+              <calculation class='tableau' formula='1' />
+            </column>
+            <column-instance column='[Complete]' derivation='None' name='[none:Complete:nk]' pivot='key' type='nominal' />
+            <column-instance column='[Number of Records]' derivation='Sum' name='[sum:Number of Records:qk]' pivot='key' type='quantitative' />
+          </datasource-dependencies>
+          <aggregation value='true' />
+        </view>
+        <style />
+        <panes>
+          <pane selection-relaxation-option='selection-relaxation-allow'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Automatic' />
+            <encodings>
+              <text column='[federated.0adbvbf1irgeij14vjsz40tj1tp4].[sum:Number of Records:qk]' />
+            </encodings>
+            <style>
+              <style-rule element='mark'>
+                <format attr='mark-labels-cull' value='true' />
+                <format attr='mark-labels-show' value='true' />
+              </style-rule>
+            </style>
+          </pane>
+        </panes>
+        <rows>[federated.0adbvbf1irgeij14vjsz40tj1tp4].[none:Complete:nk]</rows>
+        <cols />
+      </table>
+      <simple-id uuid='{E2610B6A-3C9A-4A58-98D2-9614A584D9DF}' />
+    </worksheet>
+    <worksheet name='Sheet 17'>
+      <table>
+        <view>
+          <datasources>
+            <datasource caption='DAA_10-20-2020' name='federated.06v9rwm1stl59c1bbz7pi08pn2nc' />
+          </datasources>
+          <datasource-dependencies datasource='federated.06v9rwm1stl59c1bbz7pi08pn2nc'>
+            <column caption='Anticipated Start ' datatype='string' name='[Anticipated Start Term Year (group)]' role='dimension' type='nominal'>
+              <calculation class='categorical-bin' column='[Anticipated Start Term Year]' new-bin='true'>
+                <bin default-name='false' value='&quot;Fall/Summer 2018&quot;'>
+                  <value>&quot; 2018&quot;</value>
+                  <value>&quot;2018&quot;</value>
+                  <value>&quot;Fall 2018&quot;</value>
+                  <value>&quot;Sep-18&quot;</value>
+                  <value>&quot;September 2018&quot;</value>
+                  <value>&quot;Summer 2018&quot;</value>
+                </bin>
+                <bin default-name='false' value='&quot;Fall/Summer 2019&quot;'>
+                  <value>&quot;Fall 2019&quot;</value>
+                  <value>&quot;Sep-19&quot;</value>
+                  <value>&quot;September 2019&quot;</value>
+                  <value>&quot;Summer 2019&quot;</value>
+                  <value>&quot;Summer 2019 2019&quot;</value>
+                </bin>
+                <bin default-name='false' value='&quot;Fall/Summer 2020&quot;'>
+                  <value>&quot; 2020&quot;</value>
+                  <value>&quot;2020&quot;</value>
+                  <value>&quot;Fall 2020&quot;</value>
+                  <value>&quot;Fall 2020 2020&quot;</value>
+                  <value>&quot;Summer 2020&quot;</value>
+                </bin>
+                <bin default-name='false' value='&quot;Fall/Summer 2021&quot;'>
+                  <value>&quot;Fall 2021&quot;</value>
+                  <value>&quot;Fall 2021 2021&quot;</value>
+                  <value>&quot;Summer 2021&quot;</value>
+                  <value>&quot;Summer 2021 2021&quot;</value>
+                </bin>
+                <bin default-name='false' value='&quot;Fall/Summer 2022&quot;'>
+                  <value>&quot;Fall 2022&quot;</value>
+                  <value>&quot;Fall 2022 2022&quot;</value>
+                  <value>&quot;Summer 2022&quot;</value>
+                  <value>&quot;Summer 2022 2022&quot;</value>
+                </bin>
+                <bin default-name='false' value='&quot;Fall/Summer 2023&quot;'>
+                  <value>&quot;Fall 2023&quot;</value>
+                  <value>&quot;Summer 2023&quot;</value>
+                </bin>
+                <bin default-name='false' value='&quot;Spring 2018&quot;'>
+                  <value>&quot;Jan-18&quot;</value>
+                  <value>&quot;January 2018&quot;</value>
+                  <value>&quot;Spring 2018&quot;</value>
+                </bin>
+                <bin default-name='false' value='&quot;Spring 2019&quot;'>
+                  <value>&quot;Jan-19&quot;</value>
+                  <value>&quot;January 2019&quot;</value>
+                  <value>&quot;Spring 2019&quot;</value>
+                  <value>&quot;Spring 2019 2019&quot;</value>
+                </bin>
+                <bin default-name='true' value='&quot;Spring 2020&quot;'>
+                  <value>&quot;Spring 2020&quot;</value>
+                </bin>
+                <bin default-name='false' value='&quot;Spring 2021&quot;'>
+                  <value>&quot;Spring 2021&quot;</value>
+                  <value>&quot;Spring 2021 2021&quot;</value>
+                </bin>
+                <bin default-name='false' value='&quot;Spring 2022 &quot;'>
+                  <value>&quot;Spring 2022&quot;</value>
+                  <value>&quot;Spring 2022 2022&quot;</value>
+                </bin>
+                <bin default-name='true' value='&quot;Spring 2023&quot;'>
+                  <value>&quot;Spring 2023&quot;</value>
+                </bin>
+              </calculation>
+            </column>
+            <column datatype='string' name='[Anticipated Start Term Year]' role='dimension' type='nominal' />
+            <column datatype='date' name='[App Application Date]' role='dimension' type='ordinal' />
+            <column datatype='string' name='[App Application Status]' role='dimension' type='nominal' />
+            <column datatype='string' name='[Application Status]' role='dimension' type='nominal'>
+              <calculation class='categorical-bin' column='[App Application Status]' new-bin='true'>
+                <bin default-name='false' value='&quot;Admitted &quot;'>
+                  <value>&quot;Admitted (Not Confirmed)&quot;</value>
+                  <value>&quot;Conditional Admit&quot;</value>
+                  <value>&quot;Withdrawn (After Admitted)&quot;</value>
+                </bin>
+                <bin default-name='false' value='&quot;Applied&quot;'>
+                  <value>&quot;Complete (No Decision)&quot;</value>
+                  <value>&quot;Complete (Waitlisted)&quot;</value>
+                  <value>&quot;Denied&quot;</value>
+                  <value>&quot;Hold (More Information Needed)&quot;</value>
+                  <value>&quot;Incomplete&quot;</value>
+                  <value>&quot;Withdrawn (Before Decision)&quot;</value>
+                </bin>
+                <bin default-name='false' value='&quot;Confirmed &quot;'>
+                  <value>&quot;Confirmed&quot;</value>
+                  <value>&quot;USM Graduate Confirmed&quot;</value>
+                  <value>&quot;Withdrawn (After Confirmed)&quot;</value>
+                </bin>
+                <bin default-name='false' value='&quot;Enrolled &quot;'>
+                  <value>&quot;Enrolled&quot;</value>
+                  <value>&quot;USM Graduate Enrolled&quot;</value>
+                </bin>
+              </calculation>
+            </column>
+            <column caption='Prior Inqs' datatype='integer' name='[Calculation_765049025118932994]' role='measure' type='quantitative'>
+              <calculation class='tableau' formula='LOOKUP(sum([Number of Records 1]), -1)'>
+                <table-calc ordering-type='Rows' />
+              </calculation>
+            </column>
+            <column caption='Inqs' datatype='integer' name='[Number of Records 1]' role='measure' type='quantitative' user:auto-column='numrec'>
+              <calculation class='tableau' formula='1' />
+            </column>
+            <column datatype='string' name='[Status]' role='dimension' type='nominal'>
+              <calculation class='categorical-bin' column='[Application Status]' new-bin='true'>
+                <bin default-name='false' value='&quot;Applied&quot;'>
+                  <value>%null%</value>
+                  <value>&quot;Applied&quot;</value>
+                </bin>
+              </calculation>
+            </column>
+            <column-instance column='[App Application Date]' derivation='Month' name='[mn:App Application Date:ok]' pivot='key' type='ordinal' />
+            <column-instance column='[Number of Records 1]' derivation='Sum' name='[sum:Number of Records 1:qk]' pivot='key' type='quantitative' />
+            <column-instance column='[Calculation_765049025118932994]' derivation='User' name='[usr:Calculation_765049025118932994:qk:2]' pivot='key' type='quantitative'>
+              <table-calc ordering-type='Columns' />
+            </column-instance>
+            <column-instance column='[App Application Date]' derivation='Year' name='[yr:App Application Date:ok]' pivot='key' type='ordinal' />
+          </datasource-dependencies>
+          <filter class='categorical' column='[federated.06v9rwm1stl59c1bbz7pi08pn2nc].[:Measure Names]'>
+            <groupfilter function='union' user:op='manual'>
+              <groupfilter function='member' level='[:Measure Names]' member='&quot;[federated.06v9rwm1stl59c1bbz7pi08pn2nc].[usr:Calculation_765049025118932994:qk:2]&quot;' />
+              <groupfilter function='member' level='[:Measure Names]' member='&quot;[federated.06v9rwm1stl59c1bbz7pi08pn2nc].[sum:Number of Records 1:qk]&quot;' />
+            </groupfilter>
+          </filter>
+          <manual-sort column='[federated.06v9rwm1stl59c1bbz7pi08pn2nc].[:Measure Names]' direction='ASC'>
+            <dictionary>
+              <bucket>&quot;[federated.06v9rwm1stl59c1bbz7pi08pn2nc].[usr:Calculation_765049025118932994:qk:2]&quot;</bucket>
+              <bucket>&quot;[federated.06v9rwm1stl59c1bbz7pi08pn2nc].[sum:Number of Records 1:qk]&quot;</bucket>
+            </dictionary>
+          </manual-sort>
+          <filter class='categorical' column='[federated.06v9rwm1stl59c1bbz7pi08pn2nc].[Anticipated Start Term Year (group)]'>
+            <groupfilter function='union' user:ui-domain='relevant' user:ui-enumeration='inclusive' user:ui-marker='enumerate'>
+              <groupfilter function='member' level='[Anticipated Start Term Year (group)]' member='&quot;Fall/Summer 2020&quot;' />
+              <groupfilter function='member' level='[Anticipated Start Term Year (group)]' member='&quot;Fall/Summer 2021&quot;' />
+            </groupfilter>
+          </filter>
+          <filter class='categorical' column='[federated.06v9rwm1stl59c1bbz7pi08pn2nc].[Status]'>
+            <groupfilter function='member' level='[Status]' member='&quot;Applied&quot;' user:ui-domain='relevant' user:ui-enumeration='inclusive' user:ui-marker='enumerate' />
+          </filter>
+          <filter class='categorical' column='[federated.06v9rwm1stl59c1bbz7pi08pn2nc].[yr:App Application Date:ok]'>
+            <groupfilter function='union' user:ui-domain='relevant' user:ui-enumeration='inclusive' user:ui-marker='enumerate'>
+              <groupfilter function='member' level='[yr:App Application Date:ok]' member='2019' />
+              <groupfilter function='member' level='[yr:App Application Date:ok]' member='2020' />
+            </groupfilter>
+          </filter>
+          <slices>
+            <column>[federated.06v9rwm1stl59c1bbz7pi08pn2nc].[Status]</column>
+            <column>[federated.06v9rwm1stl59c1bbz7pi08pn2nc].[Anticipated Start Term Year (group)]</column>
+            <column>[federated.06v9rwm1stl59c1bbz7pi08pn2nc].[:Measure Names]</column>
+            <column>[federated.06v9rwm1stl59c1bbz7pi08pn2nc].[yr:App Application Date:ok]</column>
+          </slices>
+          <aggregation value='true' />
+        </view>
+        <style>
+          <style-rule element='cell'>
+            <format attr='text-format' field='[federated.06v9rwm1stl59c1bbz7pi08pn2nc].[sum:Number of Records 1:qk]' value='n#,##0;-#,##0' />
+            <format attr='text-format' field='[federated.06v9rwm1stl59c1bbz7pi08pn2nc].[usr:Calculation_765049025118932994:qk:2]' value='n#,##0;-#,##0' />
+          </style-rule>
+        </style>
+        <panes>
+          <pane selection-relaxation-option='selection-relaxation-allow'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Automatic' />
+            <encodings>
+              <text column='[federated.06v9rwm1stl59c1bbz7pi08pn2nc].[Multiple Values]' />
+            </encodings>
+            <style>
+              <style-rule element='mark'>
+                <format attr='mark-labels-show' value='true' />
+                <format attr='mark-labels-cull' value='true' />
+              </style-rule>
+            </style>
+          </pane>
+        </panes>
+        <rows>[federated.06v9rwm1stl59c1bbz7pi08pn2nc].[mn:App Application Date:ok]</rows>
+        <cols>([federated.06v9rwm1stl59c1bbz7pi08pn2nc].[Anticipated Start Term Year (group)] / [federated.06v9rwm1stl59c1bbz7pi08pn2nc].[:Measure Names])</cols>
+      </table>
+      <simple-id uuid='{D42E381F-A741-4CB9-86A1-EA93E7E83315}' />
+    </worksheet>
     <worksheet name='Sheet 2'>
       <table>
         <view>
@@ -6425,7 +7994,7 @@
       <simple-id uuid='{D841DDF0-4AAA-42EC-9FF7-75DEB072582E}' />
     </worksheet>
   </worksheets>
-  <windows source-height='240'>
+  <windows source-height='261'>
     <window class='worksheet' name='Sheet 1'>
       <cards>
         <edge name='left'>
@@ -6739,9 +8308,6 @@
           <strip size='2147483647'>
             <card type='rows' />
           </strip>
-          <strip size='31'>
-            <card type='title' />
-          </strip>
         </edge>
         <edge name='right'>
           <strip size='160'>
@@ -6754,11 +8320,14 @@
             <card param='[federated.06v9rwm1stl59c1bbz7pi08pn2nc].[none:Student Type:nk]' size='68' type='filter' />
             <card param='[federated.06v9rwm1stl59c1bbz7pi08pn2nc].[none:Career:nk]' size='67' type='filter' />
           </strip>
+          <strip size='160'>
+            <card type='title' />
+          </strip>
         </edge>
       </cards>
       <simple-id uuid='{65471EC8-40A3-4670-9BB5-7780C17A51EC}' />
     </window>
-    <window class='worksheet' maximized='true' name='DAA Inquiry Report (2)'>
+    <window class='worksheet' name='DAA Inquiry Report (2)'>
       <cards>
         <edge name='left'>
           <strip size='160'>
@@ -6781,7 +8350,6 @@
         </edge>
         <edge name='right'>
           <strip size='160'>
-            <card param='[federated.06v9rwm1stl59c1bbz7pi08pn2nc].[mn:Initial Source Date:ok]' size='212' type='filter' />
             <card param='[federated.06v9rwm1stl59c1bbz7pi08pn2nc].[yr:Initial Source Date:ok]' size='0' type='filter' />
             <card param='[federated.06v9rwm1stl59c1bbz7pi08pn2nc].[Stage]' type='filter' />
             <card param='[federated.06v9rwm1stl59c1bbz7pi08pn2nc].[Application Status]' type='filter' />
@@ -6793,6 +8361,104 @@
         </edge>
       </cards>
       <simple-id uuid='{0534E18D-F71C-4759-BCC2-613F26585180}' />
+    </window>
+    <window class='worksheet' name='Sheet 14'>
+      <cards>
+        <edge name='left'>
+          <strip size='160'>
+            <card type='pages' />
+            <card type='filters' />
+            <card type='marks' />
+          </strip>
+        </edge>
+        <edge name='top'>
+          <strip size='2147483647'>
+            <card type='columns' />
+          </strip>
+          <strip size='2147483647'>
+            <card type='rows' />
+          </strip>
+          <strip size='31'>
+            <card type='title' />
+          </strip>
+        </edge>
+        <edge name='right'>
+          <strip size='160'>
+            <card pane-specification-id='0' param='[federated.06v9rwm1stl59c1bbz7pi08pn2nc].[Anticipated Start Term Year (group)]' type='color' />
+          </strip>
+        </edge>
+      </cards>
+      <simple-id uuid='{637D49DF-8D2C-4FD8-AE9B-30ACB1A50BC9}' />
+    </window>
+    <window class='worksheet' name='App Report'>
+      <cards>
+        <edge name='left'>
+          <strip size='160'>
+            <card type='pages' />
+            <card type='filters' />
+            <card type='marks' />
+          </strip>
+        </edge>
+        <edge name='top'>
+          <strip size='2147483647'>
+            <card type='columns' />
+          </strip>
+          <strip size='2147483647'>
+            <card type='rows' />
+          </strip>
+          <strip size='31'>
+            <card type='title' />
+          </strip>
+        </edge>
+      </cards>
+      <simple-id uuid='{0B53AA6F-6279-4DB8-BF29-C8DDE2217DB7}' />
+    </window>
+    <window class='worksheet' name='Sheet 16'>
+      <cards>
+        <edge name='left'>
+          <strip size='160'>
+            <card type='pages' />
+            <card type='filters' />
+            <card type='marks' />
+          </strip>
+        </edge>
+        <edge name='top'>
+          <strip size='2147483647'>
+            <card type='columns' />
+          </strip>
+          <strip size='2147483647'>
+            <card type='rows' />
+          </strip>
+          <strip size='31'>
+            <card type='title' />
+          </strip>
+        </edge>
+      </cards>
+      <simple-id uuid='{0DB0A599-95C9-4E0A-B526-69C312EA4A44}' />
+    </window>
+    <window class='worksheet' maximized='true' name='Sheet 17'>
+      <cards>
+        <edge name='left'>
+          <strip size='160'>
+            <card type='pages' />
+            <card type='filters' />
+            <card type='marks' />
+            <card type='measures' />
+          </strip>
+        </edge>
+        <edge name='top'>
+          <strip size='2147483647'>
+            <card type='columns' />
+          </strip>
+          <strip size='2147483647'>
+            <card type='rows' />
+          </strip>
+          <strip size='31'>
+            <card type='title' />
+          </strip>
+        </edge>
+      </cards>
+      <simple-id uuid='{ED1C4CA2-5146-4846-8E1D-B09EA7EC5DE3}' />
     </window>
   </windows>
 </workbook>

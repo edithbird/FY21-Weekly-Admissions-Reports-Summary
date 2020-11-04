@@ -1,0 +1,448 @@
+---
+title: "Inquiries_by_Week"
+author: "Office of Marketing and Brand Management"
+date: "10/29/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+	echo = FALSE,
+	message = FALSE,
+	warning = FALSE
+)
+```
+
+
+
+### Description
+
+On 10/29/20 USM Marketing met with Rinck Advertising's Media Team to discuss the Admission's data they would like to incorporate into the Advertising Dashboards.
+
+Today we realized that the Inquiry Summary distributed by Admissions does not exactly capture the information they are looking for. They would like to have a weekly report that they can overlay the ad vendor performance reports, i.e., a week to week record of the inquiries as they come in for each audience and product.
+
+Audience and Product have been previously defined by Tracy St. Pierre, as follows:
+
+HS students > UG degree
+Transfers > UG degree
+Online students > UG Degree (typically transfers or Working Adults)
+Degree Completers > UG degree
+Current UG > Graduate degree
+Working adults > Graduate degree
+Online students > Graduate degree (typically working adults)
+
+```{r}
+library(tidyverse)
+library(knitr)
+```
+
+
+
+```{r}
+DAA <- read.csv("C:/Users/christine.iyer/Box/FY21 Weekly Admissions Reports Summary to Inform Agency Campaigns/Reports/DAA_10-28-2020.csv", header = T, stringsAsFactors = F)
+```
+
+```{r}
+
+DAA1 <- DAA %>% 
+  mutate_at(
+    vars("Birthdate", "App.Application.Date", "Initial.Source.Date", "Created.Date"), 
+    as.POSIXct,
+    format = "%m/%d/%Y"
+    )
+# head(DAA1)
+# 
+# 
+# dim(DAA1)
+```
+
+### Factor Values in Raw Data
+
+__Fiscal Year Initial Source Date__
+
+
+```{r}
+DAA1 <- DAA1 %>% mutate(
+  FiscalYear = ifelse(Initial.Source.Date>="2015-07-01" & Initial.Source.Date <= "2016-06-30", "FY16", 
+                      ifelse(Initial.Source.Date>="2016-07-01" & Initial.Source.Date <= "2017-06-30", "FY17",
+                             ifelse(Initial.Source.Date>="2017-07-01" & Initial.Source.Date <= "2018-06-30", "FY18",
+                                    ifelse(Initial.Source.Date>="2018-07-01" & Initial.Source.Date <= "2019-06-30", "FY19",
+                                           ifelse(Initial.Source.Date>="2019-07-01" & Initial.Source.Date <= "2020-06-30", "FY20",
+                                                  ifelse(Initial.Source.Date>="2020-07-01" & Initial.Source.Date <= "2021-06-30", "FY21","FY15 or earlier")))))))
+
+```
+
+
+
+### __Student Type__
+
+
+```{r}
+#if student type is and the student is a lead, we can assume this a a first-year student because we only buy leads who are first-year bound. If student type is blank and the career is graduate, the student type will also be graduate.
+
+
+DAA1 <- DAA1 %>% 
+  mutate(Student.Type = ifelse(Student.Stage == "Lead", "First-Year Student",
+                               ifelse(Career == "Graduate", "Graduate", Student.Type)))
+
+```
+
+__Student Stage__
+
+
+```{r}
+#remove leads and classify other student stages
+
+DAA1 <- DAA1 %>% mutate(Student.Stage = ifelse(grepl("Applic", Student.Stage), "Applicant", Student.Stage))
+     
+DAA1 <- DAA1 %>% filter(Student.Stage != "Lead")
+
+```
+
+__Anticipated Start__
+
+
+```{r}
+
+
+DAA1 <- DAA1 %>% 
+  mutate(Anticipated.Start.Term.Year= 
+                        ifelse(Anticipated.Start.Term.Year == "Sep-18", "Fall 2018",
+                               ifelse(Anticipated.Start.Term.Year == "Sep-19", "Fall 2019", 
+                                      ifelse(Anticipated.Start.Term.Year == "Jan-19", "Spring 2019", 
+                                             ifelse(Anticipated.Start.Term.Year == "Summer 2021 2021", "Fall 2021", 
+                                                    ifelse(Anticipated.Start.Term.Year == "Jan-18", "Spring 2018", 
+                                                           ifelse(Anticipated.Start.Term.Year == "2018", "Fall 2018", 
+                                                                  ifelse(Anticipated.Start.Term.Year == "2020", "Fall 2020", 
+                                                                         ifelse(Anticipated.Start.Term.Year == "Spring 2021 2021", "Spring 2021", 
+                                                                                ifelse(Anticipated.Start.Term.Year == "Spring 2019 2019", "Spring 2019", 
+                                                                                       ifelse(Anticipated.Start.Term.Year == "Summer 2022 2022", "Fall 2022", 
+                                                                                              ifelse(Anticipated.Start.Term.Year == "Spring 2022 2022", "Spring 2022", 
+                                                                                                     ifelse(Anticipated.Start.Term.Year == "Summer 2023", "Fall 2023", ifelse(Anticipated.Start.Term.Year == "Summer 2019 2019", "Fall 2019", 
+                                                                                                                                                                              ifelse(Anticipated.Start.Term.Year == "Fall 2020 2020", "Fall 2020", 
+                                                                                                                                                                                     ifelse(Anticipated.Start.Term.Year == "Fall 2021 2021", "Fall 2021",
+                                                                                                                                                                                            ifelse(Anticipated.Start.Term.Year == "Summer 2020", "Fall 2020", 
+                                                                                                                                                                                                   ifelse(Anticipated.Start.Term.Year == "Summer 2019", "Fall 2019", 
+                                                                                                                                                                                                          ifelse(Anticipated.Start.Term.Year == "Summer 2021", "Fall 2021", 
+                                                                                                                                                                                                                 ifelse(Anticipated.Start.Term.Year == "Summer 2018", "Fall 2018", 
+                                                                                                                                                                                                                        ifelse(Anticipated.Start.Term.Year == "Summer 2022", "Fall 2022", 
+                                                                                                                                                                                                                               ifelse(Anticipated.Start.Term.Year == "Fall 2022 2022", "Fall 2022", Anticipated.Start.Term.Year))))))))))))))))))))))
+```
+
+__Application Status__
+
+
+```{r}
+
+AppliedCats <- c("Withdrawn (Before Decision)", "Incomplete", "Hold (More Information Needed)", "Denied", "Complete (No Decision)", "Complete (Waitlisted)") 
+
+
+DAA1 <- DAA1 %>% 
+  mutate(App.Application.Status = 
+           ifelse(App.Application.Status %in% AppliedCats, "Applied",
+                  ifelse(grepl("Confirm", App.Application.Status), "Confirmed",
+                          ifelse(grepl("Enrolled", App.Application.Status), "Enrolled", 
+                                 ifelse(grepl("Admit", App.Application.Status), "Admitted", App.Application.Status)))))
+
+
+```
+
+__Student Age Group at Time of Inq/App__
+
+
+```{r}
+DAA2 <- DAA1 %>% mutate(AgeAtInquiry = round(difftime(Initial.Source.Date, Birthdate, units = "weeks"),0), 
+                        Age_Y = as.integer(round(AgeAtInquiry/52, 0)), 
+                        
+                        AgeGroup = 
+                          ifelse(Age > 13 & Age_Y <=19, "19 and Under", 
+                                 ifelse(Age_Y > 19 & Age_Y < 26, "20-26", 
+                                        ifelse(Age_Y >= 26, "27 and Up", "Unknown"))), 
+                        AgeGroup = ifelse(is.na(AgeAtInquiry) , "Unknown", AgeGroup))
+#DAA2 %>% group_by(AgeGroup) %>% summarise(inqAndApps = n())
+# unique(DAA2$FiscalYear)
+# DAA2 %>% group_by(FiscalYear) %>% summarise(n = n()) %>% mutate(FiscalYear = ifelse(grepl("^FY",FiscalYear), FiscalYear, "FY_Unknown"))
+```
+
+__Region__
+
+
+```{r}
+targetedStates <- c("Massachusetts", "Connecticut", "New Hampshire")
+
+OtherNE <- c("Rhode Island", "Vermont")
+
+DAA2 <- DAA2 %>% mutate(Region = ifelse(Primary.State.Province == "Maine", "Maine", 
+                                        ifelse(Primary.State.Province %in% targetedStates, "Targeted OOS", 
+                                               ifelse(Primary.State.Province %in% OtherNE, "Other NE", "Remaining USA"))))
+
+```
+
+__Stealth Apps__
+
+
+```{r}
+
+DAA3 <- DAA2 %>% 
+  mutate(Stealth = ifelse(Initial.Referral.Source == "APPL", "Stealth", "Not Stealth"))
+#unique(DAA$Stealth)
+DAA4 <- DAA3 %>% 
+  mutate(Student.Stage = ifelse(Student.Stage == "", "Inquiry", Student.Stage), 
+         App.Application.Status = ifelse(App.Application.Status == "" & Student.Stage == "Applicant", "Applied", App.Application.Status ), 
+         App.Application.Status = ifelse(App.Application.Status == "" & Student.Stage == "Inquiry", "Inquiry", App.Application.Status
+                                           
+                                           
+                                           
+                                           )) %>% 
+  group_by(Stealth, Career, Student.Type, Anticipated.Start.Term.Year, Student.Stage, App.Application.Status, AgeGroup, Region, FiscalYear) %>% 
+  summarise(n = n()) 
+
+
+```
+
+
+__Save final tidied data set__
+
+```{r}
+DAA4 <- DAA4%>% mutate(DataDate = as.Date("2020-10-28"))
+
+
+Date <- Sys.Date()
+
+write.csv(DAA4, paste0("C:/Users/christine.iyer/Box/FY21 Weekly Admissions Reports Summary to Inform Agency Campaigns/TidiedInqAppReports/InqAndApps_", Date, ".csv", row.names(F)))
+```
+
+
+## Inquiries
+
+The dilemma here is that there are many records in the Unknown age group. Should they be included?
+
+Filter Criteria for Inquiries:
+
+* Stealth == "Not Stealth"
+
+* Student.Stage == "Inquiry"
+
+* Region == "Maine"
+
+* Anticipated.Start.Term.Year starts with Fall
+
+* Career == "Undergraduate"
+
+* Student.Type == "First Year Student"
+
+
+### Undergraduate Degree for In-State High School Students
+
+
+
+```{r}
+kable(DAA4 %>% 
+  filter(Stealth == "Not Stealth" & 
+           Region == "Maine" & 
+           #Student.Stage == "Inquiry" & 
+           Career == "Undergraduate" & 
+           Student.Type == "First-Year Student" & 
+           grepl("^Fall", Anticipated.Start.Term.Year), AgeGroup == "19 and Under")  %>% 
+  group_by(AgeGroup, Anticipated.Start.Term.Year, Student.Stage) %>% 
+  summarise(Inq = sum(n))%>%
+  pivot_wider(names_from = Student.Stage, values_from = Inq) %>% 
+  mutate(Inquiries = sum(Applicant + Inquiry)) %>% 
+  select(Anticipated.Start.Term.Year, Inquiries))
+
+```
+
+### Undergraduate Degree for Out-of-State High School Students
+
+
+
+```{r}
+# The dilemma here is that there are many records in the Unknown age group. Should they be included?
+# 
+# Filter Criteria for Inquiries:
+# 
+# * Stealth == "Not Stealth"
+# 
+# * Student.Stage == "Inquiry"
+# 
+# * Region == "Maine"
+# 
+# * Anticipated.Start.Term.Year starts with Fall
+# 
+# * Career == "Undergraduate"
+# 
+# * Student.Type == "First Year Student"
+
+
+kable(DAA4 %>% 
+  filter(Stealth == "Not Stealth" & 
+           Region == "Targeted OOS" & 
+           #Student.Stage == "Inquiry" & 
+           Career == "Undergraduate" & 
+           Student.Type == "First-Year Student" & 
+           grepl("^Fall", Anticipated.Start.Term.Year), AgeGroup == "19 and Under")  %>% 
+  group_by(AgeGroup, Anticipated.Start.Term.Year, Student.Stage) %>% 
+  summarise(Inq = sum(n))%>%
+  pivot_wider(names_from = Student.Stage, values_from = Inq) %>% 
+  mutate(Inquiries = sum(Applicant + Inquiry)) %>% 
+  select(Anticipated.Start.Term.Year, Inquiries))
+
+```
+
+### Transfer In-State
+
+```{r}
+#unique(DAA4$Student.Type)
+
+kable(DAA4 %>% 
+  filter(Stealth == "Not Stealth" & 
+           Region == "Maine" & 
+           Career == "Undergraduate" & 
+           Student.Type == "Transfer" & 
+           grepl("^Fall", Anticipated.Start.Term.Year))  %>% 
+  group_by(Anticipated.Start.Term.Year, Student.Stage) %>% 
+  summarise(Inq = sum(n))%>%
+  pivot_wider(names_from = Student.Stage, values_from = Inq) %>% 
+  mutate(Inquiries = sum(Applicant + Inquiry)) %>% 
+  select(Anticipated.Start.Term.Year, Inquiries))
+```
+
+### Transfer Out-of-State
+
+```{r}
+#unique(DAA4$Student.Type)
+
+kable(DAA4 %>% 
+  filter(Stealth == "Not Stealth" & 
+           Region == "Targeted OOS" & 
+           Career == "Undergraduate" & 
+           Student.Type == "Transfer" & 
+           grepl("^Fall", Anticipated.Start.Term.Year))  %>% 
+  group_by(Anticipated.Start.Term.Year, Student.Stage) %>% 
+  summarise(Inq = sum(n))%>%
+  pivot_wider(names_from = Student.Stage, values_from = Inq) %>% 
+  mutate(Inquiries = sum(Applicant) + sum(Inquiry)) %>% 
+  select(Anticipated.Start.Term.Year, Inquiries))
+```
+
+
+## Applications
+
+### Applications Undergraduate Degree for In-State High School Students
+
+The dilemma here is that there are many records in the Unknown age group. Should they be included?
+
+Filter Criteria for Inquiries:
+
+
+
+```{r}
+
+# * Student.Stage == "Inquiry"
+# 
+# * Region == "Maine"
+# 
+# * Anticipated.Start.Term.Year starts with Fall
+# 
+# * Career == "Undergraduate"
+# 
+# * Student.Type == "First Year Student"
+# 
+# unique(DAA4$Student.Stage)
+
+kable(DAA4 %>% 
+  filter(Region == "Maine" & 
+           Student.Stage == "Applicant" & 
+           Career == "Undergraduate" & 
+           Student.Type == "First-Year Student" & 
+           grepl("^Fall", Anticipated.Start.Term.Year), AgeGroup == "19 and Under")  %>% 
+  group_by(AgeGroup, Anticipated.Start.Term.Year, Student.Stage) %>% 
+  summarise(Applicants = sum(n))%>%
+  # pivot_wider(names_from = Student.Stage, values_from = Applicants) %>% 
+  mutate(Applicants = sum(Applicants)) %>% 
+  select(Anticipated.Start.Term.Year, Applicants))
+
+```
+
+### Undergraduate Degree for Out-of-State High School Students
+
+
+
+
+```{r}
+# The dilemma here is that there are many records in the Unknown age group. Should they be included?
+# 
+# Filter Criteria for Inquiries:
+# 
+# * Stealth == "Not Stealth"
+# 
+# * Student.Stage == "Inquiry"
+# 
+# * Region == "Maine"
+# 
+# * Anticipated.Start.Term.Year starts with Fall
+# 
+# * Career == "Undergraduate"
+# 
+# * Student.Type == "First Year Student"
+
+kable(DAA4 %>% 
+  filter(Region == "Targeted OOS" & 
+           Student.Stage == "Applicant" & 
+           Career == "Undergraduate" & 
+           Student.Type == "First-Year Student" & 
+           grepl("^Fall", Anticipated.Start.Term.Year), AgeGroup == "19 and Under")  %>% 
+  group_by(AgeGroup, Anticipated.Start.Term.Year, Student.Stage) %>% 
+  summarise(Applicants = sum(n))%>%
+  # pivot_wider(names_from = Student.Stage, values_from = Applicants) %>% 
+  mutate(Applicants = sum(Applicants)) %>% 
+  select(Anticipated.Start.Term.Year, Applicants))
+
+
+```
+
+### Transfer In-State
+
+
+
+```{r}
+kable(DAA4 %>% 
+  filter(Region == "Maine" & 
+           Student.Stage == "Applicant" & 
+           Career == "Undergraduate" & 
+           Student.Type == "Transfer" & 
+           grepl("^Fall", Anticipated.Start.Term.Year))  %>% 
+  group_by(Anticipated.Start.Term.Year, Student.Stage) %>% 
+  summarise(Applicants = sum(n))%>%
+  # pivot_wider(names_from = Student.Stage, values_from = Applicants) %>% 
+  mutate(Applicants = sum(Applicants)) %>% 
+  select(Anticipated.Start.Term.Year, Applicants))
+
+
+```
+
+### Transfer Out-of-State
+
+```{r}
+#unique(DAA4$Student.Type)
+
+kable(DAA4 %>% 
+  filter(Region == "Targeted OOS" & 
+           Student.Stage == "Applicant" &
+           Career == "Undergraduate" & 
+           Student.Type == "Transfer" & 
+           grepl("^Fall", Anticipated.Start.Term.Year))  %>% 
+  group_by(Anticipated.Start.Term.Year, Student.Stage) %>% 
+  summarise(Applicants = sum(n))%>%
+  #pivot_wider(names_from = Student.Stage, values_from = Inq) %>% 
+  mutate(Applicants = sum(Applicants)) %>% 
+  select(Anticipated.Start.Term.Year, Applicants))
+```
+
+
+
+[Wrike Notes](https://www.wrike.com/open.htm?id=586459551)
+
+[Wrike Project for Chris](https://www.wrike.com/open.htm?id=586545629)
+
+[Github Project for Chris](https://github.com/edithbird/FY21-Weekly-Admissions-Reports-Summary)

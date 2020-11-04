@@ -1,0 +1,139 @@
+---
+title: "Inquiries_by_Week"
+author: "Office of Marketing and Brand Management"
+date: "10/29/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+	echo = FALSE,
+	message = FALSE,
+	warning = FALSE
+)
+```
+
+
+
+### Description
+
+On 10/29/20 USM Marketing met with Rinck Advertising's Media Team to discuss the Admission's data they would like to incorporate into the Advertising Dashboards.
+
+Today we realized that the Inquiry Summary distributed by Admissions does not exactly capture the information they are looking for. They would like to have a weekly report that they can overlay the ad vendor performance reports, i.e., a week to week record of the inquiries as they come in for each audience and product.
+
+Audience and Product have been previously defined by Tracy St. Pierre, as follows:
+
+HS students > UG degree
+Transfers > UG degree
+Online students > UG Degree (typically transfers or Working Adults)
+Degree Completers > UG degree
+Current UG > Graduate degree
+Working adults > Graduate degree
+Online students > Graduate degree (typically working adults)
+
+```{r}
+library(tidyverse)
+library(knitr)
+```
+
+```{r}
+DAA <- read.csv("C:/Users/christine.iyer/Box/FY21 Weekly Admissions Reports Summary to Inform Agency Campaigns/Reports/DAA_10-28-2020.csv", header = T, stringsAsFactors = F)
+names(DAA)
+```
+## Factor Values
+
+### Student Type
+
+
+```{r}
+unique(DAA$Student.Type)
+```
+
+### Student Stage
+
+
+```{r}
+unique(DAA$Student.Stage)
+DAA <- DAA %>% mutate(Student.Stage = ifelse(grepl("Applic", Student.Stage), "Applicant", Student.Stage))
+```
+
+### Anticipated Start
+
+
+```{r}
+unique(DAA$Anticipated.Start.Term.Year)
+
+DAA <- DAA %>% 
+  mutate(Anticipated.Start.Term.Year= 
+                        ifelse(Anticipated.Start.Term.Year == "Sep-18", "Fall 2018",
+                               ifelse(Anticipated.Start.Term.Year == "Sep-19", "Fall 2019", 
+                                      ifelse(Anticipated.Start.Term.Year == "Jan-19", "Spring 2019", 
+                                             ifelse(Anticipated.Start.Term.Year == "Summer 2021 2021", "Fall 2021", 
+                                                    ifelse(Anticipated.Start.Term.Year == "Jan-18", "Spring 2018", 
+                                                           ifelse(Anticipated.Start.Term.Year == "2018", "Fall 2018", 
+                                                                  ifelse(Anticipated.Start.Term.Year == "2020", "Fall 2020", 
+                                                                         ifelse(Anticipated.Start.Term.Year == "Spring 2021 2021", "Spring 2021", 
+                                                                                ifelse(Anticipated.Start.Term.Year == "Spring 2019 2019", "Spring 2019", 
+                                                                                       ifelse(Anticipated.Start.Term.Year == "Summer 2022 2022", "Fall 2022", 
+                                                                                              ifelse(Anticipated.Start.Term.Year == "Spring 2022 2022", "Spring 2022", 
+                                                                                                     ifelse(Anticipated.Start.Term.Year == "Summer 2023", "Fall 2023", ifelse(Anticipated.Start.Term.Year == "Summer 2019 2019", "Fall 2019", 
+                                                                                                                                                                              ifelse(Anticipated.Start.Term.Year == "Fall 2020 2020", "Fall 2020", 
+                                                                                                                                                                                     ifelse(Anticipated.Start.Term.Year == "Fall 2021 2021", "Fall 2021",
+                                                                                                                                                                                            ifelse(Anticipated.Start.Term.Year == "Summer 2020", "Fall 2020", 
+                                                                                                                                                                                                   ifelse(Anticipated.Start.Term.Year == "Summer 2019", "Fall 2019", 
+                                                                                                                                                                                                          ifelse(Anticipated.Start.Term.Year == "Summer 2021", "Fall 2021", 
+                                                                                                                                                                                                                 ifelse(Anticipated.Start.Term.Year == "Summer 2018", "Fall 2018", 
+                                                                                                                                                                                                                        ifelse(Anticipated.Start.Term.Year == "Summer 2022", "Fall 2022", 
+                                                                                                                                                                                                                               ifelse(Anticipated.Start.Term.Year == "Fall 2022 2022", "Fall 2022", Anticipated.Start.Term.Year))))))))))))))))))))) )
+#unique(DAA$Anticipated.Start.Term.Year)
+```
+
+### Application Status
+
+
+```{r}
+
+AppliedCats <- c("Withdrawn (Before Decision)", "Incomplete", "Hold (More Information Needed)", "Denied", "Complete (No Decision)", "Complete (Waitlisted)") 
+
+
+DAA <- DAA %>% 
+  mutate(App.Application.Status = 
+           ifelse(App.Application.Status %in% AppliedCats, "Applied",
+                  ifelse(grepl("Confirm", App.Application.Status), "Confirmed",
+                          ifelse(grepl("Enrolled", App.Application.Status), "Enrolled", 
+                                 ifelse(grepl("Admit", App.Application.Status), "Admitted", App.Application.Status)))))
+
+unique(DAA$App.Application.Status)
+```
+
+### Student Age Group at Time of Inq/App
+
+
+```{r}
+#unique(DAA$Age)
+```
+
+### Stealth Apps
+
+
+```{r}
+
+DAA <- DAA %>% 
+  mutate(Stealth = ifelse(Initial.Referral.Source == "APPL", "Stealth", "Not Stealth"))
+#unique(DAA$Stealth)
+#DAA %>% group_by(Career, Student.Type) %>% summarise(n = n())
+
+
+```
+
+```{r}
+kable(DAA %>% 
+        filter(Student.Type == " ") %>% 
+        select(Student.Type, Career, Student.Stage))
+```
+
+[Wrike Notes](https://www.wrike.com/open.htm?id=586459551)
+
+[Wrike Project for Chris](https://www.wrike.com/open.htm?id=586545629)
+
+[Github Project for Chris](https://github.com/edithbird/FY21-Weekly-Admissions-Reports-Summary)
