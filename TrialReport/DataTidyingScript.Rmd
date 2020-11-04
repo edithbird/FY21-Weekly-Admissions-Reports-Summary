@@ -2,7 +2,9 @@
 title: "Inquiries_by_Week"
 author: "Office of Marketing and Brand Management"
 date: "10/29/2020"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -439,7 +441,7 @@ kable(DAA4 %>%
   select(Anticipated.Start.Term.Year, Applicants))
 ```
 
-
+[Notes from Rinck Meeting](https://www.wrike.com/open.htm?id=589319926)
 
 [Wrike Notes](https://www.wrike.com/open.htm?id=586459551)
 
