@@ -25,19 +25,42 @@ Today we realized that the Inquiry Summary distributed by Admissions does not ex
 
 Audience and Product have been previously defined by Tracy St. Pierre, as follows:
 
-HS students > UG degree
-Transfers > UG degree
-Online students > UG Degree (typically transfers or Working Adults)
+- <input type="checkbox" unchecked> Venus</input>
+- <input type="checkbox" checked> Mars</input>
+
+HS students In-State
+HS students OOS
+
+Transfers > UG degree (19-23 and Unknown) Tell Tracy that this drastically changes the numbers we saw last time.In-State
+
+Transfers > UG degree (19-23 and Unknown) Tell Tracy that this drastically changes the numbers we saw last time. OOS 
+
+
+
 Degree Completers > UG degree
+
+Online students > UG Degree (typically transfers or Working Adults)
+
 Current UG > Graduate degree
+
 Working adults > Graduate degree
+
 Online students > Graduate degree (typically working adults)
 
 ```{r}
 library(tidyverse)
 library(knitr)
+library(checkdown)
 ```
 
+
+<input type="checkbox" checked> Task 1</input>
+
+<input type="checkbox"> Task2</input> 
+
+```{r echo=FALSE}
+check_question(c("banana", "apple"), options = c("apple", "banana", "bread"), type = "checkbox")
+```
 
 
 ```{r}
@@ -60,7 +83,8 @@ DAA1 <- DAA %>%
 
 ### Factor Values in Raw Data
 
-__Fiscal Year Initial Source Date__
+
+### __Fiscal Year Initial Source Date__
 
 
 ```{r}
@@ -89,7 +113,7 @@ DAA1 <- DAA1 %>%
 
 ```
 
-__Student Stage__
+### __Student Stage__
 
 
 ```{r}
@@ -101,7 +125,7 @@ DAA1 <- DAA1 %>% filter(Student.Stage != "Lead")
 
 ```
 
-__Anticipated Start__
+### __Anticipated Start__
 
 
 ```{r}
@@ -131,7 +155,7 @@ DAA1 <- DAA1 %>%
                                                                                                                                                                                                                                ifelse(Anticipated.Start.Term.Year == "Fall 2022 2022", "Fall 2022", Anticipated.Start.Term.Year))))))))))))))))))))))
 ```
 
-__Application Status__
+### __Application Status__
 
 
 ```{r}
@@ -149,7 +173,7 @@ DAA1 <- DAA1 %>%
 
 ```
 
-__Student Age Group at Time of Inq/App__
+### __Student Age Group at Time of Inq/App__
 
 
 ```{r}
@@ -158,15 +182,19 @@ DAA2 <- DAA1 %>% mutate(AgeAtInquiry = round(difftime(Initial.Source.Date, Birth
                         
                         AgeGroup = 
                           ifelse(Age > 13 & Age_Y <=19, "19 and Under", 
-                                 ifelse(Age_Y > 19 & Age_Y < 26, "20-26", 
-                                        ifelse(Age_Y >= 26, "27 and Up", "Unknown"))), 
-                        AgeGroup = ifelse(is.na(AgeAtInquiry) , "Unknown", AgeGroup))
+                                 ifelse(Age_Y > 19 & Age_Y < 25, "20-25", 
+                                        ifelse(Age_Y >= 25, "26 and Up", "Unknown"))), 
+                        AgeGroup = ifelse(is.na(AgeAtInquiry) , "Unknown", AgeGroup), 
+                        AgeGroupforTransfers = ifelse(AgeGroup == "Unknown", "Unknown Age",
+                                                      ifelse(Age_Y >= 0 & Age_Y < 19, "Too Young", 
+                                                        ifelse(Age_Y > 24, "Too Old", 
+                                                          ifelse(Age_Y >=19 & Age_Y <= 24, "Transfer Age","Unknown"))))) %>% group_by()
 #DAA2 %>% group_by(AgeGroup) %>% summarise(inqAndApps = n())
 # unique(DAA2$FiscalYear)
-# DAA2 %>% group_by(FiscalYear) %>% summarise(n = n()) %>% mutate(FiscalYear = ifelse(grepl("^FY",FiscalYear), FiscalYear, "FY_Unknown"))
+# DAA2 %>% group_by(FiscalYear) %>% summarise(n = n()) %>% mutate(FiscalYear = ifelse(grepl("^FY",FiscalYear), #FiscalYear, "FY_Unknown"))
 ```
 
-__Region__
+### __Region__
 
 
 ```{r}
@@ -180,7 +208,7 @@ DAA2 <- DAA2 %>% mutate(Region = ifelse(Primary.State.Province == "Maine", "Main
 
 ```
 
-__Stealth Apps__
+### __Stealth Apps__
 
 
 ```{r}
@@ -196,7 +224,7 @@ DAA4 <- DAA3 %>%
                                            
                                            
                                            )) %>% 
-  group_by(Stealth, Career, Student.Type, Anticipated.Start.Term.Year, Student.Stage, App.Application.Status, AgeGroup, Region, FiscalYear) %>% 
+  group_by(Stealth, Career, Student.Type, Anticipated.Start.Term.Year, Student.Stage, App.Application.Status, AgeGroup, Region, FiscalYear, AgeGroupforTransfers) %>% 
   summarise(n = n()) 
 
 
@@ -234,11 +262,12 @@ Filter Criteria for Inquiries:
 * Student.Type == "First Year Student"
 
 
-### Undergraduate Degree for In-State High School Students
+### Undergraduate Degree for In-State High School Students Inquiries
 
 
 
 ```{r}
+unique(DAA4$AgeGroup)
 kable(DAA4 %>% 
   filter(Stealth == "Not Stealth" & 
            Region == "Maine" & 
@@ -246,7 +275,7 @@ kable(DAA4 %>%
            Career == "Undergraduate" & 
            Student.Type == "First-Year Student" & 
            grepl("^Fall", Anticipated.Start.Term.Year), AgeGroup == "19 and Under")  %>% 
-  group_by(AgeGroup, Anticipated.Start.Term.Year, Student.Stage) %>% 
+  group_by(Anticipated.Start.Term.Year, Student.Stage) %>% 
   summarise(Inq = sum(n))%>%
   pivot_wider(names_from = Student.Stage, values_from = Inq) %>% 
   mutate(Inquiries = sum(Applicant + Inquiry)) %>% 
@@ -254,7 +283,7 @@ kable(DAA4 %>%
 
 ```
 
-### Undergraduate Degree for Out-of-State High School Students
+### Undergraduate Degree for Out-of-State High School Students Inquiries
 
 
 
@@ -283,7 +312,7 @@ kable(DAA4 %>%
            Career == "Undergraduate" & 
            Student.Type == "First-Year Student" & 
            grepl("^Fall", Anticipated.Start.Term.Year), AgeGroup == "19 and Under")  %>% 
-  group_by(AgeGroup, Anticipated.Start.Term.Year, Student.Stage) %>% 
+  group_by(Anticipated.Start.Term.Year, Student.Stage) %>% 
   summarise(Inq = sum(n))%>%
   pivot_wider(names_from = Student.Stage, values_from = Inq) %>% 
   mutate(Inquiries = sum(Applicant + Inquiry)) %>% 
@@ -291,17 +320,17 @@ kable(DAA4 %>%
 
 ```
 
-### Transfer In-State
-
+### Transfer In-State Inquiries
+, AgeGroupforTransfers
 ```{r}
-#unique(DAA4$Student.Type)
-
+unique(DAA4$AgeGroupforTransfers)
+AgeTransfers <- c("Unknown Age", "Transfer Age")
 kable(DAA4 %>% 
   filter(Stealth == "Not Stealth" & 
-           Region == "Maine" & 
-           Career == "Undergraduate" & 
-           Student.Type == "Transfer" & 
-           grepl("^Fall", Anticipated.Start.Term.Year))  %>% 
+         Region == "Maine" & 
+         Career == "Undergraduate" & 
+         Student.Type == "Transfer" & grepl("^Fall", Anticipated.Start.Term.Year),
+         AgeGroupforTransfers %in% AgeTransfers)  %>% 
   group_by(Anticipated.Start.Term.Year, Student.Stage) %>% 
   summarise(Inq = sum(n))%>%
   pivot_wider(names_from = Student.Stage, values_from = Inq) %>% 
@@ -309,8 +338,8 @@ kable(DAA4 %>%
   select(Anticipated.Start.Term.Year, Inquiries))
 ```
 
-### Transfer Out-of-State
-
+### Transfer Out-of-State Inquiries
+ 
 ```{r}
 #unique(DAA4$Student.Type)
 
@@ -319,7 +348,8 @@ kable(DAA4 %>%
            Region == "Targeted OOS" & 
            Career == "Undergraduate" & 
            Student.Type == "Transfer" & 
-           grepl("^Fall", Anticipated.Start.Term.Year))  %>% 
+           grepl("^Fall", Anticipated.Start.Term.Year),
+           AgeGroupforTransfers %in% AgeTransfers)  %>% 
   group_by(Anticipated.Start.Term.Year, Student.Stage) %>% 
   summarise(Inq = sum(n))%>%
   pivot_wider(names_from = Student.Stage, values_from = Inq) %>% 
@@ -327,10 +357,69 @@ kable(DAA4 %>%
   select(Anticipated.Start.Term.Year, Inquiries))
 ```
 
+### Working Adults Applicants
 
+
+```{r}
+filterForWA <- c("26 and Up", "Unknown")
+unique(DAA4$AgeGroup)
+kable(DAA4 %>% 
+  filter(Stealth == "Not Stealth" & 
+           #Region == "Maine" & 
+           #Student.Stage == "Inquiry" & 
+           Career == "Undergraduate" & 
+           #Student.Type == "First-Year Student" & 
+           grepl("^Fall", Anticipated.Start.Term.Year) &
+           AgeGroup %in% filterForWA)  %>% 
+  group_by( Anticipated.Start.Term.Year, Student.Stage) %>% 
+  summarise(Inq = sum(n))%>%
+  pivot_wider(names_from = Student.Stage, values_from = Inq) %>% 
+  mutate(Inquiries = sum(Applicant + Inquiry)) %>% 
+  select(Anticipated.Start.Term.Year, Inquiries))
+
+```
+
+### Inquiries Graduate In-State
+
+```{r}
+
+kable(DAA4 %>% 
+  filter(Stealth == "Not Stealth" & 
+           Region == "Maine" & 
+           #Student.Stage == "Inquiry" & 
+           Career == "Graduate" & 
+           Student.Type == "Graduate" & 
+           grepl("^Fall", Anticipated.Start.Term.Year), AgeGroup != "19 and Under")  %>% 
+  group_by(Anticipated.Start.Term.Year, Student.Stage) %>% 
+  summarise(Inq = sum(n))%>%
+  pivot_wider(names_from = Student.Stage, values_from = Inq) %>% 
+  mutate(Inquiries = sum(Applicant + Inquiry)) %>% 
+  select(Anticipated.Start.Term.Year, Inquiries))
+
+```
+
+
+### Inquiries Graduate Out-of-State
+
+```{r}
+
+kable(DAA4 %>% 
+  filter(Stealth == "Not Stealth" & 
+           Region == "Targeted OOS" & 
+           #Student.Stage == "Inquiry" & 
+           Career == "Graduate" & 
+           Student.Type == "Graduate" & 
+           grepl("^Fall", Anticipated.Start.Term.Year), AgeGroup != "19 and Under")  %>% 
+  group_by(Anticipated.Start.Term.Year, Student.Stage) %>% 
+  summarise(Inq = sum(n))%>%
+  pivot_wider(names_from = Student.Stage, values_from = Inq) %>% 
+  mutate(Inquiries = sum(Applicant + Inquiry)) %>% 
+  select(Anticipated.Start.Term.Year, Inquiries))
+
+```
 ## Applications
 
-### Applications Undergraduate Degree for In-State High School Students
+### Applications Undergraduate Degree for In-State High School Students Applicants
 
 The dilemma here is that there are many records in the Unknown age group. Should they be included?
 
@@ -358,7 +447,7 @@ kable(DAA4 %>%
            Career == "Undergraduate" & 
            Student.Type == "First-Year Student" & 
            grepl("^Fall", Anticipated.Start.Term.Year), AgeGroup == "19 and Under")  %>% 
-  group_by(AgeGroup, Anticipated.Start.Term.Year, Student.Stage) %>% 
+  group_by( Anticipated.Start.Term.Year, Student.Stage) %>% 
   summarise(Applicants = sum(n))%>%
   # pivot_wider(names_from = Student.Stage, values_from = Applicants) %>% 
   mutate(Applicants = sum(Applicants)) %>% 
@@ -366,7 +455,7 @@ kable(DAA4 %>%
 
 ```
 
-### Undergraduate Degree for Out-of-State High School Students
+### Applicants Undergraduate Degree for Out-of-State High School Students
 
 
 
@@ -394,7 +483,7 @@ kable(DAA4 %>%
            Career == "Undergraduate" & 
            Student.Type == "First-Year Student" & 
            grepl("^Fall", Anticipated.Start.Term.Year), AgeGroup == "19 and Under")  %>% 
-  group_by(AgeGroup, Anticipated.Start.Term.Year, Student.Stage) %>% 
+  group_by(Anticipated.Start.Term.Year, Student.Stage) %>% 
   summarise(Applicants = sum(n))%>%
   # pivot_wider(names_from = Student.Stage, values_from = Applicants) %>% 
   mutate(Applicants = sum(Applicants)) %>% 
@@ -403,7 +492,7 @@ kable(DAA4 %>%
 
 ```
 
-### Transfer In-State
+### Applicants Transfer In-State
 
 
 
@@ -413,7 +502,8 @@ kable(DAA4 %>%
            Student.Stage == "Applicant" & 
            Career == "Undergraduate" & 
            Student.Type == "Transfer" & 
-           grepl("^Fall", Anticipated.Start.Term.Year))  %>% 
+           grepl("^Fall", Anticipated.Start.Term.Year), 
+           AgeGroupforTransfers %in% AgeTransfers)  %>% 
   group_by(Anticipated.Start.Term.Year, Student.Stage) %>% 
   summarise(Applicants = sum(n))%>%
   # pivot_wider(names_from = Student.Stage, values_from = Applicants) %>% 
@@ -423,7 +513,7 @@ kable(DAA4 %>%
 
 ```
 
-### Transfer Out-of-State
+### Applicants Transfer Out-of-State
 
 ```{r}
 #unique(DAA4$Student.Type)
@@ -433,7 +523,8 @@ kable(DAA4 %>%
            Student.Stage == "Applicant" &
            Career == "Undergraduate" & 
            Student.Type == "Transfer" & 
-           grepl("^Fall", Anticipated.Start.Term.Year))  %>% 
+           grepl("^Fall", Anticipated.Start.Term.Year), 
+         AgeGroupforTransfers %in% AgeTransfers)  %>% 
   group_by(Anticipated.Start.Term.Year, Student.Stage) %>% 
   summarise(Applicants = sum(n))%>%
   #pivot_wider(names_from = Student.Stage, values_from = Inq) %>% 
@@ -441,7 +532,63 @@ kable(DAA4 %>%
   select(Anticipated.Start.Term.Year, Applicants))
 ```
 
-[Notes from Rinck Meeting](https://www.wrike.com/open.htm?id=589319926)
+
+
+
+### Applicants Working Adults 
+
+
+```{r}
+
+
+kable(DAA4 %>% 
+  filter(#Region == "Targeted OOS" & 
+           Student.Stage == "Applicant" &
+           Career == "Undergraduate" & 
+           #Student.Type == "Transfer" & 
+           grepl("^Fall", Anticipated.Start.Term.Year), 
+         AgeGroup %in% filterForWA)  %>% 
+  group_by(Anticipated.Start.Term.Year, Student.Stage) %>% 
+  summarise(Applicants = sum(n))%>%
+  #pivot_wider(names_from = Student.Stage, values_from = Inq) %>% 
+  mutate(Applicants = sum(Applicants)) %>% 
+  select(Anticipated.Start.Term.Year, Applicants))
+```
+
+### Applicants Graduate In-State
+
+```{r}
+kable(DAA4 %>% 
+  filter(Region == "Maine" & 
+           Student.Stage == "Applicant" & 
+           Career == "Graduate" & 
+           Student.Type == "Graduate" & 
+           grepl("^Fall", Anticipated.Start.Term.Year), AgeGroup != "19 and Under")  %>% 
+  group_by( Anticipated.Start.Term.Year, Student.Stage) %>% 
+  summarise(Applicants = sum(n))%>%
+  # pivot_wider(names_from = Student.Stage, values_from = Applicants) %>% 
+  mutate(Applicants = sum(Applicants)) %>% 
+  select(Anticipated.Start.Term.Year, Applicants))
+```
+
+### Applicants Graduate Out-of-State
+
+```{r}
+kable(DAA4 %>% 
+  filter(Region == "Targeted OOS" & 
+           Student.Stage == "Applicant" & 
+           Career == "Graduate" & 
+           Student.Type == "Graduate" & 
+           grepl("^Fall", Anticipated.Start.Term.Year), AgeGroup != "19 and Under")  %>% 
+  group_by( Anticipated.Start.Term.Year, Student.Stage) %>% 
+  summarise(Applicants = sum(n))%>%
+  # pivot_wider(names_from = Student.Stage, values_from = Applicants) %>% 
+  mutate(Applicants = sum(Applicants)) %>% 
+  select(Anticipated.Start.Term.Year, Applicants))
+```
+
+
+[Notes from Rinck Meeting](https://www.wrike.com/open.htm?id=589319926) Refer to notes before proceeding.
 
 [Wrike Notes](https://www.wrike.com/open.htm?id=586459551)
 
