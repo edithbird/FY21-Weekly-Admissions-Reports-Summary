@@ -6,13 +6,21 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(
+	echo = FALSE,
+	message = FALSE,
+	warning = FALSE
+)
 ```
 
 
-```{r}
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 library(dplyr)
 library(knitr)
+library(ggplot2)
+library(forcats)
+library(patchwork)
+suppressPackageStartupMessages(library("dplyr"))
 ```
 
 ## R Markdown
@@ -21,9 +29,9 @@ This is an R Markdown document. Markdown is a simple formatting syntax for autho
 
 When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
-```{r cars}
+```{r cars, fig.height=4, fig.width=8}
 DAAData <- read.csv("C:/Users/christine.iyer/Box/FY21 Weekly Admissions Reports Summary to Inform Agency Campaigns/Reports/DAA_11-18-2020.csv", header = T, stringsAsFactors = F)
-summary(DAAData)
+colors <- c("#60c7d1", "#731012", "#0e1033", "#f5a800")
 ```
 
 ## Including Plots
@@ -33,7 +41,7 @@ summary(DAAData)
 # Read data
 #MacOnly 
 
-DAA <- read.csv("C:/Users/christine.iyer/Box/FY21 Weekly Admissions Reports Summary to Inform Agency Campaigns/Reports/DAA_11-18-2020.csv", header = T, stringsAsFactors = F)
+#DAA <- read.csv("C:/Users/christine.iyer/Box/FY21 Weekly Admissions Reports Summary to Inform Agency Campaigns/Reports/DAA_11-18-2020.csv", header = T, stringsAsFactors = F)
 Date <- as.Date("2020-11-18")
 #WINDOWS
 
@@ -42,11 +50,26 @@ Date <- as.Date("2020-11-18")
 
 ```{r}
 # Convert dates
-DAA1 <- DAA %>% 
+DAA1 <- DAAData %>% 
   mutate_at(
     vars("Birthdate", "App.Application.Date", "Initial.Source.Date", "Created.Date"), 
-    as.POSIXct,
+    as.Date,
     format = "%m/%d/%Y")
+
+DAA1$Month_I_N <- as.numeric(format(as.Date(DAA1$Initial.Source.Date),"%m")) # Month's number
+
+DAA1$Month_I_M  <- months(as.Date(DAA1$Initial.Source.Date), abbreviate=TRUE) 
+
+DAA1$Month_A_N <- as.numeric(format(as.Date(DAA1$App.Application.Date),"%m")) # Month's number
+
+DAA1$Month_A_M  <- months(as.Date(DAA1$App.Application.Date), abbreviate=TRUE) 
+
+DAA1$Yr_I_Y <- as.numeric(format(as.Date(DAA1$Initial.Source.Date),"%Y")) # Month's number
+
+DAA1$Yr_A_Y <- as.numeric(format(as.Date(DAA1$App.Application.Date),"%Y")) # Month's number
+
+
+
 ```
 
 ### Factor Values in Raw Data
@@ -165,11 +188,8 @@ DAA2 <- DAA2 %>% mutate(Region = ifelse(Primary.State.Province == "Maine", "Main
 
 ### __Stealth Apps__
 
+Month_I_N,Month_I_M,  Month_A_N, Month_A_M  
 
-
-```{r}
-suppressPackageStartupMessages(library("dplyr"))
-```
 
 ```{r}
 DAA3 <- DAA2 %>% 
@@ -179,7 +199,7 @@ DAA4 <- DAA3 %>%
   mutate(Student.Stage = ifelse(Student.Stage == "", "Inquiry", Student.Stage), 
          App.Application.Status = ifelse(App.Application.Status == "" & Student.Stage == "Applicant", "Applied", App.Application.Status ), 
          App.Application.Status = ifelse(App.Application.Status == "" & Student.Stage == "Inquiry", "Inquiry", App.Application.Status)) %>% 
-  group_by(Stealth, Career, Student.Type, Anticipated.Start.Term.Year, Student.Stage, App.Application.Status, AgeGroup, Region, FiscalYear, AgeGroupforTransfers) %>% 
+  group_by(Stealth, Career, Student.Type, Anticipated.Start.Term.Year, Student.Stage, App.Application.Status, AgeGroup, Region, FiscalYear, AgeGroupforTransfers, Initial.Source.Date, App.Application.Date, Month_I_N,Month_I_M,  Month_A_N, Month_A_M, Yr_I_Y, Yr_A_Y ) %>% 
   summarise(n = n()) 
 ```
  
@@ -188,17 +208,134 @@ DAA4 <- DAA3 %>%
 ```{r}
 SelectFY <- c("Fall 2018", "Fall 2019", "Fall 2020", "Fall 2021")
 DAA4 <- DAA4 %>% filter(Anticipated.Start.Term.Year %in% SelectFY)
+
+DAA4$Month_I_M <- factor(DAA4$Month_I_M , levels = c("Jul", "Aug", "Sep", "Oct", "Nov", "Dec",  "Jan", "Feb", "Mar", "Apr", "May", "Jun"))
+
+DAA4$Month_A_M <- factor(DAA4$Month_A_M , levels = c("Jul", "Aug", "Sep", "Oct", "Nov", "Dec",  "Jan", "Feb", "Mar", "Apr", "May", "Jun"))
+
+
 unique(DAA4$Anticipated.Start.Term.Year)
 ```
+       Stage = "Inquiry"
+
+```{r}
+AgeTransfers <- c("Unknown Age", "Transfer Age")
+filterForWA <- c("26 and Up", "Unknown")
+DAA4 %>% mutate(Aud_P = 
+                  ifelse(Stealth == "Not Stealth" & 
+                          Region == "Maine" & 
+                          Career == "Undergraduate" & 
+                          Student.Type == "First-Year Student" & 
+                          grepl("^Fall", Anticipated.Start.Term.Year)& 
+                          AgeGroup == "19 and Under", "HSUGIS",
+                         ifelse(Stealth == "Not Stealth" &
+                                  Region == "Targeted OOS" & 
+                                  Career == "Undergraduate" & 
+                                  Student.Type == "First-Year Student" & 
+                                  grepl("^Fall",Anticipated.Start.Term.Year) &
+                                  AgeGroup == "19 and Under", "HSUGOS",
+                                ifelse(Stealth == "Not Stealth" &
+                                         Region == "Maine" & 
+                                         Career == "Undergraduate" & 
+                                         Student.Type == "Transfer" & 
+                                         grepl("^Fall", Anticipated.Start.Term.Year)&
+                                         AgeGroupforTransfers %in% AgeTransfers, "CUTRIS",
+                                       ifelse(Stealth == "Not Stealth" & 
+                                                Region == "Targeted OOS" & 
+                                                Career == "Undergraduate" & 
+                                                Student.Type == "Transfer" & grepl("^Fall", Anticipated.Start.Term.Year) & 
+                                                AgeGroupforTransfers %in% AgeTransfers, "CUTROS",
+                                              ifelse(Stealth == "Not Stealth" &
+                                                     Career == "Undergraduate" & 
+                                                       grepl("^Fall", Anticipated.Start.Term.Year) &
+                                                       AgeGroup %in% filterForWA, "WADC",
+                                                     ifelse(Stealth == "Not Stealth" & 
+                                                              Region == "Maine" & 
+                                                              Career == "Graduate" & 
+                                                              Student.Type == "Graduate" & 
+                                                              grepl("^Fall", Anticipated.Start.Term.Year)& 
+                                                            AgeGroup == "20-25", "CUGRIS",
+                                                            
+                                                            ifelse(Stealth == "Not Stealth" & 
+                                                                     Region == "Maine" & 
+                                                                     Career == "Graduate" & 
+                                                                     Student.Type == "Graduate" & 
+                                                                     grepl("^Fall", Anticipated.Start.Term.Year)&
+                                                                     AgeGroup == "26 and Up", "WAGRIS",
+                                                                   ifelse(Stealth == "Not Stealth" & 
+                                                                           Region == "Targeted OOS" & 
+                                                                           #Student.Stage == "Inquiry" & 
+                                                                           Career == "Graduate" & 
+                                                                           Student.Type == "Graduate" & 
+                                                                           grepl("^Fall", Anticipated.Start.Term.Year)&
+                                                                           AgeGroup == "20-25", "CUGROS",
+                                                                          ifelse(Stealth == "Not Stealth" & 
+                                                                                 Region == "Targeted OOS" & 
+                                                                                 #Student.Stage == "Inquiry" & 
+                                                                                 Career == "Graduate" & 
+                                                                                 Student.Type == "Graduate" & 
+                                                                                 grepl("^Fall", Anticipated.Start.Term.Year)& 
+                                                                                  AgeGroup == "26 and Up", "WAGROS", "Other"))))))))), 
+                Stage = "Inquiry")
+```
+
+
+
 
 
 ### Inquiries
 
 
 
-```{r}
+```{r fig.height=4, fig.width=8}
+FY <- c("FY18", "FY19", "FY20", "FY21")
 Inquiries <- DAA4 %>% filter(Stealth == "Not Stealth")
+HSUGIS_I <- Inquiries %>%
+  filter(Region == "Maine" & 
+       Career == "Undergraduate" &  
+       Student.Type == "First-Year Student" &
+       AgeGroup == "19 and Under", 
+       FiscalYear %in% FY) %>% 
+  rename(Inquiries = n) %>% 
+  select(-Month_A_N, -Month_A_M ) %>% 
+  group_by(Month_I_M, Anticipated.Start.Term.Year) %>% 
+  summarise(Inquiries = sum(Inquiries)) 
 
+
+g <- ggplot(data = HSUGIS_I, aes(x = Month_I_M, y = lag(Inquiries), group = Anticipated.Start.Term.Year, colour=Anticipated.Start.Term.Year)) + 
+     geom_line(size = 1.3) +
+     geom_point() +
+     theme_bw()+
+  scale_color_manual(values = colors) + 
+  theme(legend.position = "none") + 
+  theme(axis.text.x = element_text(angle = 45))
+
+  
+
+HSUGIS_A <- DAA4 %>% 
+  filter(Region == "Maine" & 
+       Career == "Undergraduate" &  
+       Student.Type == "First-Year Student" &
+       AgeGroup == "19 and Under", 
+       FiscalYear %in% FY) %>% 
+  rename(Applications = n) %>% 
+  select(-Month_I_N, -Month_I_M ) %>% 
+  group_by(Month_A_N, Month_A_M, Anticipated.Start.Term.Year) %>% 
+  summarise(Applications = sum(Applications)) %>% na.omit()
+
+
+
+h <- ggplot(data = HSUGIS_A, aes(x = Month_A_M, y = lag(Applications), group = Anticipated.Start.Term.Year, colour=Anticipated.Start.Term.Year)) + 
+     geom_line(size = 1.3) +
+     geom_point() +
+     theme_bw()+
+  scale_color_manual(values = colors)+ 
+  theme(axis.text.x = element_text(angle = 45))
+
+g
+  
+h
+
+write.csv(DAA4, "C:/Users/christine.iyer/Box/FY21 Weekly Admissions Reports Summary to Inform Agency Campaigns/TidiedInqAppReports/FotTableauYoY.csv", row.names = F)
 
 ```
-
