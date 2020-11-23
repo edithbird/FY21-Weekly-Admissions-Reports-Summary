@@ -557,7 +557,10 @@ PGCTR <- data1 %>%
 
 * Two
 
-\href{https://www.wrike.com/open.htm?id=525346252}{{\color{blue}{\underline{Wrike Project Details}}}}
+\href{https://www.wrike.com/open.htm?id=569449783}{{\color{blue}{\underline{Chris' Wrike Project Details}}}}
+\href{https://www.wrike.com/open.htm?id=586459551}{{\color{blue}{\underline{Tracy's Notes in Wrike }}}}
+
+
 
 \href{https://github.com/edithbird/fy20_cybersecurity}{{\color{blue}{\underline{Github Repository}}}}
 

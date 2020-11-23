@@ -1,0 +1,204 @@
+---
+title: "FY21_Inq_App_Flow_Funnel_Rinck"
+author: "Office of Marketing and Brand Management"
+date: "11/20/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+library(dplyr)
+library(knitr)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+DAAData <- read.csv("C:/Users/christine.iyer/Box/FY21 Weekly Admissions Reports Summary to Inform Agency Campaigns/Reports/DAA_11-18-2020.csv", header = T, stringsAsFactors = F)
+summary(DAAData)
+```
+
+## Including Plots
+
+
+```{r}
+# Read data
+#MacOnly 
+
+DAA <- read.csv("C:/Users/christine.iyer/Box/FY21 Weekly Admissions Reports Summary to Inform Agency Campaigns/Reports/DAA_11-18-2020.csv", header = T, stringsAsFactors = F)
+Date <- as.Date("2020-11-18")
+#WINDOWS
+
+#DAA <- read.csv("C:/Users/christine.iyer/Box/FY21 Weekly Admissions Reports Summary to Inform Agency Campaigns/Reports/DAA_11-13-2020.csv", header = T, stringsAsFactors = F)
+```
+
+```{r}
+# Convert dates
+DAA1 <- DAA %>% 
+  mutate_at(
+    vars("Birthdate", "App.Application.Date", "Initial.Source.Date", "Created.Date"), 
+    as.POSIXct,
+    format = "%m/%d/%Y")
+```
+
+### Factor Values in Raw Data
+
+
+### __Fiscal Year Initial Source Date__
+
+
+```{r}
+#create FY variable on initial source date
+DAA1 <- DAA1 %>% mutate(
+  FiscalYear = ifelse(Initial.Source.Date>="2015-07-01" & Initial.Source.Date <= "2016-06-30", "FY16", 
+                      ifelse(Initial.Source.Date>="2016-07-01" & Initial.Source.Date <= "2017-06-30", "FY17",
+                             ifelse(Initial.Source.Date>="2017-07-01" & Initial.Source.Date <= "2018-06-30", "FY18",
+                                    ifelse(Initial.Source.Date>="2018-07-01" & Initial.Source.Date <= "2019-06-30", "FY19",
+                                           ifelse(Initial.Source.Date>="2019-07-01" & Initial.Source.Date <= "2020-06-30", "FY20",
+                                                  ifelse(Initial.Source.Date>="2020-07-01" & Initial.Source.Date <= "2021-06-30", "FY21","FY15 or earlier")))))))
+
+```
+
+
+
+### __Student Type__
+
+
+```{r}
+#if student type is and the student is a lead, we can assume this a a first-year student because we only buy leads who are first-year bound. If student type is blank and the career is graduate, the student type will also be graduate.
+DAA1 <- DAA1 %>% 
+  mutate(Student.Type = ifelse(Student.Stage == "Lead", "First-Year Student",
+                               ifelse(Career == "Graduate", "Graduate", Student.Type)))
+```
+
+### __Student Stage__
+
+
+```{r}
+#remove leads and classify other student stages
+DAA1 <- DAA1 %>% mutate(Student.Stage = ifelse(grepl("Applic", Student.Stage), "Applicant", Student.Stage))
+DAA1 <- DAA1 %>% filter(Student.Stage != "Lead")
+```
+
+### __Anticipated Start__
+
+
+```{r}
+#tidy up the Start term year choices
+DAA1 <- DAA1 %>% 
+  mutate(Anticipated.Start.Term.Year= 
+                        ifelse(Anticipated.Start.Term.Year == "Sep-18", "Fall 2018",
+                               ifelse(Anticipated.Start.Term.Year == "Sep-19", "Fall 2019", 
+                                      ifelse(Anticipated.Start.Term.Year == "Jan-19", "Spring 2019", 
+                                             ifelse(Anticipated.Start.Term.Year == "Summer 2021 2021", "Fall 2021", 
+                                                    ifelse(Anticipated.Start.Term.Year == "Jan-18", "Spring 2018", 
+                                                           ifelse(Anticipated.Start.Term.Year == "2018", "Fall 2018", 
+                                                                  ifelse(Anticipated.Start.Term.Year == "2020", "Fall 2020", 
+                                                                         ifelse(Anticipated.Start.Term.Year == "Spring 2021 2021", "Spring 2021", 
+                                                                                ifelse(Anticipated.Start.Term.Year == "Spring 2019 2019", "Spring 2019", 
+                                                                                       ifelse(Anticipated.Start.Term.Year == "Summer 2022 2022", "Fall 2022", 
+                                                                                              ifelse(Anticipated.Start.Term.Year == "Spring 2022 2022", "Spring 2022", 
+                                                                                                     ifelse(Anticipated.Start.Term.Year == "Summer 2023", "Fall 2023", ifelse(Anticipated.Start.Term.Year == "Summer 2019 2019", "Fall 2019", 
+ifelse(Anticipated.Start.Term.Year == "Fall 2020 2020", "Fall 2020", 
+ifelse(Anticipated.Start.Term.Year == "Fall 2021 2021", "Fall 2021",
+    ifelse(Anticipated.Start.Term.Year == "Summer 2020", "Fall 2020", 
+           ifelse(Anticipated.Start.Term.Year == "Summer 2019", "Fall 2019", 
+                  ifelse(Anticipated.Start.Term.Year == "Summer 2021", "Fall 2021", 
+                         ifelse(Anticipated.Start.Term.Year == "Summer 2018", "Fall 2018", 
+                                ifelse(Anticipated.Start.Term.Year == "Summer 2022", "Fall 2022", 
+                                       ifelse(Anticipated.Start.Term.Year == "Fall 2022 2022", "Fall 2022", Anticipated.Start.Term.Year))))))))))))))))))))))
+```
+
+### __Application Status__
+
+
+```{r}
+#group by app status
+AppliedCats <- c("Withdrawn (Before Decision)", "Incomplete", "Hold (More Information Needed)", "Denied", "Complete (No Decision)", "Complete (Waitlisted)") 
+DAA1 <- DAA1 %>% 
+  mutate(App.Application.Status = 
+           ifelse(App.Application.Status %in% AppliedCats, "Applied",
+                  ifelse(grepl("Confirm", App.Application.Status), "Confirmed",
+                          ifelse(grepl("Enrolled", App.Application.Status), "Enrolled", 
+                                 ifelse(grepl("Admit", App.Application.Status), "Admitted", App.Application.Status)))))
+
+
+```
+
+### __Student Age Group at Time of Inq/App__
+
+
+```{r}
+#since we are targeting by age group, we want to see ages at the time of inquiry
+DAA2 <- DAA1 %>% mutate(AgeAtInquiry = round(difftime(Initial.Source.Date, Birthdate, units = "weeks"),0), 
+                        Age_Y = as.integer(round(AgeAtInquiry/52, 0)), 
+                        
+                        AgeGroup = 
+                          ifelse(Age > 13 & Age_Y <=19, "19 and Under", 
+                                 ifelse(Age_Y > 19 & Age_Y < 25, "20-25", 
+                                        ifelse(Age_Y >= 25, "26 and Up", "Unknown"))), 
+                        AgeGroup = ifelse(is.na(AgeAtInquiry) , "Unknown", AgeGroup), 
+                        AgeGroupforTransfers = ifelse(AgeGroup == "Unknown", "Unknown Age",
+                                                      ifelse(Age_Y >= 0 & Age_Y < 19, "Too Young", 
+                                                        ifelse(Age_Y > 24, "Too Old", 
+                                                          ifelse(Age_Y >=19 & Age_Y <= 24, "Transfer Age","Unknown"))))) 
+```
+
+### __Region__
+
+
+```{r}
+targetedStates <- c("Massachusetts", "Connecticut", "New Hampshire")
+OtherNE <- c("Rhode Island", "Vermont")
+DAA2 <- DAA2 %>% mutate(Region = ifelse(Primary.State.Province == "Maine", "Maine", 
+                                        ifelse(Primary.State.Province %in% targetedStates, "Targeted OOS", 
+                                               ifelse(Primary.State.Province %in% OtherNE, "Other NE", "Remaining USA"))))
+```
+
+### __Stealth Apps__
+
+
+
+```{r}
+suppressPackageStartupMessages(library("dplyr"))
+```
+
+```{r}
+DAA3 <- DAA2 %>% 
+  mutate(Stealth = ifelse(Initial.Referral.Source == "APPL", "Stealth", "Not Stealth"))
+#unique(DAA$Stealth)
+DAA4 <- DAA3 %>% 
+  mutate(Student.Stage = ifelse(Student.Stage == "", "Inquiry", Student.Stage), 
+         App.Application.Status = ifelse(App.Application.Status == "" & Student.Stage == "Applicant", "Applied", App.Application.Status ), 
+         App.Application.Status = ifelse(App.Application.Status == "" & Student.Stage == "Inquiry", "Inquiry", App.Application.Status)) %>% 
+  group_by(Stealth, Career, Student.Type, Anticipated.Start.Term.Year, Student.Stage, App.Application.Status, AgeGroup, Region, FiscalYear, AgeGroupforTransfers) %>% 
+  summarise(n = n()) 
+```
+ 
+### __Narrow FY__
+ 
+```{r}
+SelectFY <- c("Fall 2018", "Fall 2019", "Fall 2020", "Fall 2021")
+DAA4 <- DAA4 %>% filter(Anticipated.Start.Term.Year %in% SelectFY)
+unique(DAA4$Anticipated.Start.Term.Year)
+```
+
+
+### Inquiries
+
+
+
+```{r}
+Inquiries <- DAA4 %>% filter(Stealth == "Not Stealth")
+
+
+```
+

@@ -50,12 +50,18 @@ Online students > Graduate degree (typically working adults)
 ```{r}
 library(tidyverse)
 library(knitr)
-library(checkdown)
+
 ```
 
 ```{r}
 # Read data
-DAA <- read.csv("C:/Users/christine.iyer/Box/FY21 Weekly Admissions Reports Summary to Inform Agency Campaigns/Reports/DAA_11-13-2020.csv", header = T, stringsAsFactors = F)
+#MacOnly 
+
+DAA <- read.csv("C:/Users/christine.iyer/Box/FY21 Weekly Admissions Reports Summary to Inform Agency Campaigns/Reports/DAA_11-18-2020.csv", header = T, stringsAsFactors = F)
+Date <- as.Date("2020-11-18")
+#WINDOWS
+
+#DAA <- read.csv("C:/Users/christine.iyer/Box/FY21 Weekly Admissions Reports Summary to Inform Agency Campaigns/Reports/DAA_11-13-2020.csv", header = T, stringsAsFactors = F)
 ```
 
 ```{r}
@@ -184,6 +190,11 @@ DAA2 <- DAA2 %>% mutate(Region = ifelse(Primary.State.Province == "Maine", "Main
 ### __Stealth Apps__
 
 
+
+```{r}
+suppressPackageStartupMessages(library("dplyr"))
+```
+
 ```{r}
 DAA3 <- DAA2 %>% 
   mutate(Stealth = ifelse(Initial.Referral.Source == "APPL", "Stealth", "Not Stealth"))
@@ -207,8 +218,20 @@ unique(DAA4$Anticipated.Start.Term.Year)
 ### __Save final tidied data set__
 
 ```{r}
-DAA4 <- DAA4%>% mutate(DataDate = Sys.Date())
-Date <- Sys.Date()
+
+
+DAA4 <- DAA4%>% mutate(DataDate = Date)
+
+#DAA4 <- DAA4%>% mutate(DataDate = Sys.Date())
+#Date <- Sys.Date()
+
+
+#MacOnly
+
+# write.csv(DAA4, paste0("/Users/christine.iyer/Box/FY21 Weekly Admissions Reports Summary to Inform Agency Campaigns/TidiedInqAppReports/InqAndApps_", Date, ".csv", row.names(F)))
+
+
+# Windows
 write.csv(DAA4, paste0("C:/Users/christine.iyer/Box/FY21 Weekly Admissions Reports Summary to Inform Agency Campaigns/TidiedInqAppReports/InqAndApps_", Date, ".csv", row.names(F)))
 ```
 
@@ -548,10 +571,10 @@ Eighteen <- DAA4 %>%
 ```
 
 ```{r}
-Nine[4,1] <- "Fall 2021"
-Nine[4,2] <- 0
-Nine[4,3] <- "WAGROS"
-dim(Nine)
+# Nine[4,1] <- "Fall 2021"
+# Nine[4,2] <- 0
+# Nine[4,3] <- "WAGROS"
+# dim(Nine)
 HSUGIS <- merge.data.frame(One, Ten, all = T)
 HSUGOS <- merge.data.frame(Two, Eleven, all = T)
 CUTRIS <- merge.data.frame(Three, Twelve, all = T)
@@ -571,25 +594,60 @@ A_AllFunnel <- rbind.data.frame(Ten, Eleven, Twelve, Thirteen, Fourteen, Fifteen
 
 
 AllFunnelIandA <- merge.data.frame(I_AllFunnel, A_AllFunnel, all=T)
-AllFunnelIandA <- AllFunnelIandA %>% mutate(DateCollected = as.Date("2020-11-10"))
+
+AllFunnelIandA <- AllFunnelIandA %>% mutate(DateCollected = Date)
+
+
+
+# AllFunnelIandA <- AllFunnelIandA %>% mutate(DateCollected = as.Date("2020-11-17"))
 
 # ,, Ten, Eleven Three, Four, Five, Six, Seven, Eight, Nine, Ten, Eleven, Twelve, Thirteen, Fourteen, Fifteen, Sixteen, Seventeen, Eighteen
 # all <- all[,c(1:2, )]
 
   
-  
+kable(AllFunnelIandA)  
+
+#write.csv(AllFunnelIandA, "C:/Users/christine.iyer/Box/FY21 Weekly Admissions Reports Summary to Inform Agency Campaigns/FinalDatatoAppend/AllGood.csv", row.names = F)
+
+
+write.table(AllFunnelIandA,  
+             file="C:/Users/christine.iyer/Box/FY21 Weekly Admissions Reports Summary to Inform Agency Campaigns/FinalDatatoAppend/AllGood.csv", 
+             append = T, 
+             sep=',', 
+             row.names=T, 
+             col.names=F )
+
+
+#write.csv(AllFunnelIandA, "C:/Users/christine.iyer/Box/FY21 Weekly Admissions Reports Summary to Inform Agency Campaigns/FinalDatatoAppend/AllGood.csv", append = TRUE)
 
 ```
-__Save to a Spreadsheet__
+
+ggplot(data1, aes(x = date)) +
+  geom_line(aes(y = x_r), size = 2, color = "red") + 
+  geom_line(aes(y = reer), size = 2, color = "blue") +
+  facet_wrap(.~origin, ncol = 4, scales = "free_y") + 
+  scale_y_continuous(
+    name = "X/GDP",
+    sec.axis = sec_axis(~.*scaleFactor, name = "REER")
+  ) +   
+  theme_bw() +
+  theme(
+    axis.title.y = element_text(color = "red", size = 13),
+    axis.title.y.right = element_text(color = "blue", size = 13)
+  ) +
+  ggtitle("Export Ratio and Real Effective Exchange Rate")
 
 
 ```{r}
-library("googlesheets")
-suppressPackageStartupMessages(library("dplyr"))
-```
 
-```{r}
-iris_ss <- gs_new("FY21_Weekly_Enrollment_Funnel", input = AllFunnelIandA, trim = TRUE)
+AllFunnelIandA %>% 
+  filter(Anticipated.Start.Term.Year == "Fall 2021") %>% 
+  arrange(Aud_P) %>% 
+  ggplot(aes(x = DateCollected)) +
+  geom_line(aes(y = Inquiries), size = 3, color = "red") + 
+  geom_line(aes(y = Applicants), size = 3, color = "blue")  +
+  facet_wrap(~Aud_P, ncol = 3)+
+  theme_bw()
 ```
 
 
