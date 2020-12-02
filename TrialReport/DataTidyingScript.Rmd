@@ -57,8 +57,8 @@ library(knitr)
 # Read data
 #MacOnly 
 
-DAA <- read.csv("C:/Users/christine.iyer/Box/FY21 Weekly Admissions Reports Summary to Inform Agency Campaigns/Reports/DAA_11-18-2020.csv", header = T, stringsAsFactors = F)
-Date <- as.Date("2020-11-18")
+DAA <- read.csv("C:/Users/christine.iyer/Box/FY21 Weekly Admissions Reports Summary to Inform Agency Campaigns/Reports/DAA_12-01-2020.csv", header = T, stringsAsFactors = F)
+Date <- Sys.Date()
 #WINDOWS
 
 #DAA <- read.csv("C:/Users/christine.iyer/Box/FY21 Weekly Admissions Reports Summary to Inform Agency Campaigns/Reports/DAA_11-13-2020.csv", header = T, stringsAsFactors = F)
@@ -307,7 +307,7 @@ Four <- DAA4 %>%
            Region == "Targeted OOS" & 
            Career == "Undergraduate" & 
            Student.Type == "Transfer" & 
-           grepl("^Fall", Anticipated.Start.Term.Year),
+           grepl("^Fall", Anticipated.Start.Term.Year)&
            AgeGroupforTransfers %in% AgeTransfers)  %>% 
   group_by(Anticipated.Start.Term.Year, Student.Stage) %>% 
   summarise(Inq = sum(n))%>%
@@ -362,7 +362,8 @@ Seven <- DAA4 %>%
            #Student.Stage == "Inquiry" & 
            Career == "Graduate" & 
            Student.Type == "Graduate" & 
-           grepl("^Fall", Anticipated.Start.Term.Year), AgeGroup == "26 and Up")  %>% 
+           grepl("^Fall", Anticipated.Start.Term.Year)&
+           AgeGroup == "26 and Up")  %>% 
   group_by(Anticipated.Start.Term.Year, Student.Stage) %>% 
   summarise(Inq = sum(n))%>%
   pivot_wider(names_from = Student.Stage, values_from = Inq) %>% 
@@ -381,7 +382,7 @@ Eight <- DAA4 %>%
            #Student.Stage == "Inquiry" & 
            Career == "Graduate" & 
            Student.Type == "Graduate" & 
-           grepl("^Fall", Anticipated.Start.Term.Year),
+           grepl("^Fall", Anticipated.Start.Term.Year)&
            AgeGroup == "20-25")  %>% 
   group_by(Anticipated.Start.Term.Year, Student.Stage) %>% 
   summarise(Inq = sum(n))%>%
@@ -400,7 +401,7 @@ Nine <- DAA4 %>%
            #Student.Stage == "Inquiry" & 
            Career == "Graduate" & 
            Student.Type == "Graduate" & 
-           grepl("^Fall", Anticipated.Start.Term.Year), AgeGroup == "26 and Up")  %>% 
+           grepl("^Fall", Anticipated.Start.Term.Year)& AgeGroup == "26 and Up")  %>% 
   group_by(Anticipated.Start.Term.Year, Student.Stage) %>% 
   summarise(Inq = sum(n))%>%
   pivot_wider(names_from = Student.Stage, values_from = Inq) %>% 

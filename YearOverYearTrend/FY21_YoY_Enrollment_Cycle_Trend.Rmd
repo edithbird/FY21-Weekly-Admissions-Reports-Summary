@@ -33,11 +33,9 @@ colors <- c("#60c7d1", "#731012", "#0e1033", "#f5a800")
 ```{r}
 # Read data
 #MacOnly 
-
 #DAA <- read.csv("C:/Users/christine.iyer/Box/FY21 Weekly Admissions Reports Summary to Inform Agency Campaigns/Reports/DAA_11-18-2020.csv", header = T, stringsAsFactors = F)
 Date <- Sys.Date()-1
 #WINDOWS
-
 #DAA <- read.csv("C:/Users/christine.iyer/Box/FY21 Weekly Admissions Reports Summary to Inform Agency Campaigns/Reports/DAA_11-13-2020.csv", header = T, stringsAsFactors = F)
 ```
 
@@ -48,21 +46,12 @@ DAA1 <- DAAData %>%
     vars("Birthdate", "App.Application.Date", "Initial.Source.Date", "Created.Date"), 
     as.Date,
     format = "%m/%d/%Y")
-
 DAA1$Month_I_N <- as.numeric(format(as.Date(DAA1$Initial.Source.Date),"%m")) # Month's number
-
 DAA1$Month_I_M  <- months(as.Date(DAA1$Initial.Source.Date), abbreviate=TRUE) 
-
 DAA1$Month_A_N <- as.numeric(format(as.Date(DAA1$App.Application.Date),"%m")) # Month's number
-
 DAA1$Month_A_M  <- months(as.Date(DAA1$App.Application.Date), abbreviate=TRUE) 
-
 DAA1$Yr_I_Y <- as.numeric(format(as.Date(DAA1$Initial.Source.Date),"%Y")) # Month's number
-
 DAA1$Yr_A_Y <- as.numeric(format(as.Date(DAA1$App.Application.Date),"%Y")) # Month's number
-
-
-
 ```
 
 
@@ -70,8 +59,6 @@ DAA1$Yr_A_Y <- as.numeric(format(as.Date(DAA1$App.Application.Date),"%Y")) # Mon
 
 ```{r}
 ### Factor Values in Raw Data
-
-
 ### __Fiscal Year Initial Source Date__
 #create FY variable on initial source date
 DAA1 <- DAA1 %>% mutate(
@@ -81,7 +68,6 @@ DAA1 <- DAA1 %>% mutate(
                                     ifelse(Initial.Source.Date>="2018-07-01" & Initial.Source.Date <= "2019-06-30", "FY19",
                                            ifelse(Initial.Source.Date>="2019-07-01" & Initial.Source.Date <= "2020-06-30", "FY20",
                                                   ifelse(Initial.Source.Date>="2020-07-01" & Initial.Source.Date <= "2021-06-30", "FY21","FY15 or earlier")))))))
-
 ```
 
 
@@ -141,7 +127,6 @@ ifelse(Anticipated.Start.Term.Year == "Fall 2021 2021", "Fall 2021",
 
 ```{r}
 ### __Application Status__
-
 #group by app status
 AppliedCats <- c("Withdrawn (Before Decision)", "Incomplete", "Hold (More Information Needed)", "Denied", "Complete (No Decision)", "Complete (Waitlisted)") 
 DAA1 <- DAA1 %>% 
@@ -150,8 +135,6 @@ DAA1 <- DAA1 %>%
                   ifelse(grepl("Confirm", App.Application.Status), "Confirmed",
                           ifelse(grepl("Enrolled", App.Application.Status), "Enrolled", 
                                  ifelse(grepl("Admit", App.Application.Status), "Admitted", App.Application.Status)))))
-
-
 ```
 
 
@@ -177,7 +160,6 @@ DAA2 <- DAA1 %>% mutate(AgeAtInquiry = round(difftime(Initial.Source.Date, Birth
 
 
 ```{r}
-
 ### __Region__
 targetedStates <- c("Massachusetts", "Connecticut", "New Hampshire")
 OtherNE <- c("Rhode Island", "Vermont")
@@ -191,7 +173,6 @@ DAA2 <- DAA2 %>% mutate(Region = ifelse(Primary.State.Province == "Maine", "Main
 
 
 ```{r}
-
 ### __Stealth Apps__
 DAA3 <- DAA2 %>% 
   mutate(Stealth = ifelse(Initial.Referral.Source == "APPL", "Stealth", "Not Stealth"))
@@ -210,19 +191,14 @@ DAA4 <- DAA3 %>%
 ### __Narrow FY__
 SelectFY <- c("Fall 2018", "Fall 2019", "Fall 2020", "Fall 2021")
 DAA4 <- DAA4 %>% filter(Anticipated.Start.Term.Year %in% SelectFY)
-
 DAA4$Month_I_M <- factor(DAA4$Month_I_M , levels = c("Jul", "Aug", "Sep", "Oct", "Nov", "Dec",  "Jan", "Feb", "Mar", "Apr", "May", "Jun"))
-
 DAA4$Month_A_M <- factor(DAA4$Month_A_M , levels = c("Jul", "Aug", "Sep", "Oct", "Nov", "Dec",  "Jan", "Feb", "Mar", "Apr", "May", "Jun"))
-
-
 unique(DAA4$Anticipated.Start.Term.Year)
 ```
        
 
 ```{r}
 # Age Groups
-
 AgeTransfers <- c("Unknown Age", "Transfer Age")
 filterForWA <- c("26 and Up", "Unknown")
 DAA4 <- DAA4 %>% mutate(Aud_P = 
@@ -338,17 +314,14 @@ Apps5 <- DAA4 %>% mutate(Aud_P =
                                                                                  grepl("^Fall", Anticipated.Start.Term.Year)& 
                                                                                  AgeGroup == "26 and Up", "WAGROS", "Other"))))))))), 
                 Stage = "Applicant")
-
 ```
 
 
 ```{r}
 DAA4 <- DAA4 %>% mutate(Stage1 = Stage)
 InqsApps <- merge(DAA4, Apps5, all = T)
-
 AnotherIA <- left_join(DAA4, Apps5
                        )
-
 # dim(AnotherIA)
 # kable(head(AnotherIA, 25))
 InqsApps <- InqsApps %>% filter(Aud_P != "Other")
@@ -375,8 +348,6 @@ HSUGIS_I <- Inquiries %>%
   select(-Month_A_N, -Month_A_M ) %>% 
   group_by(Month_I_M, Anticipated.Start.Term.Year) %>% 
   summarise(Inquiries = sum(Inquiries)) 
-
-
 g <- ggplot(data = HSUGIS_I, aes(x = Month_I_M, y = Inquiries - lag(Inquiries), group = Anticipated.Start.Term.Year, colour=Anticipated.Start.Term.Year)) + 
      geom_line(size = 1.2) +
      geom_point() +
@@ -386,9 +357,7 @@ g <- ggplot(data = HSUGIS_I, aes(x = Month_I_M, y = Inquiries - lag(Inquiries), 
   theme(axis.text.x = element_text(angle = 45)) + 
   ylab("Inquiries")+ 
   xlab("")
-
   
-
 HSUGIS_A <- DAA4 %>% 
   filter(Region == "Maine" & 
        Career == "Undergraduate" &  
@@ -399,9 +368,6 @@ HSUGIS_A <- DAA4 %>%
   select(-Month_I_N, -Month_I_M ) %>% 
   group_by(Month_A_N, Month_A_M, Anticipated.Start.Term.Year) %>% 
   summarise(Applications = sum(Applications)) %>% na.omit()
-
-
-
 h <- ggplot(data = HSUGIS_A, aes(x = Month_A_M, y = Applications - lag(Applications), group = Anticipated.Start.Term.Year, colour=Anticipated.Start.Term.Year)) + 
      geom_line(size = 1.2) +
      geom_point() +
@@ -440,8 +406,6 @@ HSUGIS_O <- Inquiries %>%
   select(-Month_A_N, -Month_A_M ) %>% 
   group_by(Month_I_M, Anticipated.Start.Term.Year) %>% 
   summarise(Inquiries = sum(Inquiries)) 
-
-
 g <- ggplot(data = HSUGIS_O, aes(x = Month_I_M, y = Inquiries - lag(Inquiries), group = Anticipated.Start.Term.Year, colour=Anticipated.Start.Term.Year)) + 
      geom_line(size = 1.2) +
      geom_point() +
@@ -451,9 +415,7 @@ g <- ggplot(data = HSUGIS_O, aes(x = Month_I_M, y = Inquiries - lag(Inquiries), 
   theme(axis.text.x = element_text(angle = 45)) + 
   ylab("Inquiries")+ 
   xlab("")
-
   
-
 HSUGOS_A <- DAA4 %>% 
   filter(Region == "Targeted OOS" & 
        Career == "Undergraduate" &  
@@ -464,9 +426,6 @@ HSUGOS_A <- DAA4 %>%
   select(-Month_I_N, -Month_I_M ) %>% 
   group_by(Month_A_N, Month_A_M, Anticipated.Start.Term.Year) %>% 
   summarise(Applications = sum(Applications)) %>% na.omit()
-
-
-
 h <- ggplot(data = HSUGOS_A, aes(x = Month_A_M, y = Applications - lag(Applications), group = Anticipated.Start.Term.Year, colour=Anticipated.Start.Term.Year)) + 
      geom_line(size = 1.2) +
      geom_point() +
@@ -513,8 +472,6 @@ CUTRIS_I <- Inquiries %>%
   select(-Month_A_N, -Month_A_M ) %>% 
   group_by(Month_I_M, Anticipated.Start.Term.Year) %>% 
   summarise(Inquiries = sum(Inquiries)) 
-
-
 g <- ggplot(data = CUTRIS_I, aes(x = Month_I_M, y = Inquiries - lag(Inquiries), group = Anticipated.Start.Term.Year, colour=Anticipated.Start.Term.Year)) + 
      geom_line(size = 1.2) +
      geom_point() +
@@ -524,9 +481,7 @@ g <- ggplot(data = CUTRIS_I, aes(x = Month_I_M, y = Inquiries - lag(Inquiries), 
   theme(axis.text.x = element_text(angle = 45)) + 
   ylab("Inquiries")+ 
   xlab("")
-
   
-
 CUTRIS_A <- DAA4 %>% 
   filter(Region == "Maine" & 
        Career == "Undergraduate" &  
@@ -536,9 +491,6 @@ CUTRIS_A <- DAA4 %>%
   select(-Month_I_N, -Month_I_M ) %>% 
   group_by(Month_A_N, Month_A_M, Anticipated.Start.Term.Year) %>% 
   summarise(Applications = sum(Applications)) %>% na.omit()
-
-
-
 h <- ggplot(data = CUTRIS_A, aes(x = Month_A_M, y = Applications - lag(Applications), group = Anticipated.Start.Term.Year, colour=Anticipated.Start.Term.Year)) + 
      geom_line(size = 1.2) +
      geom_point() +
@@ -577,8 +529,6 @@ CUTROS_O <- Inquiries %>%
   select(-Month_A_N, -Month_A_M ) %>% 
   group_by(Month_I_M, Anticipated.Start.Term.Year) %>% 
   summarise(Inquiries = sum(Inquiries)) 
-
-
 g <- ggplot(data = CUTROS_O, aes(x = Month_I_M, y = Inquiries - lag(Inquiries), group = Anticipated.Start.Term.Year, colour=Anticipated.Start.Term.Year)) + 
      geom_line(size = 1.2) +
      geom_point() +
@@ -588,9 +538,7 @@ g <- ggplot(data = CUTROS_O, aes(x = Month_I_M, y = Inquiries - lag(Inquiries), 
   theme(axis.text.x = element_text(angle = 45)) + 
   ylab("Inquiries")+ 
   xlab("")
-
   
-
 CUTROS_A <- DAA4 %>% 
   filter(Region == "Targeted OOS" & 
        Career == "Undergraduate" &  
@@ -600,9 +548,6 @@ CUTROS_A <- DAA4 %>%
   select(-Month_I_N, -Month_I_M ) %>% 
   group_by(Month_A_N, Month_A_M, Anticipated.Start.Term.Year) %>% 
   summarise(Applications = sum(Applications)) %>% na.omit()
-
-
-
 h <- ggplot(data = CUTROS_A, aes(x = Month_A_M, y = Applications - lag(Applications), group = Anticipated.Start.Term.Year, colour=Anticipated.Start.Term.Year)) + 
      geom_line(size = 1.2) +
      geom_point() +
@@ -628,7 +573,62 @@ g
 h
 ```
 
+```{r  WADC, fig.height=4, fig.width=8}
+FY <- c("FY18", "FY19", "FY20", "FY21")
+Inquiries <- DAA4 %>% filter(Stealth == "Not Stealth")
+WADC_I <- Inquiries %>%
+  filter(
+       Career == "Undergraduate" &  
+       FiscalYear %in% FY &
+       Aud_P == "WADC") %>%  
+  rename(Inquiries = n) %>% 
+  select(-Month_A_N, -Month_A_M ) %>% 
+  group_by(Month_I_M, Anticipated.Start.Term.Year) %>% 
+  summarise(Inquiries = sum(Inquiries)) 
+g <- ggplot(data = WADC_I, aes(x = Month_I_M, y = Inquiries - lag(Inquiries), group = Anticipated.Start.Term.Year, colour=Anticipated.Start.Term.Year)) + 
+     geom_line(size = 1.2) +
+     geom_point() +
+     theme_bw()+
+  scale_color_manual(values = colors) + 
+  theme(legend.position = "none") + 
+  theme(axis.text.x = element_text(angle = 45)) + 
+  ylab("Inquiries")+ 
+  xlab("")
+  
+WADC_A <- DAA4 %>% 
+  filter( 
+       Career == "Undergraduate" &  
+       FiscalYear %in% FY &
+       Aud_P == "WADC") %>% 
+  rename(Applications = n) %>% 
+  select(-Month_I_N, -Month_I_M ) %>% 
+  group_by(Month_A_N, Month_A_M, Anticipated.Start.Term.Year) %>% 
+  summarise(Applications = sum(Applications)) %>% na.omit()
+h <- ggplot(data = WADC_A, aes(x = Month_A_M, y = Applications - lag(Applications), group = Anticipated.Start.Term.Year, colour=Anticipated.Start.Term.Year)) + 
+     geom_line(size = 1.2) +
+     geom_point() +
+     theme_bw()+
+  scale_color_manual(values = colors)+ 
+  theme(axis.text.x = element_text(angle = 45))+
+    theme(legend.position="bottom")+ 
+  ylab("Applicants") + 
+  xlab("")
+```
+
+
+**WADC Inquiries**
+
+```{r fig.height=4, fig.width=8}
+g
+```
+
+
+**WADC Applicants**
+
+```{r fig.height=4, fig.width=8}
+h
+```
+
 ```{r}
 write.csv(DAA4, "C:/Users/christine.iyer/Box/FY21 Weekly Admissions Reports Summary to Inform Agency Campaigns/TidiedInqAppReports/FotTableauYoY.csv", row.names = F)
 ```
-
