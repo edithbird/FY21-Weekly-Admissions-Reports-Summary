@@ -206,8 +206,7 @@ DAA4 <- DAA3 %>%
 
  
 ```{r}
-unique(DAA3$FiscalYear_I)
-unique(DAA3$FiscalYear_A)
+
 ### __Narrow FY__
 SelectFY_E <- c("Fall 2018", "Fall 2019", "Fall 2020", "Fall 2021")
 SelectFY <- c("FY18", "FY19", "FY20", "FY21")
@@ -355,18 +354,16 @@ InqsApps <- InqsApps %>% filter(Aud_P != "Other")
 
 ```{r}
 FY <- c("FY18", "FY19", "FY20", "FY21")
-FY
+
 Inquiries <- DAA4 %>% filter(Stealth == "Not Stealth")
-unique(Inquiries$FiscalYear_I)
+
 ```
 
 ##########################    
 
 ### Conversions
 
-```{r}
-unique(Inquiries$FiscalYear_I)
-```
+
 
 
 ```{r HSUGIS,fig.height=4, fig.width=8}
@@ -378,7 +375,7 @@ HSUGIS_I <- Inquiries %>%
   select(-Month_A_N, -Month_A_M ) %>% 
   group_by(Month_I_M, FiscalYear_I) %>% 
   summarise(Inquiries = sum(Inquiries)) 
-g <- ggplot(data = HSUGIS_I, aes(x = Month_I_M, y = Inquiries - lag(Inquiries), group = FiscalYear_I, colour=FiscalYear_I)) + 
+g <- ggplot(data = HSUGIS_I, aes(x = Month_I_M, y = Inquiries, group = FiscalYear_I, colour=FiscalYear_I)) + 
      geom_line(size = 1) +
      geom_point() +
      theme_bw()+
@@ -395,7 +392,7 @@ HSUGIS_A <- DAA4 %>%
   select(-Month_I_N, -Month_I_M ) %>% 
   group_by(Month_A_N, Month_A_M, FiscalYear_A) %>% 
   summarise(Applications = sum(Applications)) %>% na.omit()
-h <- ggplot(data = HSUGIS_A, aes(x = Month_A_M, y = Applications - lag(Applications), group = FiscalYear_A, colour=FiscalYear_A)) + 
+h <- ggplot(data = HSUGIS_A, aes(x = Month_A_M, y = Applications, group = FiscalYear_A, colour=FiscalYear_A)) + 
      geom_line(size = 1) +
      geom_point() +
      theme_bw()+
@@ -428,7 +425,7 @@ HSUGOS_I <- Inquiries %>%
   select(-Month_A_N, -Month_A_M ) %>% 
   group_by(Month_I_M, FiscalYear_I) %>% 
   summarise(Inquiries = sum(Inquiries)) 
-g <- ggplot(data = HSUGOS_I, aes(x = Month_I_M, y = Inquiries - lag(Inquiries), group = FiscalYear_I, colour=FiscalYear_I)) + 
+g <- ggplot(data = HSUGOS_I, aes(x = Month_I_M, y = Inquiries, group = FiscalYear_I, colour=FiscalYear_I)) + 
      geom_line(size = 1) +
      geom_point() +
      theme_bw()+
@@ -445,7 +442,7 @@ HSUGOS_A <- DAA4 %>%
   select(-Month_I_N, -Month_I_M ) %>% 
   group_by(Month_A_N, Month_A_M, FiscalYear_A) %>% 
   summarise(Applications = sum(Applications)) %>% na.omit()
-h <- ggplot(data = HSUGOS_A, aes(x = Month_A_M, y = Applications - lag(Applications), group = FiscalYear_A, colour=FiscalYear_A)) + 
+h <- ggplot(data = HSUGOS_A, aes(x = Month_A_M, y = Applications, group = FiscalYear_A, colour=FiscalYear_A)) + 
      geom_line(size = 1) +
      geom_point() +
      theme_bw()+
@@ -488,7 +485,7 @@ CUTRIS_I <- Inquiries %>%
   select(-Month_A_N, -Month_A_M ) %>% 
   group_by(Month_I_M, FiscalYear_I) %>% 
   summarise(Inquiries = sum(Inquiries)) 
-g <- ggplot(data = CUTRIS_I, aes(x = Month_I_M, y = Inquiries - lag(Inquiries), group = FiscalYear_I, colour=FiscalYear_I)) + 
+g <- ggplot(data = CUTRIS_I, aes(x = Month_I_M, y = Inquiries, group = FiscalYear_I, colour=FiscalYear_I)) + 
      geom_line(size = 1) +
      geom_point() +
      theme_bw()+
@@ -505,7 +502,7 @@ CUTRIS_A <- DAA4 %>%
   select(-Month_I_N, -Month_I_M ) %>% 
   group_by(Month_A_N, Month_A_M, FiscalYear_A) %>% 
   summarise(Applications = sum(Applications)) %>% na.omit()
-h <- ggplot(data = CUTRIS_A, aes(x = Month_A_M, y = Applications - lag(Applications), group = FiscalYear_A, colour=FiscalYear_A)) + 
+h <- ggplot(data = CUTRIS_A, aes(x = Month_A_M, y = Applications, group = FiscalYear_A, colour=FiscalYear_A)) + 
      geom_line(size = 1) +
      geom_point() +
      theme_bw()+
@@ -541,7 +538,7 @@ CUTROS_I <- Inquiries %>%
   select(-Month_A_N, -Month_A_M ) %>% 
   group_by(Month_I_M, FiscalYear_I) %>% 
   summarise(Inquiries = sum(Inquiries)) 
-g <- ggplot(data = CUTROS_I, aes(x = Month_I_M, y = Inquiries - lag(Inquiries), group = FiscalYear_I, colour=FiscalYear_I)) + 
+g <- ggplot(data = CUTROS_I, aes(x = Month_I_M, y = Inquiries, group = FiscalYear_I, colour=FiscalYear_I)) + 
      geom_line(size = 1) +
      geom_point() +
      theme_bw()+
@@ -558,7 +555,7 @@ CUTROS_A <- DAA4 %>%
   select(-Month_I_N, -Month_I_M ) %>% 
   group_by(Month_A_N, Month_A_M, FiscalYear_A) %>% 
   summarise(Applications = sum(Applications)) %>% na.omit()
-h <- ggplot(data = CUTROS_A, aes(x = Month_A_M, y = Applications - lag(Applications), group = FiscalYear_A, colour=FiscalYear_A)) + 
+h <- ggplot(data = CUTROS_A, aes(x = Month_A_M, y = Applications, group = FiscalYear_A, colour=FiscalYear_A)) + 
      geom_line(size = 1) +
      geom_point() +
      theme_bw()+
@@ -583,7 +580,7 @@ g
 h
 ```
 
-```{r  WADC, fig.height=4, fig.width=8}
+```{r WADC, fig.height=4, fig.width=8, include=FALSE, eval=FALSE}
 FY <- c("FY18", "FY19", "FY20", "FY21")
 Inquiries <- DAA4 %>% filter(Stealth == "Not Stealth")
 WADC_I <- Inquiries %>%
@@ -628,18 +625,18 @@ h <- ggplot(data = WADC_A, aes(x = Month_A_M, y = Applications - lag(Application
 
 **WADC Inquiries**
 
-```{r fig.height=4, fig.width=8}
+```{r fig.height=4, fig.width=8, include=FALSE, eval=FALSE}
 g
 ```
 
 
 **WADC Applicants**
 
-```{r fig.height=4, fig.width=8}
+```{r fig.height=4, fig.width=8, include=FALSE, eval=FALSE}
 h
 ```
 
-```{r  CUGRIS, fig.height=4, fig.width=8}
+```{r  CUGRIS, fig.height=4, fig.width=8, include=FALSE, eval=FALSE}
 FY <- c("FY18", "FY19", "FY20", "FY21")
 Inquiries <- DAA4 %>% filter(Stealth == "Not Stealth")
 CUGRIS_I <- Inquiries %>%
@@ -684,18 +681,18 @@ h <- ggplot(data = CUGRIS_A, aes(x = Month_A_M, y = Applications - lag(Applicati
 
 **CUGRIS Inquiries**
 
-```{r fig.height=4, fig.width=8}
+```{r fig.height=4, fig.width=8, include=FALSE, eval=FALSE}
 g
 ```
 
 
 **CUGRIS Applicants**
 
-```{r fig.height=4, fig.width=8}
+```{r fig.height=4, fig.width=8, include=FALSE, eval=FALSE}
 h
 ```
 
-```{r  WAGRIS, fig.height=4, fig.width=8}
+```{r  WAGRIS, fig.height=4, fig.width=8, include=FALSE, eval=FALSE}
 FY <- c("FY18", "FY19", "FY20", "FY21")
 Inquiries <- DAA4 %>% filter(Stealth == "Not Stealth")
 WAGRIS_I <- Inquiries %>%
@@ -752,7 +749,7 @@ h
 ```
 
 
-```{r  CUGROS, fig.height=4, fig.width=8}
+```{r  CUGROS, fig.height=4, fig.width=8, include=FALSE, eval=FALSE}
 FY <- c("FY18", "FY19", "FY20", "FY21")
 Inquiries <- DAA4 %>% filter(Stealth == "Not Stealth")
 CUGROS_I <- Inquiries %>%
@@ -809,7 +806,7 @@ h
 ```
 
 
-```{r  WAGROS, fig.height=4, fig.width=8}
+```{r  WAGROS, fig.height=4, fig.width=8, include=FALSE, eval=FALSE}
 FY <- c("FY18", "FY19", "FY20", "FY21")
 Inquiries <- DAA4 %>% filter(Stealth == "Not Stealth")
 WAGROS_I <- Inquiries %>%
@@ -869,7 +866,7 @@ h
 write.csv(DAA4, "C:/Users/christine.iyer/Box/FY21 Weekly Admissions Reports Summary to Inform Agency Campaigns/TidiedInqAppReports/FotTableauYoY.csv", row.names = F)
 ```
 
-```{r  test, fig.height=4, fig.width=8}
+```{r  test, fig.height=4, fig.width=8, include=FALSE, eval=FALSE}
 
 CUTRIS_I <- Inquiries %>%
   filter(
