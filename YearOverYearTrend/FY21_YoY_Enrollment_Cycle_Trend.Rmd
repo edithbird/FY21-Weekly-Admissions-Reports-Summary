@@ -1,7 +1,7 @@
 ---
 title: "FY21_Inq_App_Flow_Funnel_Rinck"
 author: "Office of Marketing and Brand Management"
-date: "11/20/2020"
+date: "Refreshed `r Sys.Date()`"
 output: html_document
 ---
 
@@ -14,39 +14,40 @@ knitr::opts_chunk$set(
 ```
 
 
-```{r echo=FALSE, message=FALSE, warning=FALSE}
+```{r libraries,echo=FALSE, message=FALSE, warning=FALSE}
 library(dplyr)
 library(knitr)
 library(ggplot2)
 library(forcats)
 library(patchwork)
+library(plotly)
 suppressPackageStartupMessages(library("dplyr"))
 ```
 
-## Year Over Year Conversions
+## Year Over Year Inquiry and Application Flow
 
-```{r cars, fig.height=4, fig.width=8}
-DAAData <- read.csv("C:/Users/christine.iyer/Box/FY21 Weekly Admissions Reports Summary to Inform Agency Campaigns/Reports/DAA_12-01-2020.csv", header = T, stringsAsFactors = F)
-colors <- c("#60c7d1", "#731012", "#0e1033", "#f5a800")
+```{r data, fig.height=4, fig.width=8}
+DAAData <- read.csv("C:/Users/christine.iyer/OneDrive - University of Maine System/FY21 Weekly Admissions Reports Summary to Inform Agency Campaigns/Reports/DAA_09-21-2021.csv", header = T, stringsAsFactors = F)
+colors <- c("#60c7d1", "#731012", "#0e1033", "#f5a800", "#00539B")
 ```
 
-```{r}
+```{r date of data pull must be changed}
 # Read data
 #MacOnly 
 #DAA <- read.csv("C:/Users/christine.iyer/Box/FY21 Weekly Admissions Reports Summary to Inform Agency Campaigns/Reports/DAA_11-18-2020.csv", header = T, stringsAsFactors = F)
-Date <- Sys.Date()-1
+Date <- Sys.Date()
 #WINDOWS
 #DAA <- read.csv("C:/Users/christine.iyer/Box/FY21 Weekly Admissions Reports Summary to Inform Agency Campaigns/Reports/DAA_11-13-2020.csv", header = T, stringsAsFactors = F)
 ```
 
-```{r}
-# Convert dates
+```{r convert dates}
+#new fields for month and month number
 DAA1 <- DAAData %>% 
   mutate_at(
     vars("Birthdate", "App.Application.Date", "Initial.Source.Date", "Created.Date"), 
     as.Date,
     format = "%m/%d/%Y")
-
+head(DAA1)
 
 DAA1$Month_I_N <- as.numeric(format(as.Date(DAA1$Initial.Source.Date),"%m")) # Month's number
 DAA1$Month_I_M  <- months(as.Date(DAA1$Initial.Source.Date), abbreviate=TRUE) 
@@ -54,8 +55,8 @@ DAA1$Month_A_N <- as.numeric(format(as.Date(DAA1$App.Application.Date),"%m")) # 
 DAA1$Month_A_M  <- months(as.Date(DAA1$App.Application.Date), abbreviate=TRUE) 
 DAA1$Yr_I_Y <- as.numeric(format(as.Date(DAA1$Initial.Source.Date),"%Y")) # Month's number
 DAA1$Yr_A_Y <- as.numeric(format(as.Date(DAA1$App.Application.Date),"%Y")) # Month's number
-
-
+getwd()
+write.csv(DAA1, "./look.csv", row.names = F)
 # DAA1$Month_I_N <- as.numeric(format(as.Date(DAA1$Initial.Source.Date),"%m")) # Month's number
 # DAA1$Month_I_M  <- months(as.Date(DAA1$Initial.Source.Date), abbreviate=TRUE) 
 # DAA1$Yr_I_Y <- as.numeric(format(as.Date(DAA1$Initial.Source.Date),"%Y")) # Month's number
@@ -67,25 +68,26 @@ DAA1$Yr_A_Y <- as.numeric(format(as.Date(DAA1$App.Application.Date),"%Y")) # Mon
 
 
 
-```{r}
+```{r fiscal year variable}
 ### Factor Values in Raw Data
 ### __Fiscal Year Initial Source Date__
 #create FY variable on initial source date
 DAA1 <- DAA1 %>% mutate(
   FiscalYear_I = ifelse(Initial.Source.Date>="2015-07-01" & Initial.Source.Date <= "2016-06-30", "FY16", 
-                      ifelse(Initial.Source.Date>="2016-07-01" & Initial.Source.Date <= "2017-06-30", "FY17",
-                             ifelse(Initial.Source.Date>="2017-07-01" & Initial.Source.Date <= "2018-06-30", "FY18",
+                        ifelse(Initial.Source.Date>="2016-07-01" & Initial.Source.Date <= "2017-06-30", "FY17",
+                               ifelse(Initial.Source.Date>="2017-07-01" & Initial.Source.Date <= "2018-06-30", "FY18",
                                     ifelse(Initial.Source.Date>="2018-07-01" & Initial.Source.Date <= "2019-06-30", "FY19",
                                            ifelse(Initial.Source.Date>="2019-07-01" & Initial.Source.Date <= "2020-06-30", "FY20",
                                                   ifelse(Initial.Source.Date>="2020-07-01" & Initial.Source.Date <= "2021-06-30", "FY21",
-                                                         ifelse(is.na(Initial.Source.Date), "Other", "FY15 or earlier" ))))))), 
+                                                         ifelse(Initial.Source.Date>="2021-07-01", "FY22","FY15 or earlier" ))))))),
     FiscalYear_A = ifelse(App.Application.Date>="2015-07-01" & App.Application.Date <= "2016-06-30", "FY16", 
                       ifelse(App.Application.Date>="2016-07-01" & App.Application.Date <= "2017-06-30", "FY17",
                              ifelse(App.Application.Date >="2017-07-01" & App.Application.Date <= "2018-06-30", "FY18",
                                     ifelse(App.Application.Date>="2018-07-01" & App.Application.Date <= "2019-06-30", "FY19",
                                            ifelse(App.Application.Date>="2019-07-01" & App.Application.Date <= "2020-06-30", "FY20",
                                                   ifelse(App.Application.Date>="2020-07-01" & App.Application.Date <= "2021-06-30", "FY21",
-                                                         ifelse(is.na(App.Application.Date), "Other","FY15 or earlier"))))))))
+                                                         ifelse(Initial.Source.Date>="2021-07-01", "FY22","FY15 or earlier"))))))))
+
 ```
 
 
@@ -93,29 +95,29 @@ DAA1 <- DAA1 %>% mutate(
 
 
 
-```{r}
-### __Student Type__
+```{r student type}
 #if student type is and the student is a lead, we can assume this a a first-year student because we only buy leads who are first-year bound. If student type is blank and the career is graduate, the student type will also be graduate.
 DAA1 <- DAA1 %>% 
   mutate(Student.Type = ifelse(Student.Stage == "Lead", "First-Year Student",
-                               ifelse(Career == "Graduate", "Graduate", Student.Type)))
+                               ifelse((Career == "Graduate"|Student.Type == "Graduate"), "Graduate", Student.Type)))
 ```
 
 
 
 
-```{r}
-### __Student Stage__
+```{r student stage}
 #remove leads and classify other student stages
 DAA1 <- DAA1 %>% mutate(Student.Stage = ifelse(grepl("Applic", Student.Stage), "Applicant", Student.Stage))
 DAA1 <- DAA1 %>% filter(Student.Stage != "Lead")
+
+
+
 ```
 
 
 
 
-```{r}
-### __Anticipated Start__
+```{r anticipated start}
 #tidy up the Start term year choices
 DAA1 <- DAA1 %>% 
   mutate(Anticipated.Start.Term.Year= 
@@ -130,7 +132,8 @@ DAA1 <- DAA1 %>%
                                                                                 ifelse(Anticipated.Start.Term.Year == "Spring 2019 2019", "Spring 2019", 
                                                                                        ifelse(Anticipated.Start.Term.Year == "Summer 2022 2022", "Fall 2022", 
                                                                                               ifelse(Anticipated.Start.Term.Year == "Spring 2022 2022", "Spring 2022", 
-                                                                                                     ifelse(Anticipated.Start.Term.Year == "Summer 2023", "Fall 2023", ifelse(Anticipated.Start.Term.Year == "Summer 2019 2019", "Fall 2019", 
+                                                                                                     ifelse(Anticipated.Start.Term.Year == "Summer 2023", "Fall 2023", 
+                                                                                                            ifelse(Anticipated.Start.Term.Year == "Summer 2019 2019", "Fall 2019", 
 ifelse(Anticipated.Start.Term.Year == "Fall 2020 2020", "Fall 2020", 
 ifelse(Anticipated.Start.Term.Year == "Fall 2021 2021", "Fall 2021",
     ifelse(Anticipated.Start.Term.Year == "Summer 2020", "Fall 2020", 
@@ -139,12 +142,13 @@ ifelse(Anticipated.Start.Term.Year == "Fall 2021 2021", "Fall 2021",
                          ifelse(Anticipated.Start.Term.Year == "Summer 2018", "Fall 2018", 
                                 ifelse(Anticipated.Start.Term.Year == "Summer 2022", "Fall 2022", 
                                        ifelse(Anticipated.Start.Term.Year == "Fall 2022 2022", "Fall 2022", Anticipated.Start.Term.Year))))))))))))))))))))))
+unique(DAA1$Anticipated.Start.Term.Year)
+write.csv(DAA1, "C:/Users/christine.iyer/OneDrive - University of Maine System/FY21 Weekly Admissions Reports Summary to Inform Agency Campaigns/YearOverYearTrend/WrittenDataForDoubleCheck/FotTableauYoY_Line147.csv", row.names = F)
 ```
 
 
 
-```{r}
-### __Application Status__
+```{r application status}
 #group by app status
 AppliedCats <- c("Withdrawn (Before Decision)", "Incomplete", "Hold (More Information Needed)", "Denied", "Complete (No Decision)", "Complete (Waitlisted)") 
 DAA1 <- DAA1 %>% 
@@ -158,8 +162,8 @@ DAA1 <- DAA1 %>%
 
 
 
-```{r}
-### __Student Age Group at Time of Inq/App__
+```{r student age group}
+### __at Time of Inq/App__
 #since we are targeting by age group, we want to see ages at the time of inquiry
 DAA2 <- DAA1 %>% mutate(AgeAtInquiry = round(difftime(Initial.Source.Date, Birthdate, units = "weeks"),0), 
                         Age_Y = as.integer(round(AgeAtInquiry/52, 0)), 
@@ -177,8 +181,7 @@ DAA2 <- DAA1 %>% mutate(AgeAtInquiry = round(difftime(Initial.Source.Date, Birth
 
 
 
-```{r}
-### __Region__
+```{r region}
 targetedStates <- c("Massachusetts", "Connecticut", "New Hampshire")
 OtherNE <- c("Rhode Island", "Vermont")
 DAA2 <- DAA2 %>% mutate(Region = ifelse(Primary.State.Province == "Maine", "Maine", 
@@ -190,8 +193,7 @@ DAA2 <- DAA2 %>% mutate(Region = ifelse(Primary.State.Province == "Maine", "Main
  
 
 
-```{r}
-### __Stealth Apps__
+```{r stealth apps}
 DAA3 <- DAA2 %>% 
   mutate(Stealth = ifelse(Initial.Referral.Source == "APPL", "Stealth", "Not Stealth"))
 #unique(DAA$Stealth)
@@ -201,27 +203,24 @@ DAA4 <- DAA3 %>%
          App.Application.Status = ifelse(App.Application.Status == "" & Student.Stage == "Inquiry", "Inquiry", App.Application.Status)) %>% 
   group_by(Stealth, Career, Student.Type, Anticipated.Start.Term.Year, Student.Stage, App.Application.Status, AgeGroup, Region,  AgeGroupforTransfers, Initial.Source.Date, App.Application.Date, Month_I_N,Month_I_M,  Month_A_N, Month_A_M, Yr_I_Y, Yr_A_Y, FiscalYear_I, FiscalYear_A ) %>% 
   summarise(n = n()) 
+head(DAA4)
 ```
  
 
  
-```{r}
-
-### __Narrow FY__
-SelectFY_E <- c("Fall 2018", "Fall 2019", "Fall 2020", "Fall 2021")
-SelectFY <- c("FY18", "FY19", "FY20", "FY21")
+```{r narrow FY}
+SelectFY_E <- c( "Fall 2019", "Fall 2020", "Fall 2021", "Fall 2022", "Fall 2023")
+SelectFY <- c("FY19", "FY20", "FY21", "FY22")
 
 DAA4 <- DAA4 %>% filter(FiscalYear_I %in% SelectFY | FiscalYear_A %in% SelectFY)
-
-
+#reorder months
 DAA4$Month_I_M <- factor(DAA4$Month_I_M , levels = c("Jul", "Aug", "Sep", "Oct", "Nov", "Dec",  "Jan", "Feb", "Mar", "Apr", "May", "Jun"))
 DAA4$Month_A_M <- factor(DAA4$Month_A_M , levels = c("Jul", "Aug", "Sep", "Oct", "Nov", "Dec",  "Jan", "Feb", "Mar", "Apr", "May", "Jun"))
 #unique(DAA4$Anticipated.Start.Term.Year)
 ```
        
 
-```{r}
-# Age Groups
+```{r age groups}
 AgeTransfers <- c("Unknown Age", "Transfer Age")
 filterForWA <- c("26 and Up", "Unknown")
 DAA4 <- DAA4 %>% mutate(Aud_P = 
@@ -242,12 +241,12 @@ DAA4 <- DAA4 %>% mutate(Aud_P =
                                          Career == "Undergraduate" & 
                                          Student.Type == "Transfer" & 
                                          grepl("^Fall", Anticipated.Start.Term.Year)&
-                                         AgeGroupforTransfers %in% AgeTransfers, "CUTRIS",
+                                         AgeGroup != "19 and Under", "CUTRIS",
                                        ifelse(Stealth == "Not Stealth" & 
                                                 Region == "Targeted OOS" & 
                                                 Career == "Undergraduate" & 
                                                 Student.Type == "Transfer" & grepl("^Fall", Anticipated.Start.Term.Year) & 
-                                                AgeGroupforTransfers %in% AgeTransfers, "CUTROS",
+                                                AgeGroup != "19 and Under", "CUTROS",
                                               ifelse(Stealth == "Not Stealth" &
                                                      Career == "Undergraduate" & 
                                                        grepl("^Fall", Anticipated.Start.Term.Year) &
@@ -301,12 +300,12 @@ Apps5 <- DAA4 %>% mutate(Aud_P =
                                          Career == "Undergraduate" & 
                                          Student.Type == "Transfer" & 
                                          grepl("^Fall", Anticipated.Start.Term.Year)&
-                                         AgeGroupforTransfers %in% AgeTransfers, "CUTRIS",
+                                        AgeGroup != "19 and Under", "CUTRIS",
                                        ifelse(Student.Stage == "Applicant" & 
                                                 Region == "Targeted OOS" & 
                                                 Career == "Undergraduate" & 
                                                 Student.Type == "Transfer" & grepl("^Fall", Anticipated.Start.Term.Year) & 
-                                                AgeGroupforTransfers %in% AgeTransfers, "CUTROS",
+                                                AgeGroup != "19 and Under", "CUTROS",
                                               ifelse(Student.Stage == "Applicant" &
                                                      Career == "Undergraduate" & 
                                                        grepl("^Fall", Anticipated.Start.Term.Year) &
@@ -349,25 +348,20 @@ AnotherIA <- left_join(DAA4, Apps5
 # dim(AnotherIA)
 # kable(head(AnotherIA, 25))
 InqsApps <- InqsApps %>% filter(Aud_P != "Other")
-#write.csv(InqsApps, "C:/Users/christine.iyer/Box/FY21 Weekly Admissions Reports Summary to Inform Agency Campaigns/TidiedInqAppReports/FotTableauYoY.csv", row.names = F)
+# write.csv(InqsApps, "C:/Users/christine.iyer/OneDrive - University of Maine System/FY21 Weekly Admissions Reports Summary to Inform Agency Campaigns/YearOverYearTrend/WrittenDataForDoubleCheck/FotTableauYoY.csv", row.names = F)
 ```
 
 ```{r}
-FY <- c("FY18", "FY19", "FY20", "FY21")
+FY <- c("FY19", "FY20", "FY21", "FY22")
 
-Inquiries <- DAA4 %>% filter(Stealth == "Not Stealth")
-
+Inquiries <- InqsApps %>% filter(Stealth == "Not Stealth")
+DAA4 <- DAA4  %>% mutate(Question = ifelse(Yr_I_Y>Yr_A_Y, "Inconsistent", "Consistent"))
 ```
 
-##########################    
-
-### Conversions
+---------------
 
 
-
-
-```{r HSUGIS,fig.height=4, fig.width=8}
-
+```{r HSUGIS, fig.height=2, fig.width=6}
 HSUGIS_I <- Inquiries %>%
   filter(Aud_P == "HSUGIS" &
             FiscalYear_I %in% FY ) %>% 
@@ -375,9 +369,9 @@ HSUGIS_I <- Inquiries %>%
   select(-Month_A_N, -Month_A_M ) %>% 
   group_by(Month_I_M, FiscalYear_I) %>% 
   summarise(Inquiries = sum(Inquiries)) 
-g <- ggplot(data = HSUGIS_I, aes(x = Month_I_M, y = Inquiries, group = FiscalYear_I, colour=FiscalYear_I)) + 
-     geom_line(size = 1) +
-     geom_point() +
+g <- ggplot(data = HSUGIS_I, aes(x = Month_I_M, y = Inquiries, group = FiscalYear_I, colour=FiscalYear_I, text = paste("Province:", Inquiries))) + 
+     geom_line(size = 1, show.legend=FALSE) +
+     geom_point(show.legend=FALSE) +
      theme_bw()+
   scale_color_manual(values = colors) + 
   theme(legend.position = "none") + 
@@ -394,27 +388,38 @@ HSUGIS_A <- DAA4 %>%
   summarise(Applications = sum(Applications)) %>% na.omit()
 h <- ggplot(data = HSUGIS_A, aes(x = Month_A_M, y = Applications, group = FiscalYear_A, colour=FiscalYear_A)) + 
      geom_line(size = 1) +
-     geom_point() +
+     geom_point(show.legend=FALSE) +
      theme_bw()+
   scale_color_manual(values = colors)+ 
   theme(axis.text.x = element_text(angle = 45))+
     theme(legend.position="bottom")+ 
   ylab("Applicants") + 
   xlab("")
+# g <- ggplotly(g) %>% layout(showlegend = FALSE)
+# h <- ggplotly(h)%>%
+# layout(legend = list(orientation = "h", size = 2)) 
+
 ```
 
-**In-State HS Inquiries** 
+### HSUGIS
+
+__HSUGIS Inquiries__ 
 
 ```{r fig.height=4, fig.width=8}
+#g <- ggplotly(g) %>% layout(showlegend = FALSE)
 g
 ```
 
-**In-State HS Applicants** 
+**HSUGIS Applicants** 
 
 ```{r fig.height=4, fig.width=8}
+#h <- ggplotly(h) %>% layout(orientation = "h")
 h
 ```
 
+```{r}
+#plotly::subplot(g, h, nrows=2)
+```
 
 
 ```{r HSUGOS, fig.height=4, fig.width=8}
@@ -453,31 +458,23 @@ h <- ggplot(data = HSUGOS_A, aes(x = Month_A_M, y = Applications, group = Fiscal
   xlab("")
 ```
 
-**Out-of-State HS Inquiries** 
+### HSUGOS
+
+**HSUGOS Inquiries** 
 
 ```{r fig.height=4, fig.width=8}
 g
 ```
 
-**Out-of-State HS Applicants** 
+**HSUGOS Applicants**
 
 ```{r fig.height=4, fig.width=8}
 h
 ```
 
 
-
-
-
-
-
-
-
-
-
-
 ```{r CUTRIS, fig.height=4, fig.width=8}
-
+DAA4 <- DAA4 %>% filter(Question != "Inconsistent") 
 CUTRIS_I <- Inquiries %>%
   filter(Aud_P ==  "CUTRIS" &
        FiscalYear_I %in% FY) %>% 
@@ -502,6 +499,10 @@ CUTRIS_A <- DAA4 %>%
   select(-Month_I_N, -Month_I_M ) %>% 
   group_by(Month_A_N, Month_A_M, FiscalYear_A) %>% 
   summarise(Applications = sum(Applications)) %>% na.omit()
+
+
+
+write.csv(CUTRIS_A, "./CUTRIS_A.csv", row.names = F)
 h <- ggplot(data = CUTRIS_A, aes(x = Month_A_M, y = Applications, group = FiscalYear_A, colour=FiscalYear_A)) + 
      geom_line(size = 1) +
      geom_point() +
@@ -513,23 +514,24 @@ h <- ggplot(data = CUTRIS_A, aes(x = Month_A_M, y = Applications, group = Fiscal
   xlab("")
 ```
 
-**In-State TR Inquiries**
+
+### CUTRIS
+
+**CUTRIS Inquiries**
 
 ```{r fig.height=4, fig.width=8}
 g
 ```
 
-**In-State TR Applicants**
+**CUTRIS Applicants**
 
 ```{r fig.height=4, fig.width=8}
 h
 ```
 
 
-
-
 ```{r  CUTROS, fig.height=4, fig.width=8}
-FY <- c("FY18", "FY19", "FY20", "FY21")
+FY <- c("FY18", "FY19", "FY20", "FY21", "FY22")
 Inquiries <- DAA4 %>% filter(Stealth == "Not Stealth")
 CUTROS_I <- Inquiries %>%
   filter(Aud_P == "CUTROS" &
@@ -566,33 +568,34 @@ h <- ggplot(data = CUTROS_A, aes(x = Month_A_M, y = Applications, group = Fiscal
   xlab("")
 ```
 
+### CUTROS
 
-**Out-of-State TR Inquiries**
+**CUTROS Inquiries**
 
 ```{r fig.height=4, fig.width=8}
 g
 ```
 
 
-**Out-of-State TR Applicants**
+**CUTROS Applicants**
 
 ```{r fig.height=4, fig.width=8}
 h
 ```
 
-```{r WADC, fig.height=4, fig.width=8, include=FALSE, eval=FALSE}
-FY <- c("FY18", "FY19", "FY20", "FY21")
+```{r WADC, echo=FALSE, fig.height=4, fig.width=8}
+FY <- c("FY18", "FY19", "FY20", "FY21", "FY22")
 Inquiries <- DAA4 %>% filter(Stealth == "Not Stealth")
 WADC_I <- Inquiries %>%
   filter(
        Career == "Undergraduate" &  
-       FiscalYear %in% FY &
+       FiscalYear_I %in% FY &
        Aud_P == "WADC") %>%  
   rename(Inquiries = n) %>% 
   select(-Month_A_N, -Month_A_M ) %>% 
-  group_by(Month_I_M, Anticipated.Start.Term.Year) %>% 
+  group_by(Month_I_M, FiscalYear_I) %>% 
   summarise(Inquiries = sum(Inquiries)) 
-g <- ggplot(data = WADC_I, aes(x = Month_I_M, y = Inquiries - lag(Inquiries), group = Anticipated.Start.Term.Year, colour=Anticipated.Start.Term.Year)) + 
+g <- ggplot(data = WADC_I, aes(x = Month_I_M, y = Inquiries, group = FiscalYear_I, colour=FiscalYear_I)) + 
      geom_line(size = 1) +
      geom_point() +
      theme_bw()+
@@ -605,13 +608,13 @@ g <- ggplot(data = WADC_I, aes(x = Month_I_M, y = Inquiries - lag(Inquiries), gr
 WADC_A <- DAA4 %>% 
   filter( 
        Career == "Undergraduate" &  
-       FiscalYear %in% FY &
+       FiscalYear_A %in% FY &
        Aud_P == "WADC") %>% 
   rename(Applications = n) %>% 
   select(-Month_I_N, -Month_I_M ) %>% 
-  group_by(Month_A_N, Month_A_M, Anticipated.Start.Term.Year) %>% 
+  group_by(Month_A_N, Month_A_M, FiscalYear_A) %>% 
   summarise(Applications = sum(Applications)) %>% na.omit()
-h <- ggplot(data = WADC_A, aes(x = Month_A_M, y = Applications - lag(Applications), group = Anticipated.Start.Term.Year, colour=Anticipated.Start.Term.Year)) + 
+h <- ggplot(data = WADC_A, aes(x = Month_A_M, y = Applications, group = FiscalYear_A, colour=FiscalYear_A)) + 
      geom_line(size = 1) +
      geom_point() +
      theme_bw()+
@@ -622,33 +625,34 @@ h <- ggplot(data = WADC_A, aes(x = Month_A_M, y = Applications - lag(Application
   xlab("")
 ```
 
+### WADC
 
 **WADC Inquiries**
 
-```{r fig.height=4, fig.width=8, include=FALSE, eval=FALSE}
+```{r fig.height=4, fig.width=8}
 g
 ```
 
 
 **WADC Applicants**
 
-```{r fig.height=4, fig.width=8, include=FALSE, eval=FALSE}
+```{r fig.height=4, fig.width=8}
 h
 ```
 
-```{r  CUGRIS, fig.height=4, fig.width=8, include=FALSE, eval=FALSE}
-FY <- c("FY18", "FY19", "FY20", "FY21")
+```{r  CUGRIS}
+FY <- c("FY18", "FY19", "FY20", "FY21", "FY22")
 Inquiries <- DAA4 %>% filter(Stealth == "Not Stealth")
 CUGRIS_I <- Inquiries %>%
   filter(
   
-       FiscalYear %in% FY &
+       FiscalYear_I %in% FY &
        Aud_P == "CUGRIS") %>%  
   rename(Inquiries = n) %>% 
   select(-Month_A_N, -Month_A_M ) %>% 
-  group_by(Month_I_M, Anticipated.Start.Term.Year) %>% 
+  group_by(Month_I_M, FiscalYear_I) %>% 
   summarise(Inquiries = sum(Inquiries)) 
-g <- ggplot(data = CUGRIS_I, aes(x = Month_I_M, y = Inquiries - lag(Inquiries), group = Anticipated.Start.Term.Year, colour=Anticipated.Start.Term.Year)) + 
+g <- ggplot(data = CUGRIS_I, aes(x = Month_I_M, y = Inquiries, group = FiscalYear_I, colour=FiscalYear_I)) + 
      geom_line(size = 1) +
      geom_point() +
      theme_bw()+
@@ -661,13 +665,13 @@ g <- ggplot(data = CUGRIS_I, aes(x = Month_I_M, y = Inquiries - lag(Inquiries), 
 CUGRIS_A <- DAA4 %>% 
   filter( 
  
-       FiscalYear %in% FY &
+       FiscalYear_A %in% FY &
        Aud_P == "CUGRIS") %>% 
   rename(Applications = n) %>% 
   select(-Month_I_N, -Month_I_M ) %>% 
-  group_by(Month_A_N, Month_A_M, Anticipated.Start.Term.Year) %>% 
+  group_by(Month_A_N, Month_A_M, FiscalYear_A) %>% 
   summarise(Applications = sum(Applications)) %>% na.omit()
-h <- ggplot(data = CUGRIS_A, aes(x = Month_A_M, y = Applications - lag(Applications), group = Anticipated.Start.Term.Year, colour=Anticipated.Start.Term.Year)) + 
+h <- ggplot(data = CUGRIS_A, aes(x = Month_A_M, y = Applications, group = FiscalYear_A, colour=FiscalYear_A)) + 
      geom_line(size = 1) +
      geom_point() +
      theme_bw()+
@@ -678,33 +682,33 @@ h <- ggplot(data = CUGRIS_A, aes(x = Month_A_M, y = Applications - lag(Applicati
   xlab("")
 ```
 
+### CUGRIS
 
 **CUGRIS Inquiries**
 
-```{r fig.height=4, fig.width=8, include=FALSE, eval=FALSE}
+```{r fig.height=4, fig.width=8}
 g
 ```
 
-
 **CUGRIS Applicants**
 
-```{r fig.height=4, fig.width=8, include=FALSE, eval=FALSE}
+```{r fig.height=4, fig.width=8}
 h
 ```
 
-```{r  WAGRIS, fig.height=4, fig.width=8, include=FALSE, eval=FALSE}
+```{r  WAGRIS}
 FY <- c("FY18", "FY19", "FY20", "FY21")
 Inquiries <- DAA4 %>% filter(Stealth == "Not Stealth")
 WAGRIS_I <- Inquiries %>%
   filter(
   
-       FiscalYear %in% FY &
+       FiscalYear_I %in% FY &
        Aud_P == "WAGRIS") %>%  
   rename(Inquiries = n) %>% 
   select(-Month_A_N, -Month_A_M ) %>% 
-  group_by(Month_I_M, Anticipated.Start.Term.Year) %>% 
+  group_by(Month_I_M, FiscalYear_I) %>% 
   summarise(Inquiries = sum(Inquiries)) 
-g <- ggplot(data = WAGRIS_I, aes(x = Month_I_M, y = Inquiries - lag(Inquiries), group = Anticipated.Start.Term.Year, colour=Anticipated.Start.Term.Year)) + 
+g <- ggplot(data = WAGRIS_I, aes(x = Month_I_M, y = Inquiries, group = FiscalYear_I, colour=FiscalYear_I)) + 
      geom_line(size = 1) +
      geom_point() +
      theme_bw()+
@@ -717,13 +721,13 @@ g <- ggplot(data = WAGRIS_I, aes(x = Month_I_M, y = Inquiries - lag(Inquiries), 
 WAGRIS_A <- DAA4 %>% 
   filter( 
  
-       FiscalYear %in% FY &
+       FiscalYear_A %in% FY &
        Aud_P == "WAGRIS") %>% 
   rename(Applications = n) %>% 
   select(-Month_I_N, -Month_I_M ) %>% 
-  group_by(Month_A_N, Month_A_M, Anticipated.Start.Term.Year) %>% 
+  group_by(Month_A_N, Month_A_M, FiscalYear_A) %>% 
   summarise(Applications = sum(Applications)) %>% na.omit()
-h <- ggplot(data = WAGRIS_A, aes(x = Month_A_M, y = Applications - lag(Applications), group = Anticipated.Start.Term.Year, colour=Anticipated.Start.Term.Year)) + 
+h <- ggplot(data = WAGRIS_A, aes(x = Month_A_M, y = Applications, group = FiscalYear_A, colour=FiscalYear_A)) + 
      geom_line(size = 1) +
      geom_point() +
      theme_bw()+
@@ -734,6 +738,7 @@ h <- ggplot(data = WAGRIS_A, aes(x = Month_A_M, y = Applications - lag(Applicati
   xlab("")
 ```
 
+### WAGRIS
 
 **WAGRIS Inquiries**
 
@@ -749,19 +754,19 @@ h
 ```
 
 
-```{r  CUGROS, fig.height=4, fig.width=8, include=FALSE, eval=FALSE}
-FY <- c("FY18", "FY19", "FY20", "FY21")
+```{r  CUGROS}
+FY <- c("FY18", "FY19", "FY20", "FY21", "FY22")
 Inquiries <- DAA4 %>% filter(Stealth == "Not Stealth")
 CUGROS_I <- Inquiries %>%
   filter(
   
-       FiscalYear %in% FY &
+       FiscalYear_I %in% FY &
        Aud_P == "CUGROS") %>%  
   rename(Inquiries = n) %>% 
   select(-Month_A_N, -Month_A_M ) %>% 
-  group_by(Month_I_M, Anticipated.Start.Term.Year) %>% 
+  group_by(Month_I_M, FiscalYear_I) %>% 
   summarise(Inquiries = sum(Inquiries)) 
-g <- ggplot(data = CUGROS_I, aes(x = Month_I_M, y = Inquiries - lag(Inquiries), group = Anticipated.Start.Term.Year, colour=Anticipated.Start.Term.Year)) + 
+g <- ggplot(data = CUGROS_I, aes(x = Month_I_M, y = Inquiries, group = FiscalYear_I, colour=FiscalYear_I)) + 
      geom_line(size = 1) +
      geom_point() +
      theme_bw()+
@@ -774,13 +779,13 @@ g <- ggplot(data = CUGROS_I, aes(x = Month_I_M, y = Inquiries - lag(Inquiries), 
 CUGROS_A <- DAA4 %>% 
   filter( 
  
-       FiscalYear %in% FY &
+       FiscalYear_A %in% FY &
        Aud_P == "CUGROS") %>% 
   rename(Applications = n) %>% 
   select(-Month_I_N, -Month_I_M ) %>% 
-  group_by(Month_A_N, Month_A_M, Anticipated.Start.Term.Year) %>% 
+  group_by(Month_A_N, Month_A_M, FiscalYear_A) %>% 
   summarise(Applications = sum(Applications)) %>% na.omit()
-h <- ggplot(data = CUGROS_A, aes(x = Month_A_M, y = Applications - lag(Applications), group = Anticipated.Start.Term.Year, colour=Anticipated.Start.Term.Year)) + 
+h <- ggplot(data = CUGROS_A, aes(x = Month_A_M, y = Applications, group = FiscalYear_A, colour=FiscalYear_A)) + 
      geom_line(size = 1) +
      geom_point() +
      theme_bw()+
@@ -791,6 +796,7 @@ h <- ggplot(data = CUGROS_A, aes(x = Month_A_M, y = Applications - lag(Applicati
   xlab("")
 ```
 
+### CUGROS
 
 **CUGROS Inquiries**
 
@@ -806,19 +812,19 @@ h
 ```
 
 
-```{r  WAGROS, fig.height=4, fig.width=8, include=FALSE, eval=FALSE}
-FY <- c("FY18", "FY19", "FY20", "FY21")
+```{r  WAGROS}
+FY <- c("FY18", "FY19", "FY20", "FY21", "FY22")
 Inquiries <- DAA4 %>% filter(Stealth == "Not Stealth")
 WAGROS_I <- Inquiries %>%
   filter(
   
-       FiscalYear %in% FY &
+       FiscalYear_I %in% FY &
        Aud_P == "WAGROS") %>%  
   rename(Inquiries = n) %>% 
   select(-Month_A_N, -Month_A_M ) %>% 
-  group_by(Month_I_M, Anticipated.Start.Term.Year) %>% 
+  group_by(Month_I_M, FiscalYear_I) %>% 
   summarise(Inquiries = sum(Inquiries)) 
-g <- ggplot(data = WAGROS_I, aes(x = Month_I_M, y = Inquiries - lag(Inquiries), group = Anticipated.Start.Term.Year, colour=Anticipated.Start.Term.Year)) + 
+g <- ggplot(data = WAGROS_I, aes(x = Month_I_M, y = Inquiries, group = FiscalYear_I, colour=FiscalYear_I)) + 
      geom_line(size = 1) +
      geom_point() +
      theme_bw()+
@@ -831,13 +837,13 @@ g <- ggplot(data = WAGROS_I, aes(x = Month_I_M, y = Inquiries - lag(Inquiries), 
 WAGROS_A <- DAA4 %>% 
   filter( 
  
-       FiscalYear %in% FY &
+       FiscalYear_A %in% FY &
        Aud_P == "WAGROS") %>% 
   rename(Applications = n) %>% 
   select(-Month_I_N, -Month_I_M ) %>% 
-  group_by(Month_A_N, Month_A_M, Anticipated.Start.Term.Year) %>% 
+  group_by(Month_A_N, Month_A_M, FiscalYear_A) %>% 
   summarise(Applications = sum(Applications)) %>% na.omit()
-h <- ggplot(data = WAGROS_A, aes(x = Month_A_M, y = Applications - lag(Applications), group = Anticipated.Start.Term.Year, colour=Anticipated.Start.Term.Year)) + 
+h <- ggplot(data = WAGROS_A, aes(x = Month_A_M, y = Applications, group = FiscalYear_A, colour=FiscalYear_A)) + 
      geom_line(size = 1) +
      geom_point() +
      theme_bw()+
@@ -848,6 +854,7 @@ h <- ggplot(data = WAGROS_A, aes(x = Month_A_M, y = Applications - lag(Applicati
   xlab("")
 ```
 
+### WAGROS
 
 **WAGROS Inquiries**
 
@@ -863,21 +870,19 @@ h
 ```
 
 ```{r}
-write.csv(DAA4, "C:/Users/christine.iyer/Box/FY21 Weekly Admissions Reports Summary to Inform Agency Campaigns/TidiedInqAppReports/FotTableauYoY.csv", row.names = F)
+write.csv(DAA4, "C:/Users/christine.iyer/OneDrive - University of Maine System/FY21 Weekly Admissions Reports Summary to Inform Agency Campaigns/TidiedInqAppReports/FotTableauYoY.csv", row.names = F)
 ```
 
-```{r  test, fig.height=4, fig.width=8, include=FALSE, eval=FALSE}
-
+```{r test, eval=FALSE, include=FALSE}
 CUTRIS_I <- Inquiries %>%
   filter(
-  
-       FiscalYear %in% FY &
-       Aud_P == "CUTRIS") %>%  
+    FiscalYear_I %in% FY &
+      Aud_P == "CUTRIS") %>%  
   rename(Inquiries = n) %>% 
   select(-Month_A_N, -Month_A_M ) %>% 
-  group_by(Month_I_M, Anticipated.Start.Term.Year) %>% 
+  group_by(Month_I_M, FiscalYear_I) %>% 
   summarise(Inquiries = sum(Inquiries)) 
-g <- ggplot(data = CUTRIS_I, aes(x = Month_I_M, y = Inquiries - lag(Inquiries), group = Anticipated.Start.Term.Year, colour=Anticipated.Start.Term.Year)) + 
+g <- ggplot(data = CUTRIS_I, aes(x = Month_I_M, y = Inquiries, group = FiscalYear_I, colour=FiscalYear_I)) + 
      geom_line(size = 1) +
      geom_point() +
      theme_bw()+
@@ -890,13 +895,13 @@ g <- ggplot(data = CUTRIS_I, aes(x = Month_I_M, y = Inquiries - lag(Inquiries), 
 CUTRIS_A <- DAA4 %>% 
   filter( 
  
-       FiscalYear %in% FY &
+       FiscalYear_A %in% FY &
        Aud_P == "CUTRIS") %>% 
   rename(Applications = n) %>% 
   select(-Month_I_N, -Month_I_M ) %>% 
-  group_by(Month_A_N, Month_A_M, Anticipated.Start.Term.Year) %>% 
+  group_by(Month_A_N, Month_A_M, FiscalYear_A) %>% 
   summarise(Applications = sum(Applications)) %>% na.omit()
-h <- ggplot(data = CUTRIS_A, aes(x = Month_A_M, y = Applications - lag(Applications), group = Anticipated.Start.Term.Year, colour=Anticipated.Start.Term.Year)) + 
+h <- ggplot(data = CUTRIS_A, aes(x = Month_A_M, y = Applications, group = FiscalYear_A, colour=FiscalYear_A)) + 
      geom_line(size = 1) +
      geom_point() +
      theme_bw()+
@@ -908,17 +913,19 @@ h <- ggplot(data = CUTRIS_A, aes(x = Month_A_M, y = Applications - lag(Applicati
 ```
 
 
-**WAGROS Inquiries**
 
-```{r fig.height=4, fig.width=8}
+
+```{r eval=FALSE, fig.height=4, fig.width=8, include=FALSE}
+# **CUTRIS Inquiries**
 g
 ```
 
 
-**WAGROS Applicants**
+
 
 ```{r fig.height=4, fig.width=8}
-h
+#**CUTRIS Applicants**
+#h
 ```
 
 
